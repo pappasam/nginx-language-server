@@ -1,0 +1,30 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool]
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.poetry]
+name = "nginx-language-server"
+version = "0.1.0"
+description = ""
+authors = ["Sam Roeca <samuel.roeca@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+crossplane = "^0.5.7"
+pygls = "^0.9.1"
+click = "^7.1.2"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.6.2"
+
+[tool.poetry.scripts]
+nginx-language-server = 'nginx_language_server.cli:cli'

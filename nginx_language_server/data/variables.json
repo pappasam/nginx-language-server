@@ -1,0 +1,807 @@
+[
+  {
+    "name": "$arg_name",
+    "desc": "argument name in the request line",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$args",
+    "desc": "arguments in the request line",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$binary_remote_addr",
+    "desc": "client address in a binary form, value’s length is always 4 bytes\nfor IPv4 addresses or 16 bytes for IPv6 addresses",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$body_bytes_sent",
+    "desc": "number of bytes sent to a client, not counting the response header;\nthis variable is compatible with the “%B” parameter of the\nmod_log_config\nApache module",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$bytes_sent",
+    "desc": "number of bytes sent to a client (1.3.8, 1.2.5)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$connection",
+    "desc": "connection serial number (1.3.8, 1.2.5)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$connection_requests",
+    "desc": "current number of requests made through a connection (1.3.8, 1.2.5)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$content_length",
+    "desc": "“Content-Length” request header field",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$content_type",
+    "desc": "“Content-Type” request header field",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$cookie_name",
+    "desc": "the name cookie",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$document_root",
+    "desc": "root or alias directive’s value\nfor the current request",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$document_uri",
+    "desc": "same as $uri",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$host",
+    "desc": "in this order of precedence:\nhost name from the request line, or\nhost name from the “Host” request header field, or\nthe server name matching a request",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$hostname",
+    "desc": "host name",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$http_name",
+    "desc": "arbitrary request header field;\nthe last part of a variable name is the field name converted\nto lower case with dashes replaced by underscores",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$https",
+    "desc": "“on”\nif connection operates in SSL mode,\nor an empty string otherwise",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$is_args",
+    "desc": "“?” if a request line has arguments,\nor an empty string otherwise",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$limit_rate",
+    "desc": "setting this variable enables response rate limiting;\nsee limit_rate",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$msec",
+    "desc": "current time in seconds with the milliseconds resolution (1.3.9, 1.2.6)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$nginx_version",
+    "desc": "nginx version",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$pid",
+    "desc": "PID of the worker process",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$pipe",
+    "desc": "“p” if request was pipelined, “.”\notherwise (1.3.12, 1.2.7)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$proxy_protocol_addr",
+    "desc": "client address from the PROXY protocol header, or an empty string otherwise\n(1.5.12)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$proxy_protocol_port",
+    "desc": "client port from the PROXY protocol header, or an empty string otherwise\n(1.11.0)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$query_string",
+    "desc": "same as $args",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$realpath_root",
+    "desc": "an absolute pathname corresponding to the\nroot or alias directive’s value\nfor the current request,\nwith all symbolic links resolved to real paths",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$remote_addr",
+    "desc": "client address",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$remote_port",
+    "desc": "client port",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$remote_user",
+    "desc": "user name supplied with the Basic authentication",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$request",
+    "desc": "full original request line",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$request_body",
+    "desc": "request body\n\nThe variable’s value is made available in locations\nprocessed by the\nproxy_pass,\nfastcgi_pass,\nuwsgi_pass,\nand\nscgi_pass\ndirectives when the request body was read to\na memory buffer.",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$request_body_file",
+    "desc": "name of a temporary file with the request body\n\nAt the end of processing, the file needs to be removed.\nTo always write the request body to a file,\nclient_body_in_file_only needs to be enabled.\nWhen the name of a temporary file is passed in a proxied request\nor in a request to a FastCGI/uwsgi/SCGI server,\npassing the request body should be disabled by the\n\nproxy_pass_request_body off,\n\nfastcgi_pass_request_body off,\n\nuwsgi_pass_request_body off, or\n\nscgi_pass_request_body off\ndirectives, respectively.",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$request_completion",
+    "desc": "“OK” if a request has completed,\nor an empty string otherwise",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$request_filename",
+    "desc": "file path for the current request, based on the\nroot or alias\ndirectives, and the request URI",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$request_id",
+    "desc": "unique request identifier\ngenerated from 16 random bytes, in hexadecimal (1.11.0)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$request_length",
+    "desc": "request length (including request line, header, and request body)\n(1.3.12, 1.2.7)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$request_method",
+    "desc": "request method, usually\n“GET” or “POST”",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$request_time",
+    "desc": "request processing time in seconds with a milliseconds resolution\n(1.3.9, 1.2.6);\ntime elapsed since the first bytes were read from the client",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$request_uri",
+    "desc": "full original request URI (with arguments)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$scheme",
+    "desc": "request scheme, “http” or “https”",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$sent_http_name",
+    "desc": "arbitrary response header field;\nthe last part of a variable name is the field name converted\nto lower case with dashes replaced by underscores",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$sent_trailer_name",
+    "desc": "arbitrary field sent at the end of the response (1.13.2);\nthe last part of a variable name is the field name converted\nto lower case with dashes replaced by underscores",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$server_addr",
+    "desc": "an address of the server which accepted a request\n\nComputing a value of this variable usually requires one system call.\nTo avoid a system call, the listen directives\nmust specify addresses and use the bind parameter.",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$server_name",
+    "desc": "name of the server which accepted a request",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$server_port",
+    "desc": "port of the server which accepted a request",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$server_protocol",
+    "desc": "request protocol, usually\n“HTTP/1.0”,\n“HTTP/1.1”,\nor\n“HTTP/2.0”",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$status",
+    "desc": "response status (1.3.2, 1.2.2)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$tcpinfo_rtt,\n$tcpinfo_rttvar,\n$tcpinfo_snd_cwnd,\n$tcpinfo_rcv_space",
+    "desc": "information about the client TCP connection; available on systems\nthat support the TCP_INFO socket option",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$time_iso8601",
+    "desc": "local time in the ISO 8601 standard format (1.3.12, 1.2.7)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$time_local",
+    "desc": "local time in the Common Log Format (1.3.12, 1.2.7)",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$uri",
+    "desc": "current URI in request, normalized\n\nThe value of $uri may change during request processing,\ne.g. when doing internal redirects, or when using index files.",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$jwt_header_name",
+    "desc": "returns the value of a specified\nJOSE header",
+    "module": "ngx_http_auth_jwt_module"
+  },
+  {
+    "name": "$jwt_claim_name",
+    "desc": "returns the value of a specified\nJWT claim",
+    "module": "ngx_http_auth_jwt_module"
+  },
+  {
+    "name": "$fastcgi_script_name",
+    "desc": "request URI or, if a URI ends with a slash, request URI with an index file\nname configured by the fastcgi_index directive appended to it.\nThis variable can be used to set the\nSCRIPT_FILENAME and PATH_TRANSLATED\nparameters that determine the script name in PHP.\nFor example, for the “/info/” request with the\nfollowing directives\nfastcgi_index index.php;\nfastcgi_param SCRIPT_FILENAME /home/www/scripts/php$fastcgi_script_name;\n\nthe SCRIPT_FILENAME parameter will be equal to\n“/home/www/scripts/php/info/index.php”.\n\n\nWhen using the fastcgi_split_path_info directive,\nthe $fastcgi_script_name variable equals the value of\nthe first capture set by the directive.",
+    "module": "ngx_http_fastcgi_module"
+  },
+  {
+    "name": "$fastcgi_path_info",
+    "desc": "the value of the second capture set by the\nfastcgi_split_path_info directive.\nThis variable can be used to set the\nPATH_INFO parameter.",
+    "module": "ngx_http_fastcgi_module"
+  },
+  {
+    "name": "$gzip_ratio",
+    "desc": "achieved compression ratio, computed as the ratio between the\noriginal and compressed response sizes.",
+    "module": "ngx_http_gzip_module"
+  },
+  {
+    "name": "$memcached_key",
+    "desc": "Defines a key for obtaining response from a memcached server.",
+    "module": "ngx_http_memcached_module"
+  },
+  {
+    "name": "$proxy_host",
+    "desc": "name and port of a proxied server as specified in the\nproxy_pass directive;",
+    "module": "ngx_http_proxy_module"
+  },
+  {
+    "name": "$proxy_port",
+    "desc": "port of a proxied server as specified in the\nproxy_pass directive, or the protocol’s default port;",
+    "module": "ngx_http_proxy_module"
+  },
+  {
+    "name": "$proxy_add_x_forwarded_for",
+    "desc": "the “X-Forwarded-For” client request header field\nwith the $remote_addr variable appended to it, separated by a comma.\nIf the “X-Forwarded-For” field is not present in the client\nrequest header, the $proxy_add_x_forwarded_for variable is equal\nto the $remote_addr variable.",
+    "module": "ngx_http_proxy_module"
+  },
+  {
+    "name": "$realip_remote_addr",
+    "desc": "keeps the original client address (1.9.7)",
+    "module": "ngx_http_realip_module"
+  },
+  {
+    "name": "$realip_remote_port",
+    "desc": "keeps the original client port (1.11.0)",
+    "module": "ngx_http_realip_module"
+  },
+  {
+    "name": "$invalid_referer",
+    "desc": "Empty string, if the “Referer” request header field\nvalue is considered\nvalid, otherwise “1”.",
+    "module": "ngx_http_referer_module"
+  },
+  {
+    "name": "$secure_link",
+    "desc": "The status of a link check.\nThe specific value depends on the selected operation mode.",
+    "module": "ngx_http_secure_link_module"
+  },
+  {
+    "name": "$secure_link_expires",
+    "desc": "The lifetime of a link passed in a request;\nintended to be used only in the\nsecure_link_md5 directive.",
+    "module": "ngx_http_secure_link_module"
+  },
+  {
+    "name": "$session_log_id",
+    "desc": "current session ID;",
+    "module": "ngx_http_session_log_module"
+  },
+  {
+    "name": "$session_log_binary_id",
+    "desc": "current session ID in binary form (16 bytes).",
+    "module": "ngx_http_session_log_module"
+  },
+  {
+    "name": "$slice_range",
+    "desc": "the current slice range in\nHTTP\nbyte range format,\nfor example, bytes=0-1048575.",
+    "module": "ngx_http_slice_module"
+  },
+  {
+    "name": "$spdy",
+    "desc": "SPDY protocol version for SPDY connections,\nor an empty string otherwise;",
+    "module": "ngx_http_spdy_module"
+  },
+  {
+    "name": "$spdy_request_priority",
+    "desc": "request priority for SPDY connections,\nor an empty string otherwise.",
+    "module": "ngx_http_spdy_module"
+  },
+  {
+    "name": "$date_local",
+    "desc": "current time in the local time zone.\nThe format is set by the config command\nwith the timefmt parameter.",
+    "module": "ngx_http_ssi_module"
+  },
+  {
+    "name": "$date_gmt",
+    "desc": "current time in GMT.\nThe format is set by the config command\nwith the timefmt parameter.",
+    "module": "ngx_http_ssi_module"
+  },
+  {
+    "name": "$ssl_cipher",
+    "desc": "returns the string of ciphers used\nfor an established SSL connection;",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_ciphers",
+    "desc": "returns the list of ciphers supported by the client (1.11.7).\nKnown ciphers are listed by names, unknown are shown in hexadecimal,\nfor example:\nAES128-SHA:AES256-SHA:0x00ff\n\n\nThe variable is fully supported only when using OpenSSL version 1.0.2 or higher.\nWith older versions, the variable is available\nonly for new sessions and lists only known ciphers.",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_escaped_cert",
+    "desc": "returns the client certificate in the PEM format (urlencoded)\nfor an established SSL connection (1.13.5);",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_cert",
+    "desc": "returns the client certificate in the PEM format\nfor an established SSL connection, with each line except the first\nprepended with the tab character;\nthis is intended for the use in the\nproxy_set_header directive;\n\nThe variable is deprecated,\nthe $ssl_client_escaped_cert variable should be used instead.",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_fingerprint",
+    "desc": "returns the SHA1 fingerprint of the client certificate\nfor an established SSL connection (1.7.1);",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_i_dn",
+    "desc": "returns the “issuer DN” string of the client certificate\nfor an established SSL connection according to\nRFC 2253 (1.11.6);",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_i_dn_legacy",
+    "desc": "returns the “issuer DN” string of the client certificate\nfor an established SSL connection;\n\nPrior to version 1.11.6, the variable name was $ssl_client_i_dn.",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_raw_cert",
+    "desc": "returns the client certificate in the PEM format\nfor an established SSL connection;",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_s_dn",
+    "desc": "returns the “subject DN” string of the client certificate\nfor an established SSL connection according to\nRFC 2253 (1.11.6);",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_s_dn_legacy",
+    "desc": "returns the “subject DN” string of the client certificate\nfor an established SSL connection;\n\nPrior to version 1.11.6, the variable name was $ssl_client_s_dn.",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_serial",
+    "desc": "returns the serial number of the client certificate\nfor an established SSL connection;",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_v_end",
+    "desc": "returns the end date of the client certificate (1.11.7);",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_v_remain",
+    "desc": "returns the number of days\nuntil the client certificate expires (1.11.7);",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_v_start",
+    "desc": "returns the start date of the client certificate (1.11.7);",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_client_verify",
+    "desc": "returns the result of client certificate verification:\n“SUCCESS”, “FAILED:reason”,\nand “NONE” if a certificate was not present;\n\nPrior to version 1.11.7, the “FAILED” result\ndid not contain the reason string.",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_curves",
+    "desc": "returns the list of curves supported by the client (1.11.7).\nKnown curves are listed by names, unknown are shown in hexadecimal,\nfor example:\n0x001d:prime256v1:secp521r1:secp384r1\n\n\nThe variable is supported only when using OpenSSL version 1.0.2 or higher.\nWith older versions, the variable value will be an empty string.\n\n\nThe variable is available only for new sessions.",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_early_data",
+    "desc": "returns “1” if\nTLS 1.3 early data is used\nand the handshake is not complete, otherwise “” (1.15.3).",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_protocol",
+    "desc": "returns the protocol of an established SSL connection;",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_server_name",
+    "desc": "returns the server name requested through\nSNI\n(1.7.0);",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_session_id",
+    "desc": "returns the session identifier of an established SSL connection;",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_session_reused",
+    "desc": "returns “r” if an SSL session was reused,\nor “.” otherwise (1.5.11).",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$connections_active",
+    "desc": "same as the Active connections value;",
+    "module": "ngx_http_stub_status_module"
+  },
+  {
+    "name": "$connections_reading",
+    "desc": "same as the Reading value;",
+    "module": "ngx_http_stub_status_module"
+  },
+  {
+    "name": "$connections_writing",
+    "desc": "same as the Writing value;",
+    "module": "ngx_http_stub_status_module"
+  },
+  {
+    "name": "$connections_waiting",
+    "desc": "same as the Waiting value.",
+    "module": "ngx_http_stub_status_module"
+  },
+  {
+    "name": "$upstream_addr",
+    "desc": "keeps the IP address and port,\nor the path to the UNIX-domain socket of the upstream server.\nIf several servers were contacted during request processing,\ntheir addresses are separated by commas, e.g.\n“192.168.1.1:80, 192.168.1.2:80, unix:/tmp/sock”.\nIf an internal redirect from one server group to another happens,\ninitiated by\n“X-Accel-Redirect” or\nerror_page,\nthen the server addresses from different groups are separated by colons, e.g.\n“192.168.1.1:80, 192.168.1.2:80, unix:/tmp/sock : 192.168.10.1:80, 192.168.10.2:80”.\nIf a server cannot be selected,\nthe variable keeps the name of the server group.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_bytes_received",
+    "desc": "number of bytes received from an upstream server (1.11.4).\nValues from several connections\nare separated by commas and colons like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_bytes_sent",
+    "desc": "number of bytes sent to an upstream server (1.15.8).\nValues from several connections\nare separated by commas and colons like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_cache_status",
+    "desc": "keeps the status of accessing a response cache (0.8.3).\nThe status can be either “MISS”,\n“BYPASS”, “EXPIRED”,\n“STALE”, “UPDATING”,\n“REVALIDATED”, or “HIT”.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_connect_time",
+    "desc": "keeps time spent on establishing a connection with the upstream server (1.9.1);\nthe time is kept in seconds with millisecond resolution.\nIn case of SSL, includes time spent on handshake.\nTimes of several connections\nare separated by commas and colons like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_cookie_name",
+    "desc": "cookie with the specified name sent by the upstream server\nin the “Set-Cookie” response header field (1.7.1).\nOnly the cookies from the response of the last server are saved.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_header_time",
+    "desc": "keeps time\nspent on receiving the response header from the upstream server (1.7.10);\nthe time is kept in seconds with millisecond resolution.\nTimes of several responses\nare separated by commas and colons like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_http_name",
+    "desc": "keep server response header fields.\nFor example, the “Server” response header field\nis available through the $upstream_http_server variable.\nThe rules of converting header field names to variable names are the same\nas for the variables that start with the\n“$http_” prefix.\nOnly the header fields from the response of the last server are saved.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_queue_time",
+    "desc": "keeps time the request spent in the upstream queue\n(1.13.9);\nthe time is kept in seconds with millisecond resolution.\nTimes of several responses\nare separated by commas and colons like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_response_length",
+    "desc": "keeps the length of the response obtained from the upstream server (0.7.27);\nthe length is kept in bytes.\nLengths of several responses\nare separated by commas and colons like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_response_time",
+    "desc": "keeps time spent on receiving the response from the upstream server;\nthe time is kept in seconds with millisecond resolution.\nTimes of several responses\nare separated by commas and colons like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_status",
+    "desc": "keeps status code of the response obtained from the upstream server.\nStatus codes of several responses\nare separated by commas and colons like addresses in the\n$upstream_addr variable.\nIf a server cannot be selected,\nthe variable keeps the 502 (Bad Gateway) status code.",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$upstream_trailer_name",
+    "desc": "keeps fields from the end of the response\nobtained from the upstream server (1.13.10).",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "$uid_got",
+    "desc": "The cookie name and received client identifier.",
+    "module": "ngx_http_userid_module"
+  },
+  {
+    "name": "$uid_reset",
+    "desc": "If the variable is set to a non-empty string that is not “0”,\nthe client identifiers are reset.\nThe special value “log” additionally leads to the output of\nmessages about the reset identifiers to the\nerror_log.",
+    "module": "ngx_http_userid_module"
+  },
+  {
+    "name": "$uid_set",
+    "desc": "The cookie name and sent client identifier.",
+    "module": "ngx_http_userid_module"
+  },
+  {
+    "name": "$http2",
+    "desc": "negotiated protocol identifier:\n“h2” for HTTP/2 over TLS,\n“h2c” for HTTP/2 over cleartext TCP,\nor an empty string otherwise.",
+    "module": "ngx_http_v2_module"
+  },
+  {
+    "name": "$binary_remote_addr",
+    "desc": "client address in a binary form, value’s length is always 4 bytes\nfor IPv4 addresses or 16 bytes for IPv6 addresses",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$bytes_received",
+    "desc": "number of bytes received from a client (1.11.4)",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$bytes_sent",
+    "desc": "number of bytes sent to a client",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$connection",
+    "desc": "connection serial number",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$hostname",
+    "desc": "host name",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$msec",
+    "desc": "current time in seconds with the milliseconds resolution",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$nginx_version",
+    "desc": "nginx version",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$pid",
+    "desc": "PID of the worker process",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$protocol",
+    "desc": "protocol used to communicate with the client:\nTCP or UDP (1.11.4)",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$proxy_protocol_addr",
+    "desc": "client address from the PROXY protocol header, or an empty string otherwise\n(1.11.4)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$proxy_protocol_port",
+    "desc": "client port from the PROXY protocol header, or an empty string otherwise\n(1.11.4)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$remote_addr",
+    "desc": "client address",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$remote_port",
+    "desc": "client port",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$server_addr",
+    "desc": "an address of the server which accepted a connection\n\nComputing a value of this variable usually requires one system call.\nTo avoid a system call, the listen directives\nmust specify addresses and use the bind parameter.",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$server_port",
+    "desc": "port of the server which accepted a connection",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$session_time",
+    "desc": "session duration in seconds with a milliseconds resolution\n(1.11.4);",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$status",
+    "desc": "session status (1.11.4), can be one of the following:\n\n\n200\n\nsession completed successfully\n\n\n400\n\nclient data could not be parsed, for example,\nthe PROXY protocol header\n\n\n403\n\naccess forbidden, for example, when access is limited for\ncertain client addresses\n\n\n500\n\ninternal server error\n\n\n502\n\nbad gateway, for example,\nif an upstream server could not be selected or reached.\n\n\n503\n\nservice unavailable, for example, when access is limited by the\nnumber of connections",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$time_iso8601",
+    "desc": "local time in the ISO 8601 standard format",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$time_local",
+    "desc": "local time in the Common Log Format",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$realip_remote_addr",
+    "desc": "keeps the original client address",
+    "module": "ngx_stream_realip_module"
+  },
+  {
+    "name": "$realip_remote_port",
+    "desc": "keeps the original client port",
+    "module": "ngx_stream_realip_module"
+  },
+  {
+    "name": "$ssl_cipher",
+    "desc": "returns the string of ciphers used\nfor an established SSL connection;",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_ciphers",
+    "desc": "returns the list of ciphers supported by the client (1.11.7).\nKnown ciphers are listed by names, unknown are shown in hexadecimal,\nfor example:\nAES128-SHA:AES256-SHA:0x00ff\n\n\nThe variable is fully supported only when using OpenSSL version 1.0.2 or higher.\nWith older versions, the variable is available\nonly for new sessions and lists only known ciphers.",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_client_cert",
+    "desc": "returns the client certificate in the PEM format\nfor an established SSL connection, with each line except the first\nprepended with the tab character (1.11.8);",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_client_fingerprint",
+    "desc": "returns the SHA1 fingerprint of the client certificate\nfor an established SSL connection (1.11.8);",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_client_i_dn",
+    "desc": "returns the “issuer DN” string of the client certificate\nfor an established SSL connection according to\nRFC 2253 (1.11.8);",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_client_raw_cert",
+    "desc": "returns the client certificate in the PEM format\nfor an established SSL connection (1.11.8);",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_client_s_dn",
+    "desc": "returns the “subject DN” string of the client certificate\nfor an established SSL connection according to\nRFC 2253 (1.11.8);",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_client_serial",
+    "desc": "returns the serial number of the client certificate\nfor an established SSL connection (1.11.8);",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_client_v_end",
+    "desc": "returns the end date of the client certificate (1.11.8);",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_client_v_remain",
+    "desc": "returns the number of days\nuntil the client certificate expires (1.11.8);",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_client_v_start",
+    "desc": "returns the start date of the client certificate (1.11.8);",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_client_verify",
+    "desc": "returns the result of client certificate verification (1.11.8):\n“SUCCESS”, “FAILED:reason”,\nand “NONE” if a certificate was not present;",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_curves",
+    "desc": "returns the list of curves supported by the client (1.11.7).\nKnown curves are listed by names, unknown are shown in hexadecimal,\nfor example:\n0x001d:prime256v1:secp521r1:secp384r1\n\n\nThe variable is supported only when using OpenSSL version 1.0.2 or higher.\nWith older versions, the variable value will be an empty string.\n\n\nThe variable is available only for new sessions.",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_protocol",
+    "desc": "returns the protocol of an established SSL connection;",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_server_name",
+    "desc": "returns the server name requested through\nSNI;",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_session_id",
+    "desc": "returns the session identifier of an established SSL connection;",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_session_reused",
+    "desc": "returns “r” if an SSL session was reused,\nor “.” otherwise.",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_preread_protocol",
+    "desc": "the highest SSL protocol version supported by the client (1.15.2)",
+    "module": "ngx_stream_ssl_preread_module"
+  },
+  {
+    "name": "$ssl_preread_server_name",
+    "desc": "server name requested through SNI",
+    "module": "ngx_stream_ssl_preread_module"
+  },
+  {
+    "name": "$ssl_preread_alpn_protocols",
+    "desc": "list of protocols advertised by the client through ALPN (1.13.10).\nThe values are separated by commas.",
+    "module": "ngx_stream_ssl_preread_module"
+  },
+  {
+    "name": "$upstream_addr",
+    "desc": "keeps the IP address and port,\nor the path to the UNIX-domain socket of the upstream server (1.11.4).\nIf several servers were contacted during proxying,\ntheir addresses are separated by commas, e.g.\n“192.168.1.1:12345, 192.168.1.2:12345, unix:/tmp/sock”.\nIf a server cannot be selected,\nthe variable keeps the name of the server group.",
+    "module": "ngx_stream_upstream_module"
+  },
+  {
+    "name": "$upstream_bytes_received",
+    "desc": "number of bytes received from an upstream server (1.11.4).\nValues from several connections\nare separated by commas like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_stream_upstream_module"
+  },
+  {
+    "name": "$upstream_bytes_sent",
+    "desc": "number of bytes sent to an upstream server (1.11.4).\nValues from several connections\nare separated by commas like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_stream_upstream_module"
+  },
+  {
+    "name": "$upstream_connect_time",
+    "desc": "time to connect to the upstream server (1.11.4);\nthe time is kept in seconds with millisecond resolution.\nTimes of several connections\nare separated by commas like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_stream_upstream_module"
+  },
+  {
+    "name": "$upstream_first_byte_time",
+    "desc": "time to receive the first byte of data (1.11.4);\nthe time is kept in seconds with millisecond resolution.\nTimes of several connections\nare separated by commas like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_stream_upstream_module"
+  },
+  {
+    "name": "$upstream_session_time",
+    "desc": "session duration in seconds with millisecond resolution (1.11.4).\nTimes of several connections\nare separated by commas like addresses in the\n$upstream_addr variable.",
+    "module": "ngx_stream_upstream_module"
+  }
+]
