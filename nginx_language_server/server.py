@@ -9,7 +9,7 @@ Official language server spec:
 import itertools
 from typing import List, Optional, Union
 
-from pygls.features import COMPLETION
+from pygls.features import COMPLETION, HOVER
 from pygls.protocol import LanguageServerProtocol
 from pygls.server import LanguageServer
 from pygls.types import (
@@ -72,10 +72,33 @@ def completion(
             insert_text=directive["name"],
             insert_text_format=InsertTextFormat.PlainText,
         )
-        for directive in possibilities
+        for directive in possibilities.values()
     ]
     return (
         CompletionList(is_incomplete=False, items=completion_items)
         if completion_items
         else None
     )
+
+# @SERVER.feature(HOVER)
+# def hover(
+#     server: LanguageServer, params: TextDocumentPositionParams
+# ) -> Optional[Hover]:
+#     """Support Hover."""
+#     document = server.workspace.get_document(params.textDocument.uri)
+#     parsed = nginxconf.convert(document.source)
+#     line = nginxconf.find(parsed, params.position.line)
+
+#     jedi_script = jedi_utils.script(server.project, document)
+#     jedi_lines = jedi_utils.line_column(jedi_script, params.position)
+#     for name in jedi_script.help(**jedi_lines):
+#         docstring = name.docstring()
+#         if not docstring:
+#             continue
+#         markup_kind = _choose_markup(server)
+#         docstring_clean = jedi_utils.convert_docstring(docstring, markup_kind)
+#         contents = MarkupContent(kind=markup_kind, value=docstring_clean)
+#         document = server.workspace.get_document(params.textDocument.uri)
+#         _range = pygls_utils.current_word_range(document, params.position)
+#         return Hover(contents=contents, range=_range)
+#     return None

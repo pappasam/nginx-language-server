@@ -11,7 +11,8 @@ with _path_data.joinpath("directives.json").open() as outfile:
 directives = {}
 for _directive in _directives:
     for context in _directive["contexts"]:
+        new_context = {_directive["name"]: _directive}
         if context not in directives:
-            directives[context] = [_directive]
+            directives[context] = new_context
         else:
-            directives[context].append(_directive)
+            directives[context].update(new_context)
