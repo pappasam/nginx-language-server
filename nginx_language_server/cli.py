@@ -1,3 +1,5 @@
+"""Cli for nginx language server."""
+
 import click
 
 from .server import SERVER

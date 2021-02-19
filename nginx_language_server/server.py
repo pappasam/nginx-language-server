@@ -6,41 +6,23 @@ Official language server spec:
     https://microsoft.github.io/language-server-protocol/specification
 """
 
-import itertools
-from typing import List, Optional, Union
+from typing import Optional
 
 from pygls.features import COMPLETION, HOVER
-from pygls.protocol import LanguageServerProtocol
 from pygls.server import LanguageServer
 from pygls.types import (
-    CodeAction,
-    CodeActionKind,
-    CodeActionParams,
-    SymbolKind,
     CompletionItem,
     CompletionList,
     CompletionParams,
-    DidChangeConfigurationParams,
-    DidChangeTextDocumentParams,
-    DidOpenTextDocumentParams,
-    DidSaveTextDocumentParams,
-    DocumentHighlight,
-    DocumentSymbol,
-    DocumentSymbolParams,
     Hover,
-    InitializeParams,
-    InitializeResult,
     InsertTextFormat,
-    Location,
     MarkupContent,
     MarkupKind,
-    RenameParams,
-    SymbolInformation,
+    SymbolKind,
     TextDocumentPositionParams,
-    WorkspaceEdit,
-    WorkspaceSymbolParams,
 )
 
+from . import pygls_utils
 from .parser import nginxconf
 from .parser.directives import directives
 
@@ -62,7 +44,7 @@ def completion(
     parsed = nginxconf.convert(document.source)
     line = nginxconf.find(parsed, params.position.line)
     contexts = line["contexts"] if line["contexts"] else ["main"]
-    possibilities = directives.get(contexts[-1], [])
+    possibilities = directives.get(contexts[-1], {})
     completion_items = [
         CompletionItem(
             label=directive["name"],
@@ -80,25 +62,24 @@ def completion(
         else None
     )
 
-# @SERVER.feature(HOVER)
-# def hover(
-#     server: LanguageServer, params: TextDocumentPositionParams
-# ) -> Optional[Hover]:
-#     """Support Hover."""
-#     document = server.workspace.get_document(params.textDocument.uri)
-#     parsed = nginxconf.convert(document.source)
-#     line = nginxconf.find(parsed, params.position.line)
 
-#     jedi_script = jedi_utils.script(server.project, document)
-#     jedi_lines = jedi_utils.line_column(jedi_script, params.position)
-#     for name in jedi_script.help(**jedi_lines):
-#         docstring = name.docstring()
-#         if not docstring:
-#             continue
-#         markup_kind = _choose_markup(server)
-#         docstring_clean = jedi_utils.convert_docstring(docstring, markup_kind)
-#         contents = MarkupContent(kind=markup_kind, value=docstring_clean)
-#         document = server.workspace.get_document(params.textDocument.uri)
-#         _range = pygls_utils.current_word_range(document, params.position)
-#         return Hover(contents=contents, range=_range)
-#     return None
+@SERVER.feature(HOVER)
+def hover(
+    server: LanguageServer, params: TextDocumentPositionParams
+) -> Optional[Hover]:
+    """Support Hover."""
+    document = server.workspace.get_document(params.textDocument.uri)
+    parsed = nginxconf.convert(document.source)
+    word = document.word_at_position(params.position)
+    line = nginxconf.find(parsed, params.position.line)
+    contexts = line["contexts"] if line["contexts"] else ["main"]
+    possibilities = directives.get(contexts[-1], {})
+    directive = possibilities.get(word)
+    if directive:
+        contents = MarkupContent(
+            kind=MarkupKind.PlainText,
+            value=directive["desc"],
+        )
+        _range = pygls_utils.current_word_range(document, params.position)
+        return Hover(contents=contents, range=_range)
+    return None
