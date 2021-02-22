@@ -12,19 +12,18 @@ from pygls.features import COMPLETION, HOVER
 from pygls.server import LanguageServer
 from pygls.types import (
     CompletionItem,
+    CompletionItemKind,
     CompletionList,
     CompletionParams,
     Hover,
     InsertTextFormat,
     MarkupContent,
     MarkupKind,
-    SymbolKind,
     TextDocumentPositionParams,
 )
 
 from . import pygls_utils
-from .parser import nginxconf
-from .parser.directives import directives
+from .parser import DIRECTIVES, nginxconf
 
 # pylint: disable=line-too-long
 
@@ -43,15 +42,20 @@ def completion(
     document = server.workspace.get_document(params.textDocument.uri)
     parsed = nginxconf.convert(document.source)
     line = nginxconf.find(parsed, params.position.line)
-    contexts = line["contexts"] if line["contexts"] else ["main"]
-    possibilities = directives.get(contexts[-1], {})
+    if not line:
+        return None
+    contexts = line.contexts if line.contexts else ["main"]
+    last_context = contexts[-1]
+    if last_context not in DIRECTIVES:
+        return None
+    possibilities = DIRECTIVES[last_context]
     completion_items = [
         CompletionItem(
-            label=directive["name"],
-            filter_text=directive["name"],
-            detail=directive["desc"],
-            kind=SymbolKind.Property,
-            insert_text=directive["name"],
+            label=directive.name,
+            filter_text=directive.name,
+            detail=directive.desc,
+            kind=CompletionItemKind.Property,
+            insert_text=directive.name,
             insert_text_format=InsertTextFormat.PlainText,
         )
         for directive in possibilities.values()
@@ -72,14 +76,19 @@ def hover(
     parsed = nginxconf.convert(document.source)
     word = document.word_at_position(params.position)
     line = nginxconf.find(parsed, params.position.line)
-    contexts = line["contexts"] if line["contexts"] else ["main"]
-    possibilities = directives.get(contexts[-1], {})
-    directive = possibilities.get(word)
-    if directive:
-        contents = MarkupContent(
-            kind=MarkupKind.PlainText,
-            value=directive["desc"],
-        )
-        _range = pygls_utils.current_word_range(document, params.position)
-        return Hover(contents=contents, range=_range)
-    return None
+    if not line:
+        return None
+    contexts = line.contexts if line.contexts else ["main"]
+    last_context = contexts[-1]
+    if last_context not in DIRECTIVES:
+        return None
+    possibilities = DIRECTIVES[last_context]
+    if word not in possibilities:
+        return None
+    directive = possibilities[word]
+    contents = MarkupContent(
+        kind=MarkupKind.PlainText,
+        value=directive.desc,
+    )
+    _range = pygls_utils.current_word_range(document, params.position)
+    return Hover(contents=contents, range=_range)
