@@ -12,13 +12,13 @@ from pygls.features import COMPLETION, HOVER
 from pygls.server import LanguageServer
 from pygls.types import (
     CompletionItem,
+    CompletionItemKind,
     CompletionList,
     CompletionParams,
     Hover,
     InsertTextFormat,
     MarkupContent,
     MarkupKind,
-    SymbolKind,
     TextDocumentPositionParams,
 )
 
@@ -42,7 +42,9 @@ def completion(
     document = server.workspace.get_document(params.textDocument.uri)
     parsed = nginxconf.convert(document.source)
     line = nginxconf.find(parsed, params.position.line)
-    contexts = line["contexts"] if line["contexts"] else ["main"]
+    if not line:
+        return None
+    contexts = line.contexts if line.contexts else ["main"]
     last_context = contexts[-1]
     if last_context not in DIRECTIVES:
         return None
@@ -52,7 +54,7 @@ def completion(
             label=directive.name,
             filter_text=directive.name,
             detail=directive.desc,
-            kind=SymbolKind.Property,
+            kind=CompletionItemKind.Property,
             insert_text=directive.name,
             insert_text_format=InsertTextFormat.PlainText,
         )
@@ -74,7 +76,9 @@ def hover(
     parsed = nginxconf.convert(document.source)
     word = document.word_at_position(params.position)
     line = nginxconf.find(parsed, params.position.line)
-    contexts = line["contexts"] if line["contexts"] else ["main"]
+    if not line:
+        return None
+    contexts = line.contexts if line.contexts else ["main"]
     last_context = contexts[-1]
     if last_context not in DIRECTIVES:
         return None
