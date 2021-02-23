@@ -47,6 +47,21 @@ With [coc.nvim](https://github.com/neoclide/coc.nvim), put the following in `coc
   },
 ```
 
+In your vimrc, I recommend putting in the following lines to ensure variables complete / hover correcty:
+
+```vim
+augroup custom_nginx
+  autocmd!
+  autocmd FileType nginx set iskeyword+=$
+augroup end
+
+augroup custom_coc_additional_keyword_characters
+  autocmd!
+  autocmd FileType nginx
+        \ let b:coc_additional_keywords = ['.', '/', '"', '$', '-']
+augroup end
+```
+
 Note: this list is non-exhaustive. If you know of a great choice not included in this list, please submit a PR!
 
 ## Inspiration

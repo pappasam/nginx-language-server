@@ -44,9 +44,10 @@ license = "GPL-3.0-only"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-crossplane = ">=0.5.7"
+crossplane = "^0.5.7"
 pygls = "^0.9.1"
-click = ">=7.0"
+click = "^7.0"
+pydantic = "^1.7.3"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.6.2"
