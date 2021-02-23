@@ -32,23 +32,27 @@ class DirectiveDefinition(BaseModel):
     @validator("information", always=True)
     def get_information(cls, v, values) -> str:
         """Obtain information immediately."""
-        result = wrap_rich_text(values["desc"].strip())
+        result = ""
         if values["default"]:
-            result += "\n\n"
             result += (
-                "**Default:**\n```nginx\n"
-                + textwrap.indent(
-                    wrap_plain_text(";\n".join(values["default"].split(";"))),
-                    "  ",
-                )
-                + "\n```"
+                "```nginx\n"
+                + wrap_plain_text(";\n".join(values["default"].split(";")))
+                + "\n```\n\n"
             )
+        else:
+            result += (
+                "```nginx\n" + wrap_plain_text(values["name"]) + "\n```\n\n"
+            )
+
+        result += wrap_rich_text(values["desc"].strip())
         if values["syntax"]:
             result += "\n\n"
             result += (
-                "**Syntax:**\n```text\n"
+                "```nginx\n"
                 + textwrap.indent(
-                    wrap_plain_text("\n=-=-=-=-=-=\n".join(values["syntax"])),
+                    wrap_plain_text(
+                        "\n#--------------------\n".join(values["syntax"])
+                    ),
                     "  ",
                 )
                 + "\n```"
