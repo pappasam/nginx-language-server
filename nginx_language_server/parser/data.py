@@ -2,9 +2,12 @@
 
 import json
 import pathlib
+import textwrap
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
+
+from .utils import wrap_plain_text, wrap_rich_text
 
 ListDicts = List[Dict[str, Any]]
 
@@ -20,6 +23,55 @@ class DirectiveDefinition(BaseModel):
     notes: List[str]
     since: Optional[str]
     module: str
+    information: str = ""
+
+    # pylint: disable=no-self-argument
+    # pylint: disable=no-self-use
+    # pylint: disable=unused-argument
+
+    @validator("information", always=True)
+    def get_information(cls, v, values) -> str:
+        """Obtain information immediately."""
+        result = wrap_rich_text(values["desc"].strip())
+        if values["default"]:
+            result += "\n\n"
+            result += (
+                "**Default:**\n```nginx\n"
+                + textwrap.indent(
+                    wrap_plain_text(";\n".join(values["default"].split(";"))),
+                    "  ",
+                )
+                + "\n```"
+            )
+        if values["syntax"]:
+            result += "\n\n"
+            result += (
+                "**Syntax:**\n```text\n"
+                + textwrap.indent(
+                    wrap_plain_text("\n=-=-=-=-=-=\n".join(values["syntax"])),
+                    "  ",
+                )
+                + "\n```"
+            )
+        if values["contexts"]:
+            result += "\n"
+            result += wrap_plain_text(
+                "**Contexts:** `" + ", ".join(values["contexts"]) + "`"
+            )
+        if values["module"]:
+            result += "\n"
+            result += wrap_rich_text("**Module:** " + values["module"] + "")
+        if values["since"]:
+            result += "\n"
+            result += wrap_rich_text("**Since:** " + values["since"])
+        if values["notes"]:
+            result += "\n**Notes:**"
+            _notes_wrapped = [wrap_rich_text(note) for note in values["notes"]]
+            if len(_notes_wrapped) == 1:
+                result += _notes_wrapped[0]
+            else:
+                result += "\n- " + "\n- ".join(_notes_wrapped)
+        return result.replace("“", '"').replace("”", '"').strip()
 
 
 class VariableDefinition(BaseModel):

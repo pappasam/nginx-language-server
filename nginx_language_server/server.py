@@ -22,7 +22,7 @@ from pygls.types import (
     TextDocumentPositionParams,
 )
 
-from . import pygls_utils, utils
+from . import pygls_utils
 from .parser import DIRECTIVES, nginxconf
 
 # pylint: disable=line-too-long
@@ -55,7 +55,7 @@ def completion(
             filter_text=directive.name,
             documentation=MarkupContent(
                 kind=MarkupKind.Markdown,
-                value=utils.full_information(directive, include_name=False),
+                value=directive.information,
             ),
             kind=CompletionItemKind.Property,
             insert_text=directive.name,
@@ -91,7 +91,7 @@ def hover(
     directive = possibilities[word]
     contents = MarkupContent(
         kind=MarkupKind.Markdown,
-        value=utils.full_information(directive),
+        value=directive.information,
     )
     _range = pygls_utils.current_word_range(document, params.position)
     return Hover(contents=contents, range=_range)
