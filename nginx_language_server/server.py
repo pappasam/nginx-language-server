@@ -53,6 +53,7 @@ def completion(
         CompletionItem(
             label=directive.name,
             filter_text=directive.name,
+            detail=f"directive: {directive.name}",
             documentation=MarkupContent(
                 kind=MarkupKind.Markdown,
                 value=directive.information,
