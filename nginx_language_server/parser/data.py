@@ -23,15 +23,23 @@ class DirectiveDefinition(BaseModel):
     notes: List[str]
     since: Optional[str]
     module: str
-    information: str = ""
+
+    # Calculated values
+    ls_detail: str = ""
+    ls_documentation: str = ""
 
     # pylint: disable=no-self-argument
     # pylint: disable=no-self-use
     # pylint: disable=unused-argument
 
-    @validator("information", always=True)
-    def get_information(cls, v, values) -> str:
-        """Obtain information immediately."""
+    @validator("ls_detail", always=True)
+    def get_ls_detail(cls, v, values) -> str:
+        """Get detail string."""
+        return f"directive: {values['name']}"
+
+    @validator("ls_documentation", always=True)
+    def get_ls_documentation(cls, v, values) -> str:
+        """Get documentation string."""
         result = ""
         if values["default"]:
             result += (
@@ -39,20 +47,18 @@ class DirectiveDefinition(BaseModel):
                 + wrap_plain_text(";\n".join(values["default"].split(";")))
                 + "\n```\n\n"
             )
-        else:
-            result += (
-                "```nginx\n" + wrap_plain_text(values["name"]) + "\n```\n\n"
-            )
-
-        result += wrap_rich_text(values["desc"].strip())
+        if values["desc"]:
+            desc = wrap_rich_text(values["desc"].strip())
+            if desc:
+                if desc[-1] == ":":
+                    desc = desc[:-1] + "."
+                result += desc
         if values["syntax"]:
             result += "\n\n"
             result += (
                 "```nginx\n"
                 + textwrap.indent(
-                    wrap_plain_text(
-                        "\n#--------------------\n".join(values["syntax"])
-                    ),
+                    wrap_plain_text("\n".join(values["syntax"])),
                     "  ",
                 )
                 + "\n```"

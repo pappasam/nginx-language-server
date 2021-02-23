@@ -53,10 +53,10 @@ def completion(
         CompletionItem(
             label=directive.name,
             filter_text=directive.name,
-            detail=f"directive: {directive.name}",
+            detail=directive.ls_detail,
             documentation=MarkupContent(
                 kind=MarkupKind.Markdown,
-                value=directive.information,
+                value=directive.ls_documentation,
             ),
             kind=CompletionItemKind.Property,
             insert_text=directive.name,
@@ -92,7 +92,7 @@ def hover(
     directive = possibilities[word]
     contents = MarkupContent(
         kind=MarkupKind.Markdown,
-        value=directive.information,
+        value=directive.ls_documentation,
     )
     _range = pygls_utils.current_word_range(document, params.position)
     return Hover(contents=contents, range=_range)
