@@ -244,7 +244,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "1d6ec5286a8a5b6a6f51169429cdf308f661b2fe92124f23a6b3799f40f98bbd"
+content-hash = "a8cb2f4dbfd294a6d3c4c755d23aaea6f1f0ac986a16bd537dfa5c8bc4e81b29"
 
 [metadata.files]
 appdirs = [
@@ -256,6 +256,7 @@ astroid = [
     {file = "astroid-2.5.tar.gz", hash = "sha256:b31c92f545517dcc452f284bc9c044050862fbe6d93d2b3de4a215a6b384bf0d"},
 ]
 black = [
+    {file = "black-20.8b1-py3-none-any.whl", hash = "sha256:70b62ef1527c950db59062cda342ea224d772abdf6adc58b86a45421bab20a6b"},
     {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
 ]
 click = [
