@@ -23,7 +23,7 @@ from pygls.types import (
 )
 
 from . import pygls_utils
-from .parser import DIRECTIVES, nginxconf
+from .parser import DIRECTIVES, VARIABLES, nginxconf
 
 # pylint: disable=line-too-long
 
@@ -34,7 +34,7 @@ SERVER = LanguageServer()
 # Server capabilities
 
 
-@SERVER.feature(COMPLETION, trigger_characters=[".", "'", '"'])
+@SERVER.feature(COMPLETION, trigger_characters=["$"])
 def completion(
     server: LanguageServer, params: CompletionParams
 ) -> Optional[CompletionList]:
@@ -48,7 +48,7 @@ def completion(
     last_context = contexts[-1]
     if last_context not in DIRECTIVES:
         return None
-    possibilities = DIRECTIVES[last_context]
+    directives = DIRECTIVES[last_context]
     completion_items = [
         CompletionItem(
             label=directive.name,
@@ -62,7 +62,7 @@ def completion(
             insert_text=directive.name,
             insert_text_format=InsertTextFormat.PlainText,
         )
-        for directive in possibilities.values()
+        for directive in (*directives.values(), *VARIABLES.values())
     ]
     return (
         CompletionList(is_incomplete=False, items=completion_items)
@@ -78,21 +78,23 @@ def hover(
     """Support Hover."""
     document = server.workspace.get_document(params.textDocument.uri)
     parsed = nginxconf.convert(document.source)
-    word = document.word_at_position(params.position)
+    word = pygls_utils.word_at_position(document, params.position)
     line = nginxconf.find(parsed, params.position.line)
+
     if not line:
         return None
     contexts = line.contexts if line.contexts else ["main"]
     last_context = contexts[-1]
-    if last_context not in DIRECTIVES:
-        return None
-    possibilities = DIRECTIVES[last_context]
+    possible_directives = (
+        DIRECTIVES[last_context] if last_context in DIRECTIVES else {}
+    )
+    possibilities = {**possible_directives, **VARIABLES}
     if word not in possibilities:
         return None
-    directive = possibilities[word]
+    found = possibilities[word]
     contents = MarkupContent(
         kind=MarkupKind.Markdown,
-        value=directive.ls_documentation,
+        value=found.ls_documentation,
     )
     _range = pygls_utils.current_word_range(document, params.position)
     return Hover(contents=contents, range=_range)

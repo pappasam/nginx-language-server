@@ -91,6 +91,34 @@ class VariableDefinition(BaseModel):
     desc: str
     module: str
 
+    # Calculated values
+    ls_detail: str = ""
+    ls_documentation: str = ""
+
+    # pylint: disable=no-self-argument
+    # pylint: disable=no-self-use
+    # pylint: disable=unused-argument
+
+    @validator("ls_detail", always=True)
+    def get_ls_detail(cls, v, values) -> str:
+        """Get detail string."""
+        return f"variable: {values['name']}"
+
+    @validator("ls_documentation", always=True)
+    def get_ls_documentation(cls, v, values) -> str:
+        """Get documentation string."""
+        result = ""
+        if values["desc"]:
+            desc = wrap_rich_text(values["desc"].strip())
+            if desc:
+                if desc[-1] == ":":
+                    desc = desc[:-1] + "."
+                result += desc
+        if values["module"]:
+            result += "\n\n"
+            result += wrap_rich_text("**Module:** " + values["module"] + "")
+        return result.replace("“", '"').replace("”", '"').strip()
+
 
 # nested directive, with context and directive name as keys
 DirectiveDefinitionLookup = Dict[str, Dict[str, DirectiveDefinition]]
