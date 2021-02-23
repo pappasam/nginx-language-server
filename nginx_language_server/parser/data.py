@@ -35,7 +35,7 @@ class DirectiveDefinition(BaseModel):
     @validator("ls_detail", always=True)
     def get_ls_detail(cls, v, values) -> str:
         """Get detail string."""
-        return f"directive: {values['name']}"
+        return f"dir: {values['name']}"
 
     @validator("ls_documentation", always=True)
     def get_ls_documentation(cls, v, values) -> str:
@@ -102,7 +102,7 @@ class VariableDefinition(BaseModel):
     @validator("ls_detail", always=True)
     def get_ls_detail(cls, v, values) -> str:
         """Get detail string."""
-        return f"variable: {values['name']}"
+        return f"var: {values['name']}"
 
     @validator("ls_documentation", always=True)
     def get_ls_documentation(cls, v, values) -> str:
