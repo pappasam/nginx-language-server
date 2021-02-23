@@ -6,7 +6,16 @@
 
 A [Language Server](https://microsoft.github.io/language-server-protocol/) for `nginx.conf`.
 
-Still under constructions, expect big changes and breaking changes for a while. Requires Python 3.8 for now, will probably relax in future.
+Still under constructions, expect big changes and breaking changes for a while.
+
+## Capabilities
+
+nginx-language-server currently partially supports the following Language Server capabilities with more to be added in the future.
+
+### Language Features
+
+- [textDocument/completion](https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_completion)
+- [textDocument/hover](https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover)
 
 ## Installation
 

@@ -12,7 +12,7 @@ class DirectiveDefinition(NamedTuple):
 
     name: str
     syntax: List[str]
-    definition: str
+    default: Optional[str]
     contexts: List[str]
     desc: str
     notes: List[str]
@@ -25,7 +25,7 @@ class DirectiveDefinition(NamedTuple):
         return cls(
             name=invalue["name"],
             syntax=invalue["syntax"],
-            definition=invalue["def"],
+            default=invalue["def"],
             contexts=invalue["contexts"],
             desc=invalue["desc"],
             notes=invalue["notes"],

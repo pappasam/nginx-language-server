@@ -13,7 +13,7 @@ line_length = 79
 
 [tool.poetry]
 name = "nginx-language-server"
-version = "0.1.0"
+version = "0.2.0"
 description = "A language server for nginx.conf"
 authors = ["Sam Roeca <samuel.roeca@gmail.com>"]
 readme = "README.md"
@@ -43,13 +43,17 @@ include = ["README.md"]
 license = "GPL-3.0-only"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-crossplane = "^0.5.7"
+python = "^3.6"
+crossplane = ">=0.5.7"
 pygls = "^0.9.1"
-click = "^7.1.2"
+click = ">=7.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.6.2"
+mypy = "^0.812"
+black = "^20.8b1"
+docformatter = "^1.4"
+isort = "^5.7.0"
 
 [tool.poetry.scripts]
 nginx-language-server = 'nginx_language_server.cli:cli'
