@@ -90,8 +90,11 @@ def hover(
     )
     possibilities = {**possible_directives, **VARIABLES}
     if word not in possibilities:
-        return None
-    found = possibilities[word]
+        if line.line != params.position.line:
+            return None
+        found = possibilities[line.directive]
+    else:
+        found = possibilities[word]
     contents = MarkupContent(
         kind=MarkupKind.Markdown,
         value=found.ls_documentation,

@@ -75,7 +75,7 @@ class DirectiveDefinition(BaseModel):
             result += "\n"
             result += wrap_rich_text("**Since:** " + values["since"])
         if values["notes"]:
-            result += "\n**Notes:**"
+            result += "\n\n*Notes:*"
             _notes_wrapped = [wrap_rich_text(note) for note in values["notes"]]
             if len(_notes_wrapped) == 1:
                 result += _notes_wrapped[0]

@@ -13,7 +13,7 @@ from pygls.workspace import Document, position_from_utf16
 
 _SENTINEL = object()
 
-RE_END_WORD = re.compile(r"^[A-Za-z_0-9$\-]*")
+RE_END_WORD = re.compile(r'^[A-Za-z_0-9$\-]*')
 RE_START_WORD = re.compile(r"[A-Za-z_0-9$\-]*$")
 
 
