@@ -70,7 +70,6 @@ def completion(
         else None
     )
 
-
 @SERVER.feature(HOVER)
 def hover(
     server: LanguageServer, params: TextDocumentPositionParams
@@ -80,6 +79,9 @@ def hover(
     parsed = nginxconf.convert(document.source)
     word = pygls_utils.word_at_position(document, params.position)
     line = nginxconf.find(parsed, params.position.line)
+
+    # append "_name" to beginning of word
+    word_name = word.rsplit("_", maxsplit=1)[0] + "_name"
 
     if not line:
         return None
@@ -92,7 +94,9 @@ def hover(
     if word not in possibilities:
         if line.line != params.position.line:
             return None
-        found = possibilities[line.directive]
+        if word_name not in possibilities:
+            return None
+        found = possibilities[word_name]
     else:
         found = possibilities[word]
     contents = MarkupContent(

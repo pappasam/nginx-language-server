@@ -53,12 +53,7 @@ In your vimrc, I recommend putting in the following lines to ensure variables co
 augroup custom_nginx
   autocmd!
   autocmd FileType nginx set iskeyword+=$
-augroup end
-
-augroup custom_coc_additional_keyword_characters
-  autocmd!
-  autocmd FileType nginx
-        \ let b:coc_additional_keywords = ['.', '/', '"', '$', '-']
+  autocmd FileType nginx let b:coc_additional_keywords = ['$']
 augroup end
 ```
 
