@@ -1,0 +1,14 @@
+{
+  "name": "nginx-language-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:pappasam/nginx-language-server.git",
+  "author": "Sam Roeca <samuel.roeca@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "cheerio": "^1.0.0-rc.5",
+    "html-minifier": "^4.0.0",
+    "request": "^2.88.2"
+  }
+}

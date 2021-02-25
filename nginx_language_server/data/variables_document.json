@@ -1,0 +1,326 @@
+[
+  {
+    "module": "ngx_http_core_module",
+    "vars": {
+      "$arg_name": "var_arg_",
+      "$args": "var_args",
+      "$binary_remote_addr": "var_binary_remote_addr",
+      "$body_bytes_sent": "var_body_bytes_sent",
+      "$bytes_sent": "var_bytes_sent",
+      "$connection": "var_connection",
+      "$connection_requests": "var_connection_requests",
+      "$content_length": "var_content_length",
+      "$content_type": "var_content_type",
+      "$cookie_name": "var_cookie_",
+      "$document_root": "var_document_root",
+      "$document_uri": "var_document_uri",
+      "$host": "var_host",
+      "$hostname": "var_hostname",
+      "$http_name": "var_http_",
+      "$https": "var_https",
+      "$is_args": "var_is_args",
+      "$limit_rate": "var_limit_rate",
+      "$msec": "var_msec",
+      "$nginx_version": "var_nginx_version",
+      "$pid": "var_pid",
+      "$pipe": "var_pipe",
+      "$proxy_protocol_addr": "var_proxy_protocol_addr",
+      "$proxy_protocol_port": "var_proxy_protocol_port",
+      "$proxy_protocol_server_addr": "var_proxy_protocol_server_addr",
+      "$proxy_protocol_server_port": "var_proxy_protocol_server_port",
+      "$query_string": "var_query_string",
+      "$realpath_root": "var_realpath_root",
+      "$remote_addr": "var_remote_addr",
+      "$remote_port": "var_remote_port",
+      "$remote_user": "var_remote_user",
+      "$request": "var_request",
+      "$request_body": "var_request_body",
+      "$request_body_file": "var_request_body_file",
+      "$request_completion": "var_request_completion",
+      "$request_filename": "var_request_filename",
+      "$request_id": "var_request_id",
+      "$request_length": "var_request_length",
+      "$request_method": "var_request_method",
+      "$request_time": "var_request_time",
+      "$request_uri": "var_request_uri",
+      "$scheme": "var_scheme",
+      "$sent_http_name": "var_sent_http_",
+      "$sent_trailer_name": "var_sent_trailer_",
+      "$server_addr": "var_server_addr",
+      "$server_name": "var_server_name",
+      "$server_port": "var_server_port",
+      "$server_protocol": "var_server_protocol",
+      "$status": "var_status",
+      "$tcpinfo_rtt,\n$tcpinfo_rttvar,\n$tcpinfo_snd_cwnd,\n$tcpinfo_rcv_space": "var_tcpinfo_",
+      "$time_iso8601": "var_time_iso8601",
+      "$time_local": "var_time_local",
+      "$uri": "var_uri"
+    },
+    "doc": "<p>The <code>ngx_http_core_module</code> module supports embedded variables with names matching the Apache Server variables. First of all, these are variables representing client request header fields, such as <code>$http_user_agent</code>, <code>$http_cookie</code>, and so on. Also there are other variables:</p><dl class=\"compact\"><dt id=\"var_arg_\"><code>$arg_</code><code><i>name</i></code></dt><dd>argument <code><i>name</i></code> in the request line</dd><dt id=\"var_args\"><code>$args</code></dt><dd>arguments in the request line</dd><dt id=\"var_binary_remote_addr\"><code>$binary_remote_addr</code></dt><dd>client address in a binary form, value’s length is always 4 bytes for IPv4 addresses or 16 bytes for IPv6 addresses</dd><dt id=\"var_body_bytes_sent\"><code>$body_bytes_sent</code></dt><dd>number of bytes sent to a client, not counting the response header; this variable is compatible with the “<code>%B</code>” parameter of the <code>mod_log_config</code> Apache module</dd><dt id=\"var_bytes_sent\"><code>$bytes_sent</code></dt><dd>number of bytes sent to a client (1.3.8, 1.2.5)</dd><dt id=\"var_connection\"><code>$connection</code></dt><dd>connection serial number (1.3.8, 1.2.5)</dd><dt id=\"var_connection_requests\"><code>$connection_requests</code></dt><dd>current number of requests made through a connection (1.3.8, 1.2.5)</dd><dt id=\"var_content_length\"><code>$content_length</code></dt><dd>“Content-Length” request header field</dd><dt id=\"var_content_type\"><code>$content_type</code></dt><dd>“Content-Type” request header field</dd><dt id=\"var_cookie_\"><code>$cookie_</code><code><i>name</i></code></dt><dd>the <code><i>name</i></code> cookie</dd><dt id=\"var_document_root\"><code>$document_root</code></dt><dd><a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#root\">root</a> or <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#alias\">alias</a> directive’s value for the current request</dd><dt id=\"var_document_uri\"><code>$document_uri</code></dt><dd>same as <code>$uri</code></dd><dt id=\"var_host\"><code>$host</code></dt><dd>in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request</dd><dt id=\"var_hostname\"><code>$hostname</code></dt><dd>host name</dd><dt id=\"var_http_\"><code>$http_</code><code><i>name</i></code></dt><dd>arbitrary request header field; the last part of a variable name is the field name converted to lower case with dashes replaced by underscores</dd><dt id=\"var_https\"><code>$https</code></dt><dd>“<code>on</code>” if connection operates in SSL mode, or an empty string otherwise</dd><dt id=\"var_is_args\"><code>$is_args</code></dt><dd>“<code>?</code>” if a request line has arguments, or an empty string otherwise</dd><dt id=\"var_limit_rate\"><code>$limit_rate</code></dt><dd>setting this variable enables response rate limiting; see <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#limit_rate\">limit_rate</a></dd><dt id=\"var_msec\"><code>$msec</code></dt><dd>current time in seconds with the milliseconds resolution (1.3.9, 1.2.6)</dd><dt id=\"var_nginx_version\"><code>$nginx_version</code></dt><dd>nginx version</dd><dt id=\"var_pid\"><code>$pid</code></dt><dd>PID of the worker process</dd><dt id=\"var_pipe\"><code>$pipe</code></dt><dd>“<code>p</code>” if request was pipelined, “<code>.</code>” otherwise (1.3.12, 1.2.7)</dd><dt id=\"var_proxy_protocol_addr\"><code>$proxy_protocol_addr</code></dt><dd>client address from the PROXY protocol header (1.5.12)<p>The PROXY protocol must be previously enabled by setting the <code>proxy_protocol</code> parameter in the <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#listen\">listen</a> directive.</p></dd><dt id=\"var_proxy_protocol_port\"><code>$proxy_protocol_port</code></dt><dd>client port from the PROXY protocol header (1.11.0)<p>The PROXY protocol must be previously enabled by setting the <code>proxy_protocol</code> parameter in the <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#listen\">listen</a> directive.</p></dd><dt id=\"var_proxy_protocol_server_addr\"><code>$proxy_protocol_server_addr</code></dt><dd>server address from the PROXY protocol header (1.17.6)<p>The PROXY protocol must be previously enabled by setting the <code>proxy_protocol</code> parameter in the <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#listen\">listen</a> directive.</p></dd><dt id=\"var_proxy_protocol_server_port\"><code>$proxy_protocol_server_port</code></dt><dd>server port from the PROXY protocol header (1.17.6)<p>The PROXY protocol must be previously enabled by setting the <code>proxy_protocol</code> parameter in the <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#listen\">listen</a> directive.</p></dd><dt id=\"var_query_string\"><code>$query_string</code></dt><dd>same as <code>$args</code></dd><dt id=\"var_realpath_root\"><code>$realpath_root</code></dt><dd>an absolute pathname corresponding to the <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#root\">root</a> or <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#alias\">alias</a> directive’s value for the current request, with all symbolic links resolved to real paths</dd><dt id=\"var_remote_addr\"><code>$remote_addr</code></dt><dd>client address</dd><dt id=\"var_remote_port\"><code>$remote_port</code></dt><dd>client port</dd><dt id=\"var_remote_user\"><code>$remote_user</code></dt><dd>user name supplied with the Basic authentication</dd><dt id=\"var_request\"><code>$request</code></dt><dd>full original request line</dd><dt id=\"var_request_body\"><code>$request_body</code></dt><dd>request body<p>The variable’s value is made available in locations processed by the <a href=\"https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass\">proxy_pass</a>, <a href=\"https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_pass\">fastcgi_pass</a>, <a href=\"https://nginx.org/en/docs/http/ngx_http_uwsgi_module.html#uwsgi_pass\">uwsgi_pass</a>, and <a href=\"https://nginx.org/en/docs/http/ngx_http_scgi_module.html#scgi_pass\">scgi_pass</a> directives when the request body was read to a <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_buffer_size\">memory buffer</a>.</p></dd><dt id=\"var_request_body_file\"><code>$request_body_file</code></dt><dd>name of a temporary file with the request body<p>At the end of processing, the file needs to be removed. To always write the request body to a file, <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_in_file_only\">client_body_in_file_only</a> needs to be enabled. When the name of a temporary file is passed in a proxied request or in a request to a FastCGI/uwsgi/SCGI server, passing the request body should be disabled by the <a href=\"https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass_request_body\">proxy_pass_request_body off</a>, <a href=\"https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_pass_request_body\">fastcgi_pass_request_body off</a>, <a href=\"https://nginx.org/en/docs/http/ngx_http_uwsgi_module.html#uwsgi_pass_request_body\">uwsgi_pass_request_body off</a>, or <a href=\"https://nginx.org/en/docs/http/ngx_http_scgi_module.html#scgi_pass_request_body\">scgi_pass_request_body off</a> directives, respectively.</p></dd><dt id=\"var_request_completion\"><code>$request_completion</code></dt><dd>“<code>OK</code>” if a request has completed, or an empty string otherwise</dd><dt id=\"var_request_filename\"><code>$request_filename</code></dt><dd>file path for the current request, based on the <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#root\">root</a> or <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#alias\">alias</a> directives, and the request URI</dd><dt id=\"var_request_id\"><code>$request_id</code></dt><dd>unique request identifier generated from 16 random bytes, in hexadecimal (1.11.0)</dd><dt id=\"var_request_length\"><code>$request_length</code></dt><dd>request length (including request line, header, and request body) (1.3.12, 1.2.7)</dd><dt id=\"var_request_method\"><code>$request_method</code></dt><dd>request method, usually “<code>GET</code>” or “<code>POST</code>”</dd><dt id=\"var_request_time\"><code>$request_time</code></dt><dd>request processing time in seconds with a milliseconds resolution (1.3.9, 1.2.6); time elapsed since the first bytes were read from the client</dd><dt id=\"var_request_uri\"><code>$request_uri</code></dt><dd>full original request URI (with arguments)</dd><dt id=\"var_scheme\"><code>$scheme</code></dt><dd>request scheme, “<code>http</code>” or “<code>https</code>”</dd><dt id=\"var_sent_http_\"><code>$sent_http_</code><code><i>name</i></code></dt><dd>arbitrary response header field; the last part of a variable name is the field name converted to lower case with dashes replaced by underscores</dd><dt id=\"var_sent_trailer_\"><code>$sent_trailer_</code><code><i>name</i></code></dt><dd>arbitrary field sent at the end of the response (1.13.2); the last part of a variable name is the field name converted to lower case with dashes replaced by underscores</dd><dt id=\"var_server_addr\"><code>$server_addr</code></dt><dd>an address of the server which accepted a request<p>Computing a value of this variable usually requires one system call. To avoid a system call, the <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#listen\">listen</a> directives must specify addresses and use the <code>bind</code> parameter.</p></dd><dt id=\"var_server_name\"><code>$server_name</code></dt><dd>name of the server which accepted a request</dd><dt id=\"var_server_port\"><code>$server_port</code></dt><dd>port of the server which accepted a request</dd><dt id=\"var_server_protocol\"><code>$server_protocol</code></dt><dd>request protocol, usually “<code>HTTP/1.0</code>”, “<code>HTTP/1.1</code>”, or “<a href=\"https://nginx.org/en/docs/http/ngx_http_v2_module.html\">HTTP/2.0</a>”</dd><dt id=\"var_status\"><code>$status</code></dt><dd>response status (1.3.2, 1.2.2)</dd><dt id=\"var_tcpinfo_\"><code>$tcpinfo_rtt</code>, <code>$tcpinfo_rttvar</code>, <code>$tcpinfo_snd_cwnd</code>, <code>$tcpinfo_rcv_space</code></dt><dd>information about the client TCP connection; available on systems that support the <code>TCP_INFO</code> socket option</dd><dt id=\"var_time_iso8601\"><code>$time_iso8601</code></dt><dd>local time in the ISO 8601 standard format (1.3.12, 1.2.7)</dd><dt id=\"var_time_local\"><code>$time_local</code></dt><dd>local time in the Common Log Format (1.3.12, 1.2.7)</dd><dt id=\"var_uri\"><code>$uri</code></dt><dd>current URI in request, <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#location\">normalized</a><p>The value of <code>$uri</code> may change during request processing, e.g. when doing internal redirects, or when using index files.</p></dd></dl>"
+  },
+  {
+    "module": "ngx_http_auth_jwt_module",
+    "vars": {
+      "$jwt_header_name": "var_jwt_header_",
+      "$jwt_claim_name": "var_jwt_claim_"
+    },
+    "doc": "<p>The <code>ngx_http_auth_jwt_module</code> module supports embedded variables:</p><p></p><dl class=\"compact\"><dt id=\"var_jwt_header_\"><code>$jwt_header_</code><code><i>name</i></code></dt><dd>returns the value of a specified <a href=\"https://tools.ietf.org/html/rfc7515#section-4\">JOSE header</a></dd><dt id=\"var_jwt_claim_\"><code>$jwt_claim_</code><code><i>name</i></code></dt><dd>returns the value of a specified <a href=\"https://tools.ietf.org/html/rfc7519#section-4\">JWT claim</a><p>For nested claims and claims including a dot (“.”), the value of the variable cannot be evaluated; the <a href=\"https://nginx.org/en/docs/http/ngx_http_auth_jwt_module.html#auth_jwt_claim_set\">auth_jwt_claim_set</a> directive should be used instead.</p></dd></dl>"
+  },
+  {
+    "module": "ngx_http_fastcgi_module",
+    "vars": {
+      "$fastcgi_script_name": "var_fastcgi_script_name",
+      "$fastcgi_path_info": "var_fastcgi_path_info"
+    },
+    "doc": "<p>The <code>ngx_http_fastcgi_module</code> module supports embedded variables that can be used to set parameters using the <a href=\"https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_param\">fastcgi_param</a> directive:</p><dl class=\"compact\"><dt id=\"var_fastcgi_script_name\"><code>$fastcgi_script_name</code></dt><dd>request URI or, if a URI ends with a slash, request URI with an index file name configured by the <a href=\"https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_index\">fastcgi_index</a> directive appended to it. This variable can be used to set the <code>SCRIPT_FILENAME</code> and <code>PATH_TRANSLATED</code> parameters that determine the script name in PHP. For example, for the “<code>/info/</code>” request with the following directives<blockquote class=\"example\"><pre>fastcgi_index index.php;\nfastcgi_param SCRIPT_FILENAME /home/www/scripts/php$fastcgi_script_name;\n</pre></blockquote>the <code>SCRIPT_FILENAME</code> parameter will be equal to “<code>/home/www/scripts/php/info/index.php</code>”.<p>When using the <a href=\"https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_split_path_info\">fastcgi_split_path_info</a> directive, the <code>$fastcgi_script_name</code> variable equals the value of the first capture set by the directive.</p></dd><dt id=\"var_fastcgi_path_info\"><code>$fastcgi_path_info</code></dt><dd>the value of the second capture set by the <a href=\"https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_split_path_info\">fastcgi_split_path_info</a> directive. This variable can be used to set the <code>PATH_INFO</code> parameter.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_gzip_module",
+    "vars": {
+      "$gzip_ratio": "var_gzip_ratio"
+    },
+    "doc": "<p></p><dl class=\"compact\"><dt id=\"var_gzip_ratio\"><code>$gzip_ratio</code></dt><dd>achieved compression ratio, computed as the ratio between the original and compressed response sizes.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_limit_conn_module",
+    "vars": {
+      "$limit_conn_status": "var_limit_conn_status"
+    },
+    "doc": "<p></p><dl class=\"compact\"><dt id=\"var_limit_conn_status\"><code>$limit_conn_status</code></dt><dd>keeps the result of limiting the number of connections (1.17.6): <code>PASSED</code>, <code>REJECTED</code>, or <code>REJECTED_DRY_RUN</code></dd></dl>"
+  },
+  {
+    "module": "ngx_http_limit_req_module",
+    "vars": {
+      "$limit_req_status": "var_limit_req_status"
+    },
+    "doc": "<p></p><dl class=\"compact\"><dt id=\"var_limit_req_status\"><code>$limit_req_status</code></dt><dd>keeps the result of limiting the request processing rate (1.17.6): <code>PASSED</code>, <code>DELAYED</code>, <code>REJECTED</code>, <code>DELAYED_DRY_RUN</code>, or <code>REJECTED_DRY_RUN</code></dd></dl>"
+  },
+  {
+    "module": "ngx_http_memcached_module",
+    "vars": {
+      "$memcached_key": "var_memcached_key"
+    },
+    "doc": "<p></p><dl class=\"compact\"><dt id=\"var_memcached_key\"><code>$memcached_key</code></dt><dd>Defines a key for obtaining response from a memcached server.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_proxy_module",
+    "vars": {
+      "$proxy_host": "var_proxy_host",
+      "$proxy_port": "var_proxy_port",
+      "$proxy_add_x_forwarded_for": "var_proxy_add_x_forwarded_for"
+    },
+    "doc": "<p>The <code>ngx_http_proxy_module</code> module supports embedded variables that can be used to compose headers using the <a href=\"https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_set_header\">proxy_set_header</a> directive:</p><dl class=\"compact\"><dt id=\"var_proxy_host\"><code>$proxy_host</code></dt><dd>name and port of a proxied server as specified in the <a href=\"https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass\">proxy_pass</a> directive;</dd><dt id=\"var_proxy_port\"><code>$proxy_port</code></dt><dd>port of a proxied server as specified in the <a href=\"https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass\">proxy_pass</a> directive, or the protocol’s default port;</dd><dt id=\"var_proxy_add_x_forwarded_for\"><code>$proxy_add_x_forwarded_for</code></dt><dd>the “X-Forwarded-For” client request header field with the <code>$remote_addr</code> variable appended to it, separated by a comma. If the “X-Forwarded-For” field is not present in the client request header, the <code>$proxy_add_x_forwarded_for</code> variable is equal to the <code>$remote_addr</code> variable.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_realip_module",
+    "vars": {
+      "$realip_remote_addr": "var_realip_remote_addr",
+      "$realip_remote_port": "var_realip_remote_port"
+    },
+    "doc": "<p></p><dl class=\"compact\"><dt id=\"var_realip_remote_addr\"><code>$realip_remote_addr</code></dt><dd>keeps the original client address (1.9.7)</dd><dt id=\"var_realip_remote_port\"><code>$realip_remote_port</code></dt><dd>keeps the original client port (1.11.0)</dd></dl>"
+  },
+  {
+    "module": "ngx_http_referer_module",
+    "vars": {
+      "$invalid_referer": "var_invalid_referer"
+    },
+    "doc": "<p></p><dl class=\"compact\"><dt id=\"var_invalid_referer\"><code>$invalid_referer</code></dt><dd>Empty string, if the “Referer” request header field value is considered <a href=\"https://nginx.org/en/docs/http/ngx_http_referer_module.html#valid_referers\">valid</a>, otherwise “<code>1</code>”.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_secure_link_module",
+    "vars": {
+      "$secure_link": "var_secure_link",
+      "$secure_link_expires": "var_secure_link_expires"
+    },
+    "doc": "<p></p><dl><dt id=\"var_secure_link\"><code>$secure_link</code></dt><dd>The status of a link check. The specific value depends on the selected operation mode.</dd><dt id=\"var_secure_link_expires\"><code>$secure_link_expires</code></dt><dd>The lifetime of a link passed in a request; intended to be used only in the <a href=\"https://nginx.org/en/docs/http/ngx_http_secure_link_module.html#secure_link_md5\">secure_link_md5</a> directive.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_session_log_module",
+    "vars": {
+      "$session_log_id": "var_session_log_id",
+      "$session_log_binary_id": "var_session_log_binary_id"
+    },
+    "doc": "<p>The <code>ngx_http_session_log_module</code> module supports two embedded variables:</p><dl class=\"compact\"><dt id=\"var_session_log_id\"><code>$session_log_id</code></dt><dd>current session ID;</dd><dt id=\"var_session_log_binary_id\"><code>$session_log_binary_id</code></dt><dd>current session ID in binary form (16 bytes).</dd></dl>"
+  },
+  {
+    "module": "ngx_http_slice_module",
+    "vars": {
+      "$slice_range": "var_slice_range"
+    },
+    "doc": "<p>The <code>ngx_http_slice_module</code> module supports the following embedded variables:</p><dl class=\"compact\"><dt id=\"var_slice_range\"><code>$slice_range</code></dt><dd>the current slice range in <a href=\"https://tools.ietf.org/html/rfc7233#section-2.1\">HTTP byte range</a> format, for example, <code>bytes=0-1048575</code>.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_spdy_module",
+    "vars": {
+      "$spdy": "var_spdy",
+      "$spdy_request_priority": "var_spdy_request_priority"
+    },
+    "doc": "<p>The <code>ngx_http_spdy_module</code> module supports the following embedded variables:</p><dl><dt id=\"var_spdy\"><code>$spdy</code></dt><dd>SPDY protocol version for SPDY connections, or an empty string otherwise;</dd><dt id=\"var_spdy_request_priority\"><code>$spdy_request_priority</code></dt><dd>request priority for SPDY connections, or an empty string otherwise.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_ssi_module",
+    "vars": {
+      "$date_local": "var_date_local",
+      "$date_gmt": "var_date_gmt"
+    },
+    "doc": "<p>The <code>ngx_http_ssi_module</code> module supports two embedded variables:</p><dl class=\"compact\"><dt id=\"var_date_local\"><code>$date_local</code></dt><dd>current time in the local time zone. The format is set by the <code>config</code> command with the <code>timefmt</code> parameter.</dd><dt id=\"var_date_gmt\"><code>$date_gmt</code></dt><dd>current time in GMT. The format is set by the <code>config</code> command with the <code>timefmt</code> parameter.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_ssl_module",
+    "vars": {
+      "$ssl_cipher": "var_ssl_cipher",
+      "$ssl_ciphers": "var_ssl_ciphers",
+      "$ssl_client_escaped_cert": "var_ssl_client_escaped_cert",
+      "$ssl_client_cert": "var_ssl_client_cert",
+      "$ssl_client_fingerprint": "var_ssl_client_fingerprint",
+      "$ssl_client_i_dn": "var_ssl_client_i_dn",
+      "$ssl_client_i_dn_legacy": "var_ssl_client_i_dn_legacy",
+      "$ssl_client_raw_cert": "var_ssl_client_raw_cert",
+      "$ssl_client_s_dn": "var_ssl_client_s_dn",
+      "$ssl_client_s_dn_legacy": "var_ssl_client_s_dn_legacy",
+      "$ssl_client_serial": "var_ssl_client_serial",
+      "$ssl_client_v_end": "var_ssl_client_v_end",
+      "$ssl_client_v_remain": "var_ssl_client_v_remain",
+      "$ssl_client_v_start": "var_ssl_client_v_start",
+      "$ssl_client_verify": "var_ssl_client_verify",
+      "$ssl_curves": "var_ssl_curves",
+      "$ssl_early_data": "var_ssl_early_data",
+      "$ssl_protocol": "var_ssl_protocol",
+      "$ssl_server_name": "var_ssl_server_name",
+      "$ssl_session_id": "var_ssl_session_id",
+      "$ssl_session_reused": "var_ssl_session_reused"
+    },
+    "doc": "<p>The <code>ngx_http_ssl_module</code> module supports embedded variables:</p><dl class=\"compact\"><dt id=\"var_ssl_cipher\"><code>$ssl_cipher</code></dt><dd>returns the name of the cipher used for an established SSL connection;</dd><dt id=\"var_ssl_ciphers\"><code>$ssl_ciphers</code></dt><dd>returns the list of ciphers supported by the client (1.11.7). Known ciphers are listed by names, unknown are shown in hexadecimal, for example:<blockquote class=\"example\"><pre>AES128-SHA:AES256-SHA:0x00ff\n</pre></blockquote><blockquote class=\"note\">The variable is fully supported only when using OpenSSL version 1.0.2 or higher. With older versions, the variable is available only for new sessions and lists only known ciphers.</blockquote></dd><dt id=\"var_ssl_client_escaped_cert\"><code>$ssl_client_escaped_cert</code></dt><dd>returns the client certificate in the PEM format (urlencoded) for an established SSL connection (1.13.5);</dd><dt id=\"var_ssl_client_cert\"><code>$ssl_client_cert</code></dt><dd>returns the client certificate in the PEM format for an established SSL connection, with each line except the first prepended with the tab character; this is intended for the use in the <a href=\"https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_set_header\">proxy_set_header</a> directive;<blockquote class=\"note\">The variable is deprecated, the <code>$ssl_client_escaped_cert</code> variable should be used instead.</blockquote></dd><dt id=\"var_ssl_client_fingerprint\"><code>$ssl_client_fingerprint</code></dt><dd>returns the SHA1 fingerprint of the client certificate for an established SSL connection (1.7.1);</dd><dt id=\"var_ssl_client_i_dn\"><code>$ssl_client_i_dn</code></dt><dd>returns the “issuer&nbsp;DN” string of the client certificate for an established SSL connection according to <a href=\"https://tools.ietf.org/html/rfc2253\">RFC 2253</a> (1.11.6);</dd><dt id=\"var_ssl_client_i_dn_legacy\"><code>$ssl_client_i_dn_legacy</code></dt><dd>returns the “issuer&nbsp;DN” string of the client certificate for an established SSL connection;<blockquote class=\"note\">Prior to version 1.11.6, the variable name was <code>$ssl_client_i_dn</code>.</blockquote></dd><dt id=\"var_ssl_client_raw_cert\"><code>$ssl_client_raw_cert</code></dt><dd>returns the client certificate in the PEM format for an established SSL connection;</dd><dt id=\"var_ssl_client_s_dn\"><code>$ssl_client_s_dn</code></dt><dd>returns the “subject&nbsp;DN” string of the client certificate for an established SSL connection according to <a href=\"https://tools.ietf.org/html/rfc2253\">RFC 2253</a> (1.11.6);</dd><dt id=\"var_ssl_client_s_dn_legacy\"><code>$ssl_client_s_dn_legacy</code></dt><dd>returns the “subject&nbsp;DN” string of the client certificate for an established SSL connection;<blockquote class=\"note\">Prior to version 1.11.6, the variable name was <code>$ssl_client_s_dn</code>.</blockquote></dd><dt id=\"var_ssl_client_serial\"><code>$ssl_client_serial</code></dt><dd>returns the serial number of the client certificate for an established SSL connection;</dd><dt id=\"var_ssl_client_v_end\"><code>$ssl_client_v_end</code></dt><dd>returns the end date of the client certificate (1.11.7);</dd><dt id=\"var_ssl_client_v_remain\"><code>$ssl_client_v_remain</code></dt><dd>returns the number of days until the client certificate expires (1.11.7);</dd><dt id=\"var_ssl_client_v_start\"><code>$ssl_client_v_start</code></dt><dd>returns the start date of the client certificate (1.11.7);</dd><dt id=\"var_ssl_client_verify\"><code>$ssl_client_verify</code></dt><dd>returns the result of client certificate verification: “<code>SUCCESS</code>”, “<code>FAILED:</code><code><i>reason</i></code>”, and “<code>NONE</code>” if a certificate was not present;<blockquote class=\"note\">Prior to version 1.11.7, the “<code>FAILED</code>” result did not contain the <code><i>reason</i></code> string.</blockquote></dd><dt id=\"var_ssl_curves\"><code>$ssl_curves</code></dt><dd>returns the list of curves supported by the client (1.11.7). Known curves are listed by names, unknown are shown in hexadecimal, for example:<blockquote class=\"example\"><pre>0x001d:prime256v1:secp521r1:secp384r1\n</pre></blockquote><blockquote class=\"note\">The variable is supported only when using OpenSSL version 1.0.2 or higher. With older versions, the variable value will be an empty string.</blockquote><blockquote class=\"note\">The variable is available only for new sessions.</blockquote></dd><dt id=\"var_ssl_early_data\"><code>$ssl_early_data</code></dt><dd>returns “<code>1</code>” if TLS 1.3 <a href=\"https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_early_data\">early data</a> is used and the handshake is not complete, otherwise “” (1.15.3).</dd><dt id=\"var_ssl_protocol\"><code>$ssl_protocol</code></dt><dd>returns the protocol of an established SSL connection;</dd><dt id=\"var_ssl_server_name\"><code>$ssl_server_name</code></dt><dd>returns the server name requested through <a href=\"http://en.wikipedia.org/wiki/Server_Name_Indication\">SNI</a> (1.7.0);</dd><dt id=\"var_ssl_session_id\"><code>$ssl_session_id</code></dt><dd>returns the session identifier of an established SSL connection;</dd><dt id=\"var_ssl_session_reused\"><code>$ssl_session_reused</code></dt><dd>returns “<code>r</code>” if an SSL session was reused, or “<code>.</code>” otherwise (1.5.11).</dd></dl>"
+  },
+  {
+    "module": "ngx_http_stub_status_module",
+    "vars": {
+      "$connections_active": "var_connections_active",
+      "$connections_reading": "var_connections_reading",
+      "$connections_writing": "var_connections_writing",
+      "$connections_waiting": "var_connections_waiting"
+    },
+    "doc": "<p>The <code>ngx_http_stub_status_module</code> module supports the following embedded variables (1.3.14):</p><dl class=\"compact\"><dt id=\"var_connections_active\"><code>$connections_active</code></dt><dd>same as the <code>Active connections</code> value;</dd><dt id=\"var_connections_reading\"><code>$connections_reading</code></dt><dd>same as the <code>Reading</code> value;</dd><dt id=\"var_connections_writing\"><code>$connections_writing</code></dt><dd>same as the <code>Writing</code> value;</dd><dt id=\"var_connections_waiting\"><code>$connections_waiting</code></dt><dd>same as the <code>Waiting</code> value.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_upstream_module",
+    "vars": {
+      "$upstream_addr": "var_upstream_addr",
+      "$upstream_bytes_received": "var_upstream_bytes_received",
+      "$upstream_bytes_sent": "var_upstream_bytes_sent",
+      "$upstream_cache_status": "var_upstream_cache_status",
+      "$upstream_connect_time": "var_upstream_connect_time",
+      "$upstream_cookie_name": "var_upstream_cookie_",
+      "$upstream_header_time": "var_upstream_header_time",
+      "$upstream_http_name": "var_upstream_http_",
+      "$upstream_queue_time": "var_upstream_queue_time",
+      "$upstream_response_length": "var_upstream_response_length",
+      "$upstream_response_time": "var_upstream_response_time",
+      "$upstream_status": "var_upstream_status",
+      "$upstream_trailer_name": "var_upstream_trailer_"
+    },
+    "doc": "<p>The <code>ngx_http_upstream_module</code> module supports the following embedded variables:</p><dl class=\"compact\"><dt id=\"var_upstream_addr\"><code>$upstream_addr</code></dt><dd>keeps the IP address and port, or the path to the UNIX-domain socket of the upstream server. If several servers were contacted during request processing, their addresses are separated by commas, e.g. “<code>192.168.1.1:80, 192.168.1.2:80, unix:/tmp/sock</code>”. If an internal redirect from one server group to another happens, initiated by “X-Accel-Redirect” or <a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#error_page\">error_page</a>, then the server addresses from different groups are separated by colons, e.g. “<code>192.168.1.1:80, 192.168.1.2:80, unix:/tmp/sock : 192.168.10.1:80, 192.168.10.2:80</code>”. If a server cannot be selected, the variable keeps the name of the server group.</dd><dt id=\"var_upstream_bytes_received\"><code>$upstream_bytes_received</code></dt><dd>number of bytes received from an upstream server (1.11.4). Values from several connections are separated by commas and colons like addresses in the <a href=\"https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_bytes_sent\"><code>$upstream_bytes_sent</code></dt><dd>number of bytes sent to an upstream server (1.15.8). Values from several connections are separated by commas and colons like addresses in the <a href=\"https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_cache_status\"><code>$upstream_cache_status</code></dt><dd>keeps the status of accessing a response cache (0.8.3). The status can be either “<code>MISS</code>”, “<code>BYPASS</code>”, “<code>EXPIRED</code>”, “<code>STALE</code>”, “<code>UPDATING</code>”, “<code>REVALIDATED</code>”, or “<code>HIT</code>”.</dd><dt id=\"var_upstream_connect_time\"><code>$upstream_connect_time</code></dt><dd>keeps time spent on establishing a connection with the upstream server (1.9.1); the time is kept in seconds with millisecond resolution. In case of SSL, includes time spent on handshake. Times of several connections are separated by commas and colons like addresses in the <a href=\"https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_cookie_\"><code>$upstream_cookie_</code><code><i>name</i></code></dt><dd>cookie with the specified <code><i>name</i></code> sent by the upstream server in the “Set-Cookie” response header field (1.7.1). Only the cookies from the response of the last server are saved.</dd><dt id=\"var_upstream_header_time\"><code>$upstream_header_time</code></dt><dd>keeps time spent on receiving the response header from the upstream server (1.7.10); the time is kept in seconds with millisecond resolution. Times of several responses are separated by commas and colons like addresses in the <a href=\"https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_http_\"><code>$upstream_http_</code><code><i>name</i></code></dt><dd>keep server response header fields. For example, the “Server” response header field is available through the <code>$upstream_http_server</code> variable. The rules of converting header field names to variable names are the same as for the variables that start with the “<a href=\"https://nginx.org/en/docs/http/ngx_http_core_module.html#var_http_\">$http_</a>” prefix. Only the header fields from the response of the last server are saved.</dd><dt id=\"var_upstream_queue_time\"><code>$upstream_queue_time</code></dt><dd>keeps time the request spent in the upstream <a href=\"https://nginx.org/en/docs/http/ngx_http_upstream_module.html#queue\">queue</a> (1.13.9); the time is kept in seconds with millisecond resolution. Times of several responses are separated by commas and colons like addresses in the <a href=\"https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_response_length\"><code>$upstream_response_length</code></dt><dd>keeps the length of the response obtained from the upstream server (0.7.27); the length is kept in bytes. Lengths of several responses are separated by commas and colons like addresses in the <a href=\"https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_response_time\"><code>$upstream_response_time</code></dt><dd>keeps time spent on receiving the response from the upstream server; the time is kept in seconds with millisecond resolution. Times of several responses are separated by commas and colons like addresses in the <a href=\"https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_status\"><code>$upstream_status</code></dt><dd>keeps status code of the response obtained from the upstream server. Status codes of several responses are separated by commas and colons like addresses in the <a href=\"https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable. If a server cannot be selected, the variable keeps the 502 (Bad Gateway) status code.</dd><dt id=\"var_upstream_trailer_\"><code>$upstream_trailer_</code><code><i>name</i></code></dt><dd>keeps fields from the end of the response obtained from the upstream server (1.13.10).</dd></dl>"
+  },
+  {
+    "module": "ngx_http_userid_module",
+    "vars": {
+      "$uid_got": "var_uid_got",
+      "$uid_reset": "var_uid_reset",
+      "$uid_set": "var_uid_set"
+    },
+    "doc": "<p>The <code>ngx_http_userid_module</code> module supports the following embedded variables:</p><dl class=\"compact\"><dt id=\"var_uid_got\"><code>$uid_got</code></dt><dd>The cookie name and received client identifier.</dd><dt id=\"var_uid_reset\"><code>$uid_reset</code></dt><dd>If the variable is set to a non-empty string that is not “<code>0</code>”, the client identifiers are reset. The special value “<code>log</code>” additionally leads to the output of messages about the reset identifiers to the <a href=\"https://nginx.org/en/docs/ngx_core_module.html#error_log\">error_log</a>.</dd><dt id=\"var_uid_set\"><code>$uid_set</code></dt><dd>The cookie name and sent client identifier.</dd></dl>"
+  },
+  {
+    "module": "ngx_http_v2_module",
+    "vars": {
+      "$http2": "var_http2"
+    },
+    "doc": "<p>The <code>ngx_http_v2_module</code> module supports the following embedded variables:</p><dl><dt id=\"var_http2\"><code>$http2</code></dt><dd>negotiated protocol identifier: “<code>h2</code>” for HTTP/2 over TLS, “<code>h2c</code>” for HTTP/2 over cleartext TCP, or an empty string otherwise.</dd></dl>"
+  },
+  {
+    "module": "ngx_stream_core_module",
+    "vars": {
+      "$binary_remote_addr": "var_binary_remote_addr",
+      "$bytes_received": "var_bytes_received",
+      "$bytes_sent": "var_bytes_sent",
+      "$connection": "var_connection",
+      "$hostname": "var_hostname",
+      "$msec": "var_msec",
+      "$nginx_version": "var_nginx_version",
+      "$pid": "var_pid",
+      "$protocol": "var_protocol",
+      "$proxy_protocol_addr": "var_proxy_protocol_addr",
+      "$proxy_protocol_port": "var_proxy_protocol_port",
+      "$proxy_protocol_server_addr": "var_proxy_protocol_server_addr",
+      "$proxy_protocol_server_port": "var_proxy_protocol_server_port",
+      "$remote_addr": "var_remote_addr",
+      "$remote_port": "var_remote_port",
+      "$server_addr": "var_server_addr",
+      "$server_port": "var_server_port",
+      "$session_time": "var_session_time",
+      "$status": "var_status",
+      "$time_iso8601": "var_time_iso8601",
+      "$time_local": "var_time_local"
+    },
+    "doc": "<p>The <code>ngx_stream_core_module</code> module supports variables since 1.11.2.</p><dl class=\"compact\"><dt id=\"var_binary_remote_addr\"><code>$binary_remote_addr</code></dt><dd>client address in a binary form, value’s length is always 4 bytes for IPv4 addresses or 16 bytes for IPv6 addresses</dd><dt id=\"var_bytes_received\"><code>$bytes_received</code></dt><dd>number of bytes received from a client (1.11.4)</dd><dt id=\"var_bytes_sent\"><code>$bytes_sent</code></dt><dd>number of bytes sent to a client</dd><dt id=\"var_connection\"><code>$connection</code></dt><dd>connection serial number</dd><dt id=\"var_hostname\"><code>$hostname</code></dt><dd>host name</dd><dt id=\"var_msec\"><code>$msec</code></dt><dd>current time in seconds with the milliseconds resolution</dd><dt id=\"var_nginx_version\"><code>$nginx_version</code></dt><dd>nginx version</dd><dt id=\"var_pid\"><code>$pid</code></dt><dd>PID of the worker process</dd><dt id=\"var_protocol\"><code>$protocol</code></dt><dd>protocol used to communicate with the client: <code>TCP</code> or <code>UDP</code> (1.11.4)</dd><dt id=\"var_proxy_protocol_addr\"><code>$proxy_protocol_addr</code></dt><dd>client address from the PROXY protocol header (1.11.4)<p>The PROXY protocol must be previously enabled by setting the <code>proxy_protocol</code> parameter in the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_core_module.html#listen\">listen</a> directive.</p></dd><dt id=\"var_proxy_protocol_port\"><code>$proxy_protocol_port</code></dt><dd>client port from the PROXY protocol header (1.11.4)<p>The PROXY protocol must be previously enabled by setting the <code>proxy_protocol</code> parameter in the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_core_module.html#listen\">listen</a> directive.</p></dd><dt id=\"var_proxy_protocol_server_addr\"><code>$proxy_protocol_server_addr</code></dt><dd>server address from the PROXY protocol header (1.17.6)<p>The PROXY protocol must be previously enabled by setting the <code>proxy_protocol</code> parameter in the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_core_module.html#listen\">listen</a> directive.</p></dd><dt id=\"var_proxy_protocol_server_port\"><code>$proxy_protocol_server_port</code></dt><dd>server port from the PROXY protocol header (1.17.6)<p>The PROXY protocol must be previously enabled by setting the <code>proxy_protocol</code> parameter in the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_core_module.html#listen\">listen</a> directive.</p></dd><dt id=\"var_remote_addr\"><code>$remote_addr</code></dt><dd>client address</dd><dt id=\"var_remote_port\"><code>$remote_port</code></dt><dd>client port</dd><dt id=\"var_server_addr\"><code>$server_addr</code></dt><dd>an address of the server which accepted a connection<p>Computing a value of this variable usually requires one system call. To avoid a system call, the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_core_module.html#listen\">listen</a> directives must specify addresses and use the <code>bind</code> parameter.</p></dd><dt id=\"var_server_port\"><code>$server_port</code></dt><dd>port of the server which accepted a connection</dd><dt id=\"var_session_time\"><code>$session_time</code></dt><dd>session duration in seconds with a milliseconds resolution (1.11.4);</dd><dt id=\"var_status\"><code>$status</code></dt><dd>session status (1.11.4), can be one of the following:<dl class=\"compact\"><dt><code>200</code></dt><dd>session completed successfully</dd><dt><code>400</code></dt><dd>client data could not be parsed, for example, the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_core_module.html#proxy_protocol\">PROXY protocol</a> header</dd><dt><code>403</code></dt><dd>access forbidden, for example, when access is limited for <a href=\"https://nginx.org/en/docs/stream/ngx_stream_access_module.html\">certain client addresses</a></dd><dt><code>500</code></dt><dd>internal server error</dd><dt><code>502</code></dt><dd>bad gateway, for example, if an upstream server could not be selected or reached.</dd><dt><code>503</code></dt><dd>service unavailable, for example, when access is limited by the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_limit_conn_module.html\">number of connections</a></dd></dl></dd><dt id=\"var_time_iso8601\"><code>$time_iso8601</code></dt><dd>local time in the ISO 8601 standard format</dd><dt id=\"var_time_local\"><code>$time_local</code></dt><dd>local time in the Common Log Format</dd></dl>"
+  },
+  {
+    "module": "ngx_stream_limit_conn_module",
+    "vars": {
+      "$limit_conn_status": "var_limit_conn_status"
+    },
+    "doc": "<p></p><dl class=\"compact\"><dt id=\"var_limit_conn_status\"><code>$limit_conn_status</code></dt><dd>keeps the result of limiting the number of connections (1.17.6): <code>PASSED</code>, <code>REJECTED</code>, or <code>REJECTED_DRY_RUN</code></dd></dl>"
+  },
+  {
+    "module": "ngx_stream_realip_module",
+    "vars": {
+      "$realip_remote_addr": "var_realip_remote_addr",
+      "$realip_remote_port": "var_realip_remote_port"
+    },
+    "doc": "<p></p><dl class=\"compact\"><dt id=\"var_realip_remote_addr\"><code>$realip_remote_addr</code></dt><dd>keeps the original client address</dd><dt id=\"var_realip_remote_port\"><code>$realip_remote_port</code></dt><dd>keeps the original client port</dd></dl>"
+  },
+  {
+    "module": "ngx_stream_ssl_module",
+    "vars": {
+      "$ssl_cipher": "var_ssl_cipher",
+      "$ssl_ciphers": "var_ssl_ciphers",
+      "$ssl_client_cert": "var_ssl_client_cert",
+      "$ssl_client_fingerprint": "var_ssl_client_fingerprint",
+      "$ssl_client_i_dn": "var_ssl_client_i_dn",
+      "$ssl_client_raw_cert": "var_ssl_client_raw_cert",
+      "$ssl_client_s_dn": "var_ssl_client_s_dn",
+      "$ssl_client_serial": "var_ssl_client_serial",
+      "$ssl_client_v_end": "var_ssl_client_v_end",
+      "$ssl_client_v_remain": "var_ssl_client_v_remain",
+      "$ssl_client_v_start": "var_ssl_client_v_start",
+      "$ssl_client_verify": "var_ssl_client_verify",
+      "$ssl_curves": "var_ssl_curves",
+      "$ssl_protocol": "var_ssl_protocol",
+      "$ssl_server_name": "var_ssl_server_name",
+      "$ssl_session_id": "var_ssl_session_id",
+      "$ssl_session_reused": "var_ssl_session_reused"
+    },
+    "doc": "<p>The <code>ngx_stream_ssl_module</code> module supports variables since 1.11.2.</p><dl class=\"compact\"><dt id=\"var_ssl_cipher\"><code>$ssl_cipher</code></dt><dd>returns the name of the cipher used for an established SSL connection;</dd><dt id=\"var_ssl_ciphers\"><code>$ssl_ciphers</code></dt><dd>returns the list of ciphers supported by the client (1.11.7). Known ciphers are listed by names, unknown are shown in hexadecimal, for example:<blockquote class=\"example\"><pre>AES128-SHA:AES256-SHA:0x00ff\n</pre></blockquote><blockquote class=\"note\">The variable is fully supported only when using OpenSSL version 1.0.2 or higher. With older versions, the variable is available only for new sessions and lists only known ciphers.</blockquote></dd><dt id=\"var_ssl_client_cert\"><code>$ssl_client_cert</code></dt><dd>returns the client certificate in the PEM format for an established SSL connection, with each line except the first prepended with the tab character (1.11.8);</dd><dt id=\"var_ssl_client_fingerprint\"><code>$ssl_client_fingerprint</code></dt><dd>returns the SHA1 fingerprint of the client certificate for an established SSL connection (1.11.8);</dd><dt id=\"var_ssl_client_i_dn\"><code>$ssl_client_i_dn</code></dt><dd>returns the “issuer&nbsp;DN” string of the client certificate for an established SSL connection according to <a href=\"https://tools.ietf.org/html/rfc2253\">RFC 2253</a> (1.11.8);</dd><dt id=\"var_ssl_client_raw_cert\"><code>$ssl_client_raw_cert</code></dt><dd>returns the client certificate in the PEM format for an established SSL connection (1.11.8);</dd><dt id=\"var_ssl_client_s_dn\"><code>$ssl_client_s_dn</code></dt><dd>returns the “subject&nbsp;DN” string of the client certificate for an established SSL connection according to <a href=\"https://tools.ietf.org/html/rfc2253\">RFC 2253</a> (1.11.8);</dd><dt id=\"var_ssl_client_serial\"><code>$ssl_client_serial</code></dt><dd>returns the serial number of the client certificate for an established SSL connection (1.11.8);</dd><dt id=\"var_ssl_client_v_end\"><code>$ssl_client_v_end</code></dt><dd>returns the end date of the client certificate (1.11.8);</dd><dt id=\"var_ssl_client_v_remain\"><code>$ssl_client_v_remain</code></dt><dd>returns the number of days until the client certificate expires (1.11.8);</dd><dt id=\"var_ssl_client_v_start\"><code>$ssl_client_v_start</code></dt><dd>returns the start date of the client certificate (1.11.8);</dd><dt id=\"var_ssl_client_verify\"><code>$ssl_client_verify</code></dt><dd>returns the result of client certificate verification (1.11.8): “<code>SUCCESS</code>”, “<code>FAILED:</code><code><i>reason</i></code>”, and “<code>NONE</code>” if a certificate was not present;</dd><dt id=\"var_ssl_curves\"><code>$ssl_curves</code></dt><dd>returns the list of curves supported by the client (1.11.7). Known curves are listed by names, unknown are shown in hexadecimal, for example:<blockquote class=\"example\"><pre>0x001d:prime256v1:secp521r1:secp384r1\n</pre></blockquote><blockquote class=\"note\">The variable is supported only when using OpenSSL version 1.0.2 or higher. With older versions, the variable value will be an empty string.</blockquote><blockquote class=\"note\">The variable is available only for new sessions.</blockquote></dd><dt id=\"var_ssl_protocol\"><code>$ssl_protocol</code></dt><dd>returns the protocol of an established SSL connection;</dd><dt id=\"var_ssl_server_name\"><code>$ssl_server_name</code></dt><dd>returns the server name requested through <a href=\"http://en.wikipedia.org/wiki/Server_Name_Indication\">SNI</a>;</dd><dt id=\"var_ssl_session_id\"><code>$ssl_session_id</code></dt><dd>returns the session identifier of an established SSL connection;</dd><dt id=\"var_ssl_session_reused\"><code>$ssl_session_reused</code></dt><dd>returns “<code>r</code>” if an SSL session was reused, or “<code>.</code>” otherwise.</dd></dl>"
+  },
+  {
+    "module": "ngx_stream_ssl_preread_module",
+    "vars": {
+      "$ssl_preread_protocol": "var_ssl_preread_protocol",
+      "$ssl_preread_server_name": "var_ssl_preread_server_name",
+      "$ssl_preread_alpn_protocols": "var_ssl_preread_alpn_protocols"
+    },
+    "doc": "<p></p><dl class=\"compact\"><dt id=\"var_ssl_preread_protocol\"><code>$ssl_preread_protocol</code></dt><dd>the highest SSL protocol version supported by the client (1.15.2)</dd><dt id=\"var_ssl_preread_server_name\"><code>$ssl_preread_server_name</code></dt><dd>server name requested through SNI</dd><dt id=\"var_ssl_preread_alpn_protocols\"><code>$ssl_preread_alpn_protocols</code></dt><dd>list of protocols advertised by the client through ALPN (1.13.10). The values are separated by commas.</dd></dl>"
+  },
+  {
+    "module": "ngx_stream_upstream_module",
+    "vars": {
+      "$upstream_addr": "var_upstream_addr",
+      "$upstream_bytes_received": "var_upstream_bytes_received",
+      "$upstream_bytes_sent": "var_upstream_bytes_sent",
+      "$upstream_connect_time": "var_upstream_connect_time",
+      "$upstream_first_byte_time": "var_upstream_first_byte_time",
+      "$upstream_session_time": "var_upstream_session_time"
+    },
+    "doc": "<p>The <code>ngx_stream_upstream_module</code> module supports the following embedded variables:</p><dl class=\"compact\"><dt id=\"var_upstream_addr\"><code>$upstream_addr</code></dt><dd>keeps the IP address and port, or the path to the UNIX-domain socket of the upstream server (1.11.4). If several servers were contacted during proxying, their addresses are separated by commas, e.g. “<code>192.168.1.1:12345, 192.168.1.2:12345, unix:/tmp/sock</code>”. If a server cannot be selected, the variable keeps the name of the server group.</dd><dt id=\"var_upstream_bytes_received\"><code>$upstream_bytes_received</code></dt><dd>number of bytes received from an upstream server (1.11.4). Values from several connections are separated by commas like addresses in the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_bytes_sent\"><code>$upstream_bytes_sent</code></dt><dd>number of bytes sent to an upstream server (1.11.4). Values from several connections are separated by commas like addresses in the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_connect_time\"><code>$upstream_connect_time</code></dt><dd>time to connect to the upstream server (1.11.4); the time is kept in seconds with millisecond resolution. Times of several connections are separated by commas like addresses in the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_first_byte_time\"><code>$upstream_first_byte_time</code></dt><dd>time to receive the first byte of data (1.11.4); the time is kept in seconds with millisecond resolution. Times of several connections are separated by commas like addresses in the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd><dt id=\"var_upstream_session_time\"><code>$upstream_session_time</code></dt><dd>session duration in seconds with millisecond resolution (1.11.4). Times of several connections are separated by commas like addresses in the <a href=\"https://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#var_upstream_addr\">$upstream_addr</a> variable.</dd></dl>"
+  }
+]
