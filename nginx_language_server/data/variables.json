@@ -111,12 +111,22 @@
   },
   {
     "name": "$proxy_protocol_addr",
-    "desc": "client address from the PROXY protocol header, or an empty string otherwise\n(1.5.12)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "desc": "client address from the PROXY protocol header (1.5.12)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
     "module": "ngx_http_core_module"
   },
   {
     "name": "$proxy_protocol_port",
-    "desc": "client port from the PROXY protocol header, or an empty string otherwise\n(1.11.0)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "desc": "client port from the PROXY protocol header (1.11.0)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$proxy_protocol_server_addr",
+    "desc": "server address from the PROXY protocol header (1.17.6)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "$proxy_protocol_server_port",
+    "desc": "server port from the PROXY protocol header (1.17.6)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
     "module": "ngx_http_core_module"
   },
   {
@@ -261,7 +271,7 @@
   },
   {
     "name": "$jwt_claim_name",
-    "desc": "returns the value of a specified\nJWT claim",
+    "desc": "returns the value of a specified\nJWT claim\n\n\nFor nested claims and claims including a dot (“.”),\nthe value of the variable cannot be evaluated;\nthe auth_jwt_claim_set directive should be used instead.",
     "module": "ngx_http_auth_jwt_module"
   },
   {
@@ -278,6 +288,16 @@
     "name": "$gzip_ratio",
     "desc": "achieved compression ratio, computed as the ratio between the\noriginal and compressed response sizes.",
     "module": "ngx_http_gzip_module"
+  },
+  {
+    "name": "$limit_conn_status",
+    "desc": "keeps the result of limiting the number of connections (1.17.6):\nPASSED,\nREJECTED, or\nREJECTED_DRY_RUN",
+    "module": "ngx_http_limit_conn_module"
+  },
+  {
+    "name": "$limit_req_status",
+    "desc": "keeps the result of limiting the request processing rate (1.17.6):\nPASSED,\nDELAYED,\nREJECTED,\nDELAYED_DRY_RUN, or\nREJECTED_DRY_RUN",
+    "module": "ngx_http_limit_req_module"
   },
   {
     "name": "$memcached_key",
@@ -361,7 +381,7 @@
   },
   {
     "name": "$ssl_cipher",
-    "desc": "returns the string of ciphers used\nfor an established SSL connection;",
+    "desc": "returns the name of the cipher used\nfor an established SSL connection;",
     "module": "ngx_http_ssl_module"
   },
   {
@@ -616,12 +636,22 @@
   },
   {
     "name": "$proxy_protocol_addr",
-    "desc": "client address from the PROXY protocol header, or an empty string otherwise\n(1.11.4)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "desc": "client address from the PROXY protocol header (1.11.4)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
     "module": "ngx_stream_core_module"
   },
   {
     "name": "$proxy_protocol_port",
-    "desc": "client port from the PROXY protocol header, or an empty string otherwise\n(1.11.4)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "desc": "client port from the PROXY protocol header (1.11.4)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$proxy_protocol_server_addr",
+    "desc": "server address from the PROXY protocol header (1.17.6)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
+    "module": "ngx_stream_core_module"
+  },
+  {
+    "name": "$proxy_protocol_server_port",
+    "desc": "server port from the PROXY protocol header (1.17.6)\n\nThe PROXY protocol must be previously enabled by setting the\nproxy_protocol parameter\nin the listen directive.",
     "module": "ngx_stream_core_module"
   },
   {
@@ -665,6 +695,11 @@
     "module": "ngx_stream_core_module"
   },
   {
+    "name": "$limit_conn_status",
+    "desc": "keeps the result of limiting the number of connections (1.17.6):\nPASSED,\nREJECTED, or\nREJECTED_DRY_RUN",
+    "module": "ngx_stream_limit_conn_module"
+  },
+  {
     "name": "$realip_remote_addr",
     "desc": "keeps the original client address",
     "module": "ngx_stream_realip_module"
@@ -676,7 +711,7 @@
   },
   {
     "name": "$ssl_cipher",
-    "desc": "returns the string of ciphers used\nfor an established SSL connection;",
+    "desc": "returns the name of the cipher used\nfor an established SSL connection;",
     "module": "ngx_stream_ssl_module"
   },
   {

@@ -102,7 +102,7 @@
       "server",
       "location"
     ],
-    "desc": "Configures logging. Several logs can be specified on the same level (1.5.2). If on the main configuration level writing a log to a file is not explicitly defined, the default file will be used.",
+    "desc": "Configures logging. Several logs can be specified on the same configuration level (1.5.2). If on the main configuration level writing a log to a file is not explicitly defined, the default file will be used.",
     "notes": [
       "\nFor debug logging to work, nginx needs to\nbe built with --with-debug,\nsee “A debugging log”.\n",
       "\nThe directive can be specified on the\nstream level\nstarting from version 1.7.11,\nand on the mail level\nstarting from version 1.9.0.\n"
@@ -249,7 +249,7 @@
     "contexts": [
       "main"
     ],
-    "desc": "Defines named thread pools used for multi-threaded reading and sending of files without blocking worker processes.",
+    "desc": "Defines the name and parameters of a thread pool used for multi-threaded reading and sending of files without blocking worker processes.",
     "notes": [],
     "since": "1.7.11",
     "module": "Core functionality"
@@ -487,6 +487,22 @@
     "desc": "Defines a replacement for the specified location. For example, with the following configuration",
     "notes": [],
     "since": null,
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "auth_delay",
+    "syntax": [
+      "auth_delay time;"
+    ],
+    "def": "auth_delay 0s;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Delays processing of unauthorized requests with 401 response code to prevent timing attacks when access is limited by password, by the result of subrequest, or by JWT.",
+    "notes": [],
+    "since": "1.17.10",
     "module": "ngx_http_core_module"
   },
   {
@@ -1287,7 +1303,7 @@
   {
     "name": "resolver",
     "syntax": [
-      "resolver \n    address ...\n    [valid=time]\n    [ipv6=on|off];"
+      "resolver \n    address ...\n    [valid=time]\n    [ipv6=on|off]\n    [status_zone=zone];"
     ],
     "def": null,
     "contexts": [
@@ -1297,10 +1313,7 @@
     ],
     "desc": "Configures name servers used to resolve names of upstream servers into addresses, for example:",
     "notes": [
-      "\nBefore version 1.1.7, only a single name server could be configured.\nSpecifying name servers using IPv6 addresses is supported\nstarting from versions 1.3.1 and 1.2.2.\n",
-      "\nResolving of names into IPv6 addresses is supported\nstarting from version 1.5.8.\n",
-      "\nBefore version 1.1.9, tuning of caching time was not possible,\nand nginx always cached answers for the duration of 5 minutes.\n",
-      "\nTo prevent DNS spoofing, it is recommended\nconfiguring DNS servers in a properly secured trusted local network.\n"
+      "\nBefore version 1.1.7, only a single name server could be configured.\nSpecifying name servers using IPv6 addresses is supported\nstarting from versions 1.3.1 and 1.2.2.\n"
     ],
     "since": null,
     "module": "ngx_http_core_module"
@@ -1773,7 +1786,9 @@
     ],
     "def": null,
     "contexts": [
-      "server"
+      "server",
+      "location",
+      "ifinlocation"
     ],
     "desc": "Enables collection of virtual http or stream server status information in the specified zone. Several servers may share the same zone.",
     "notes": [],
@@ -1792,7 +1807,7 @@
       "location",
       "limit_except"
     ],
-    "desc": "Enables validation of user name and password using the “HTTP Basic Authentication” protocol. The specified parameter is used as a realm. Parameter value can contain variables (1.3.10, 1.2.7). The special value off allows cancelling the effect of the auth_basic directive inherited from the previous configuration level.",
+    "desc": "Enables validation of user name and password using the “HTTP Basic Authentication” protocol. The specified parameter is used as a realm. Parameter value can contain variables (1.3.10, 1.2.7). The special value off cancels the effect of the auth_basic directive inherited from the previous configuration level.",
     "notes": [],
     "since": null,
     "module": "ngx_http_auth_basic_module"
@@ -2512,7 +2527,7 @@
   {
     "name": "fastcgi_cache_path",
     "syntax": [
-      "fastcgi_cache_path \n    path\n    [levels=levels]\n    [use_temp_path=on|off]\n    keys_zone=name:size\n    [inactive=time]\n    [max_size=size]\n    [manager_files=number]\n    [manager_sleep=time]\n    [manager_threshold=time]\n    [loader_files=number]\n    [loader_sleep=time]\n    [loader_threshold=time]\n    [purger=on|off]\n    [purger_files=number]\n    [purger_sleep=time]\n    [purger_threshold=time];"
+      "fastcgi_cache_path \n    path\n    [levels=levels]\n    [use_temp_path=on|off]\n    keys_zone=name:size\n    [inactive=time]\n    [max_size=size]\n    [min_free=size]\n    [manager_files=number]\n    [manager_sleep=time]\n    [manager_threshold=time]\n    [loader_files=number]\n    [loader_sleep=time]\n    [loader_threshold=time]\n    [purger=on|off]\n    [purger_files=number]\n    [purger_sleep=time]\n    [purger_threshold=time];"
     ],
     "def": null,
     "contexts": [
@@ -2520,8 +2535,7 @@
     ],
     "desc": "Sets the path and other parameters of a cache. Cache data are stored in files. Both the key and file name in a cache are a result of applying the MD5 function to the proxied URL. The levels parameter defines hierarchy levels of a cache: from 1 to 3, each level accepts values 1 or 2. For example, in the following configuration",
     "notes": [
-      "\nAs part of\ncommercial subscription,\nthe shared memory zone also stores extended\ncache information,\nthus, it is required to specify a larger zone size for the same number of keys.\nFor example,\none megabyte zone can store about 4 thousand keys.\n",
-      "\nIn versions 1.7.3, 1.7.7, and 1.11.10 cache header format has been changed.\nPreviously cached responses will be considered invalid\nafter upgrading to a newer nginx version.\n"
+      "\nAs part of\ncommercial subscription,\nthe shared memory zone also stores extended\ncache information,\nthus, it is required to specify a larger zone size for the same number of keys.\nFor example,\none megabyte zone can store about 4 thousand keys.\n"
     ],
     "since": null,
     "module": "ngx_http_fastcgi_module"
@@ -2845,7 +2859,7 @@
       "server",
       "location"
     ],
-    "desc": "Sets a parameter that should be passed to the FastCGI server. The value can contain text, variables, and their combination. These directives are inherited from the previous level if and only if there are no fastcgi_param directives defined on the current level.",
+    "desc": "Sets a parameter that should be passed to the FastCGI server. The value can contain text, variables, and their combination. These directives are inherited from the previous configuration level if and only if there are no fastcgi_param directives defined on the current level.",
     "notes": [],
     "since": null,
     "module": "ngx_http_fastcgi_module"
@@ -3390,7 +3404,7 @@
       "server",
       "location"
     ],
-    "desc": "Allows redefining or appending fields to the request header passed to the gRPC server. The value can contain text, variables, and their combinations. These directives are inherited from the previous level if and only if there are no grpc_set_header directives defined on the current level.",
+    "desc": "Allows redefining or appending fields to the request header passed to the gRPC server. The value can contain text, variables, and their combinations. These directives are inherited from the previous configuration level if and only if there are no grpc_set_header directives defined on the current level.",
     "notes": [],
     "since": null,
     "module": "ngx_http_grpc_module"
@@ -3457,6 +3471,25 @@
     "desc": "Specifies the enabled ciphers for requests to a gRPC SSL server. The ciphers are specified in the format understood by the OpenSSL library.",
     "notes": [],
     "since": null,
+    "module": "ngx_http_grpc_module"
+  },
+  {
+    "name": "grpc_ssl_conf_command",
+    "syntax": [
+      "grpc_ssl_conf_command command;"
+    ],
+    "def": null,
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Sets arbitrary OpenSSL configuration commands when establishing a connection with the gRPC SSL server.",
+    "notes": [
+      "\nThe directive is supported when using OpenSSL 1.0.2 or higher.\n",
+      "\nNote that configuring OpenSSL directly\nmight result in unexpected behavior.\n"
+    ],
+    "since": "1.19.4",
     "module": "ngx_http_grpc_module"
   },
   {
@@ -4078,16 +4111,45 @@
   {
     "name": "js_content",
     "syntax": [
-      "js_content function;"
+      "js_content function | module.function;"
     ],
     "def": null,
     "contexts": [
       "location",
       "limit_except"
     ],
-    "desc": "Sets an njs function as a location content handler.",
+    "desc": "Sets an njs function as a location content handler. Since 0.4.0, a module function can be referenced.",
     "notes": [],
     "since": null,
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_header_filter",
+    "syntax": [
+      "js_header_filter function | module.function;"
+    ],
+    "def": null,
+    "contexts": [
+      "location",
+      "limit_except"
+    ],
+    "desc": "Sets an njs function as a response header filter. The directive allows changing arbitrary header fields of a response header.",
+    "notes": [],
+    "since": "0.5.1",
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_import",
+    "syntax": [
+      "js_import module.js |\nexport_name from module.js;"
+    ],
+    "def": null,
+    "contexts": [
+      "http"
+    ],
+    "desc": "Imports a module that implements location and variable handlers in njs. The export_name is used as a namespace to access module functions. If the export_name is not specified, the module name will be used as a namespace.",
+    "notes": [],
+    "since": "0.4.0",
     "module": "ngx_http_js_module"
   },
   {
@@ -4099,7 +4161,7 @@
     "contexts": [
       "http"
     ],
-    "desc": "Specifies a file that implements location and variable handlers in njs.",
+    "desc": "Specifies a file that implements location and variable handlers in njs:",
     "notes": [],
     "since": null,
     "module": "ngx_http_js_module"
@@ -4121,13 +4183,13 @@
   {
     "name": "js_set",
     "syntax": [
-      "js_set \n$variable function;"
+      "js_set \n$variable function |\nmodule.function;"
     ],
     "def": null,
     "contexts": [
       "http"
     ],
-    "desc": "Sets an njs function for the specified variable.",
+    "desc": "Sets an njs function for the specified variable. Since 0.4.0, a module function can be referenced.",
     "notes": [],
     "since": null,
     "module": "ngx_http_js_module"
@@ -4141,7 +4203,7 @@
     "contexts": [
       "http"
     ],
-    "desc": "Creates a new $variable whose value is looked up by the key in the key-value database. Strings are matched ignoring the case. The database is stored in a shared memory zone specified by the zone parameter.",
+    "desc": "Creates a new $variable whose value is looked up by the key in the key-value database. Matching rules are defined by the type parameter of the keyval_zone directive. The database is stored in a shared memory zone specified by the zone parameter.",
     "notes": [],
     "since": null,
     "module": "ngx_http_keyval_module"
@@ -4149,7 +4211,7 @@
   {
     "name": "keyval_zone",
     "syntax": [
-      "keyval_zone \n    zone=name:size\n    [state=file]\n    [timeout=time]\n    [sync];"
+      "keyval_zone \n    zone=name:size\n    [state=file]\n    [timeout=time]\n    [type=string|ip|prefix]\n    [sync];"
     ],
     "def": null,
     "contexts": [
@@ -4176,6 +4238,22 @@
       "\nIn HTTP/2 and SPDY, each concurrent request is considered a separate connection.\n"
     ],
     "since": null,
+    "module": "ngx_http_limit_conn_module"
+  },
+  {
+    "name": "limit_conn_dry_run",
+    "syntax": [
+      "limit_conn_dry_run on | off;"
+    ],
+    "def": "limit_conn_dry_run off;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Enables the dry run mode. In this mode, the number of connections is not limited, however, in the shared memory zone, the number of excessive connections is accounted as usual.",
+    "notes": [],
+    "since": "1.17.6",
     "module": "ngx_http_limit_conn_module"
   },
   {
@@ -4221,7 +4299,8 @@
     ],
     "desc": "Sets parameters for a shared memory zone that will keep states for various keys. In particular, the state includes the current number of connections. The key can contain text, variables, and their combination. Requests with an empty key value are not accounted.",
     "notes": [
-      "\nPrior to version 1.7.6, a key could contain exactly one variable.\n"
+      "\nPrior to version 1.7.6, a key could contain exactly one variable.\n",
+      "\nAdditionally, as part of our\ncommercial subscription,\nthe\nstatus information\nfor each such shared memory zone can be\nobtained or\nreset\nwith the API since 1.17.7.\n"
     ],
     "since": null,
     "module": "ngx_http_limit_conn_module"
@@ -4256,6 +4335,22 @@
     "desc": "Sets the shared memory zone and the maximum burst size of requests. If the requests rate exceeds the rate configured for a zone, their processing is delayed such that requests are processed at a defined rate. Excessive requests are delayed until their number exceeds the maximum burst size in which case the request is terminated with an error. By default, the maximum burst size is equal to zero. For example, the directives",
     "notes": [],
     "since": null,
+    "module": "ngx_http_limit_req_module"
+  },
+  {
+    "name": "limit_req_dry_run",
+    "syntax": [
+      "limit_req_dry_run on | off;"
+    ],
+    "def": "limit_req_dry_run off;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Enables the dry run mode. In this mode, requests processing rate is not limited, however, in the shared memory zone, the number of excessive requests is accounted as usual.",
+    "notes": [],
+    "since": "1.17.1",
     "module": "ngx_http_limit_req_module"
   },
   {
@@ -4320,7 +4415,7 @@
       "ifinlocation",
       "limit_except"
     ],
-    "desc": "Sets the path, format, and configuration for a buffered log write. Several logs can be specified on the same level. Logging to syslog can be configured by specifying the “syslog:” prefix in the first parameter. The special value off cancels all access_log directives on the current level. If the format is not specified then the predefined “combined” format is used.",
+    "desc": "Sets the path, format, and configuration for a buffered log write. Several logs can be specified on the same configuration level. Logging to syslog can be configured by specifying the “syslog:” prefix in the first parameter. The special value off cancels all access_log directives on the current level. If the format is not specified then the predefined “combined” format is used.",
     "notes": [
       "\nThe buffer size must not exceed the size of an atomic write to a disk file.\nFor FreeBSD this size is unlimited.\n"
     ],
@@ -4605,7 +4700,7 @@
       "server",
       "location"
     ],
-    "desc": "Sets the URI to which an original request will be mirrored. Several mirrors can be specified on the same level.",
+    "desc": "Sets the URI to which an original request will be mirrored. Several mirrors can be specified on the same configuration level.",
     "notes": [],
     "since": null,
     "module": "ngx_http_mirror_module"
@@ -5026,7 +5121,7 @@
   {
     "name": "proxy_cache_path",
     "syntax": [
-      "proxy_cache_path \n    path\n    [levels=levels]\n    [use_temp_path=on|off]\n    keys_zone=name:size\n    [inactive=time]\n    [max_size=size]\n    [manager_files=number]\n    [manager_sleep=time]\n    [manager_threshold=time]\n    [loader_files=number]\n    [loader_sleep=time]\n    [loader_threshold=time]\n    [purger=on|off]\n    [purger_files=number]\n    [purger_sleep=time]\n    [purger_threshold=time];"
+      "proxy_cache_path \n    path\n    [levels=levels]\n    [use_temp_path=on|off]\n    keys_zone=name:size\n    [inactive=time]\n    [max_size=size]\n    [min_free=size]\n    [manager_files=number]\n    [manager_sleep=time]\n    [manager_threshold=time]\n    [loader_files=number]\n    [loader_sleep=time]\n    [loader_threshold=time]\n    [purger=on|off]\n    [purger_files=number]\n    [purger_sleep=time]\n    [purger_threshold=time];"
     ],
     "def": null,
     "contexts": [
@@ -5034,8 +5129,7 @@
     ],
     "desc": "Sets the path and other parameters of a cache. Cache data are stored in files. The file name in a cache is a result of applying the MD5 function to the cache key. The levels parameter defines hierarchy levels of a cache: from 1 to 3, each level accepts values 1 or 2. For example, in the following configuration",
     "notes": [
-      "\nAs part of\ncommercial subscription,\nthe shared memory zone also stores extended\ncache information,\nthus, it is required to specify a larger zone size for the same number of keys.\nFor example,\none megabyte zone can store about 4 thousand keys.\n",
-      "\nIn versions 1.7.3, 1.7.7, and 1.11.10 cache header format has been changed.\nPreviously cached responses will be considered invalid\nafter upgrading to a newer nginx version.\n"
+      "\nAs part of\ncommercial subscription,\nthe shared memory zone also stores extended\ncache information,\nthus, it is required to specify a larger zone size for the same number of keys.\nFor example,\none megabyte zone can store about 4 thousand keys.\n"
     ],
     "since": null,
     "module": "ngx_http_proxy_module"
@@ -5137,6 +5231,22 @@
     "desc": "Sets a text that should be changed in the domain attribute of the “Set-Cookie” header fields of a proxied server response. Suppose a proxied server returned the “Set-Cookie” header field with the attribute “domain=localhost”. The directive",
     "notes": [],
     "since": "1.1.15",
+    "module": "ngx_http_proxy_module"
+  },
+  {
+    "name": "proxy_cookie_flags",
+    "syntax": [
+      "proxy_cookie_flags \n    off |\n    cookie\n    [flag ...];"
+    ],
+    "def": "proxy_cookie_flags off;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Sets one or more flags for the cookie. The cookie can contain text, variables, and their combinations. The secure, httponly, samesite=strict, samesite=lax, samesite=none parameters add the corresponding flags. The nosecure, nohttponly, nosamesite parameters remove the corresponding flags.",
+    "notes": [],
+    "since": "1.19.3",
     "module": "ngx_http_proxy_module"
   },
   {
@@ -5571,7 +5681,7 @@
       "server",
       "location"
     ],
-    "desc": "Allows redefining or appending fields to the request header passed to the proxied server. The value can contain text, variables, and their combinations. These directives are inherited from the previous level if and only if there are no proxy_set_header directives defined on the current level. By default, only two fields are redefined:",
+    "desc": "Allows redefining or appending fields to the request header passed to the proxied server. The value can contain text, variables, and their combinations. These directives are inherited from the previous configuration level if and only if there are no proxy_set_header directives defined on the current level. By default, only two fields are redefined:",
     "notes": [],
     "since": null,
     "module": "ngx_http_proxy_module"
@@ -5638,6 +5748,25 @@
     "desc": "Specifies the enabled ciphers for requests to a proxied HTTPS server. The ciphers are specified in the format understood by the OpenSSL library.",
     "notes": [],
     "since": "1.5.6",
+    "module": "ngx_http_proxy_module"
+  },
+  {
+    "name": "proxy_ssl_conf_command",
+    "syntax": [
+      "proxy_ssl_conf_command command;"
+    ],
+    "def": null,
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Sets arbitrary OpenSSL configuration commands when establishing a connection with the proxied HTTPS server.",
+    "notes": [
+      "\nThe directive is supported when using OpenSSL 1.0.2 or higher.\n",
+      "\nNote that configuring OpenSSL directly\nmight result in unexpected behavior.\n"
+    ],
+    "since": "1.19.4",
     "module": "ngx_http_proxy_module"
   },
   {
@@ -6321,7 +6450,7 @@
   {
     "name": "scgi_cache_path",
     "syntax": [
-      "scgi_cache_path \n    path\n    [levels=levels]\n    [use_temp_path=on|off]\n    keys_zone=name:size\n    [inactive=time]\n    [max_size=size]\n    [manager_files=number]\n    [manager_sleep=time]\n    [manager_threshold=time]\n    [loader_files=number]\n    [loader_sleep=time]\n    [loader_threshold=time]\n    [purger=on|off]\n    [purger_files=number]\n    [purger_sleep=time]\n    [purger_threshold=time];"
+      "scgi_cache_path \n    path\n    [levels=levels]\n    [use_temp_path=on|off]\n    keys_zone=name:size\n    [inactive=time]\n    [max_size=size]\n    [min_free=size]\n    [manager_files=number]\n    [manager_sleep=time]\n    [manager_threshold=time]\n    [loader_files=number]\n    [loader_sleep=time]\n    [loader_threshold=time]\n    [purger=on|off]\n    [purger_files=number]\n    [purger_sleep=time]\n    [purger_threshold=time];"
     ],
     "def": null,
     "contexts": [
@@ -6329,8 +6458,7 @@
     ],
     "desc": "Sets the path and other parameters of a cache. Cache data are stored in files. The file name in a cache is a result of applying the MD5 function to the cache key. The levels parameter defines hierarchy levels of a cache: from 1 to 3, each level accepts values 1 or 2. For example, in the following configuration",
     "notes": [
-      "\nAs part of\ncommercial subscription,\nthe shared memory zone also stores extended\ncache information,\nthus, it is required to specify a larger zone size for the same number of keys.\nFor example,\none megabyte zone can store about 4 thousand keys.\n",
-      "\nIn versions 1.7.3, 1.7.7, and 1.11.10 cache header format has been changed.\nPreviously cached responses will be considered invalid\nafter upgrading to a newer nginx version.\n"
+      "\nAs part of\ncommercial subscription,\nthe shared memory zone also stores extended\ncache information,\nthus, it is required to specify a larger zone size for the same number of keys.\nFor example,\none megabyte zone can store about 4 thousand keys.\n"
     ],
     "since": null,
     "module": "ngx_http_scgi_module"
@@ -6606,7 +6734,7 @@
       "server",
       "location"
     ],
-    "desc": "Sets a parameter that should be passed to the SCGI server. The value can contain text, variables, and their combination. These directives are inherited from the previous level if and only if there are no scgi_param directives defined on the current level.",
+    "desc": "Sets a parameter that should be passed to the SCGI server. The value can contain text, variables, and their combination. These directives are inherited from the previous configuration level if and only if there are no scgi_param directives defined on the current level.",
     "notes": [],
     "since": null,
     "module": "ngx_http_scgi_module"
@@ -6859,7 +6987,7 @@
       "server",
       "location"
     ],
-    "desc": "Enables the use of the specified session log. The special value off cancels all session_log directives inherited from the previous configuration level.",
+    "desc": "Enables the use of the specified session log. The special value off cancels the effect of the session_log directives inherited from the previous configuration level.",
     "notes": [],
     "since": null,
     "module": "ngx_http_session_log_module"
@@ -7145,6 +7273,24 @@
     "module": "ngx_http_ssl_module"
   },
   {
+    "name": "ssl_conf_command",
+    "syntax": [
+      "ssl_conf_command command;"
+    ],
+    "def": null,
+    "contexts": [
+      "http",
+      "server"
+    ],
+    "desc": "Sets arbitrary OpenSSL configuration commands.",
+    "notes": [
+      "\nThe directive is supported when using OpenSSL 1.0.2 or higher.\n",
+      "\nNote that configuring OpenSSL directly\nmight result in unexpected behavior.\n"
+    ],
+    "since": "1.19.4",
+    "module": "ngx_http_ssl_module"
+  },
+  {
     "name": "ssl_crl",
     "syntax": [
       "ssl_crl file;"
@@ -7206,9 +7352,55 @@
     ],
     "desc": "Specifies a curve for ECDHE ciphers.",
     "notes": [
-      "\nPrior to version 1.11.0,\nthe prime256v1 curve was used by default.\n"
+      "\nPrior to version 1.11.0,\nthe prime256v1 curve was used by default.\n",
+      "\nWhen using OpenSSL 1.0.2 or higher,\nthis directive sets the list of curves supported by the server.\nThus, in order for ECDSA certificates to work,\nit is important to include the curves used in the certificates.\n"
     ],
     "since": "1.1.0",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "ssl_ocsp",
+    "syntax": [
+      "ssl_ocsp on |\n        off |\n        leaf;"
+    ],
+    "def": "ssl_ocsp off;",
+    "contexts": [
+      "http",
+      "server"
+    ],
+    "desc": "Enables OCSP validation of the client certificate chain. The leaf parameter enables validation of the client certificate only.",
+    "notes": [],
+    "since": "1.19.0",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "ssl_ocsp_cache",
+    "syntax": [
+      "ssl_ocsp_cache \n    off |\n    [shared:name:size];"
+    ],
+    "def": "ssl_ocsp_cache off;",
+    "contexts": [
+      "http",
+      "server"
+    ],
+    "desc": "Sets name and size of the cache that stores client certificates status for OCSP validation. The cache is shared between all worker processes. A cache with the same name can be used in several virtual servers.",
+    "notes": [],
+    "since": "1.19.0",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "ssl_ocsp_responder",
+    "syntax": [
+      "ssl_ocsp_responder url;"
+    ],
+    "def": null,
+    "contexts": [
+      "http",
+      "server"
+    ],
+    "desc": "Overrides the URL of the OCSP responder specified in the “Authority Information Access” certificate extension for validation of client certificates.",
+    "notes": [],
+    "since": "1.19.0",
     "module": "ngx_http_ssl_module"
   },
   {
@@ -7257,6 +7449,21 @@
       "\nThe TLSv1.3 parameter (1.13.0) works only when\nOpenSSL 1.1.1 built with TLSv1.3 support is used.\n"
     ],
     "since": null,
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "ssl_reject_handshake",
+    "syntax": [
+      "ssl_reject_handshake on | off;"
+    ],
+    "def": "ssl_reject_handshake off;",
+    "contexts": [
+      "http",
+      "server"
+    ],
+    "desc": "If enabled, SSL handshakes in the server block will be rejected.",
+    "notes": [],
+    "since": "1.19.4",
     "module": "ngx_http_ssl_module"
   },
   {
@@ -7497,7 +7704,7 @@
       "server",
       "location"
     ],
-    "desc": "Sets a string to replace and a replacement string. The string to replace is matched ignoring the case. The string to replace (1.9.4) and replacement string can contain variables. Several sub_filter directives can be specified on one configuration level (1.9.4). These directives are inherited from the previous level if and only if there are no sub_filter directives defined on the current level.",
+    "desc": "Sets a string to replace and a replacement string. The string to replace is matched ignoring the case. The string to replace (1.9.4) and replacement string can contain variables. Several sub_filter directives can be specified on the same configuration level (1.9.4). These directives are inherited from the previous configuration level if and only if there are no sub_filter directives defined on the current level.",
     "notes": [],
     "since": null,
     "module": "ngx_http_sub_module"
@@ -7656,8 +7863,8 @@
     "desc": "Activates the cache for connections to upstream servers.",
     "notes": [
       "\nIt should be particularly noted that the keepalive directive\ndoes not limit the total number of connections to upstream servers\nthat an nginx worker process can open.\nThe connections parameter should be set to a number small enough\nto let upstream servers process new incoming connections as well.\n",
+      "\nWhen using load balancing methods other than the default\nround-robin method, it is necessary to activate them before\nthe keepalive directive.\n",
       "\nAlternatively, HTTP/1.0 persistent connections can be used by passing the\n“Connection: Keep-Alive” header field to an upstream server,\nthough this method is not recommended.\n",
-      "\nWhen using load balancer methods other than the default\nround-robin method, it is necessary to activate them before\nthe keepalive directive.\n",
       "\nSCGI and uwsgi protocols do not have a notion of keepalive connections.\n"
     ],
     "since": "1.1.4",
@@ -7771,9 +7978,39 @@
     "module": "ngx_http_upstream_module"
   },
   {
+    "name": "resolver",
+    "syntax": [
+      "resolver \n    address ...\n    [valid=time]\n    [ipv6=on|off]\n    [status_zone=zone];"
+    ],
+    "def": null,
+    "contexts": [
+      "upstream"
+    ],
+    "desc": "Configures name servers used to resolve names of upstream servers into addresses, for example:",
+    "notes": [],
+    "since": "1.17.5",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "resolver_timeout",
+    "syntax": [
+      "resolver_timeout time;"
+    ],
+    "def": "resolver_timeout 30s;",
+    "contexts": [
+      "upstream"
+    ],
+    "desc": "Sets a timeout for name resolution, for example:",
+    "notes": [
+      "\nThis directive is available as part of our\ncommercial subscription.\n"
+    ],
+    "since": "1.17.5",
+    "module": "ngx_http_upstream_module"
+  },
+  {
     "name": "sticky",
     "syntax": [
-      "sticky \n    cookie name\n    [expires=time]\n    [domain=domain]\n    [httponly]\n    [secure]\n    [path=path];",
+      "sticky \n    cookie name\n    [expires=time]\n    [domain=domain]\n    [httponly]\n    [samesite=strict|lax|none]\n    [secure]\n    [path=path];",
       "sticky \n    route $variable ...;",
       "sticky \n    learn\n    create=$variable\n    lookup=$variable\n    zone=name:size\n    [timeout=time]\n    [header]\n    [sync];"
     ],
@@ -7894,6 +8131,22 @@
     "desc": "Sets a time during which a browser should keep the cookie. The parameter max will cause the cookie to expire on “31 Dec 2037 23:55:55 GMT”. The parameter off will cause the cookie to expire at the end of a browser session.",
     "notes": [],
     "since": null,
+    "module": "ngx_http_userid_module"
+  },
+  {
+    "name": "userid_flags",
+    "syntax": [
+      "userid_flags \n    off |\n    flag ...;"
+    ],
+    "def": "userid_flags off;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "If the parameter is not off, defines one or more additional flags for the cookie: secure, httponly, samesite=strict, samesite=lax, samesite=none.",
+    "notes": [],
+    "since": "1.19.3",
     "module": "ngx_http_userid_module"
   },
   {
@@ -8221,7 +8474,7 @@
   {
     "name": "uwsgi_cache_path",
     "syntax": [
-      "uwsgi_cache_path \n    path\n    [levels=levels]\n    [use_temp_path=on|off]\n    keys_zone=name:size\n    [inactive=time]\n    [max_size=size]\n    [manager_files=number]\n    [manager_sleep=time]\n    [manager_threshold=time]\n    [loader_files=number]\n    [loader_sleep=time]\n    [loader_threshold=time]\n    [purger=on|off]\n    [purger_files=number]\n    [purger_sleep=time]\n    [purger_threshold=time];"
+      "uwsgi_cache_path \n    path\n    [levels=levels]\n    [use_temp_path=on|off]\n    keys_zone=name:size\n    [inactive=time]\n    [max_size=size]\n    [min_free=size]\n    [manager_files=number]\n    [manager_sleep=time]\n    [manager_threshold=time]\n    [loader_files=number]\n    [loader_sleep=time]\n    [loader_threshold=time]\n    [purger=on|off]\n    [purger_files=number]\n    [purger_sleep=time]\n    [purger_threshold=time];"
     ],
     "def": null,
     "contexts": [
@@ -8229,8 +8482,7 @@
     ],
     "desc": "Sets the path and other parameters of a cache. Cache data are stored in files. The file name in a cache is a result of applying the MD5 function to the cache key. The levels parameter defines hierarchy levels of a cache: from 1 to 3, each level accepts values 1 or 2. For example, in the following configuration",
     "notes": [
-      "\nAs part of\ncommercial subscription,\nthe shared memory zone also stores extended\ncache information,\nthus, it is required to specify a larger zone size for the same number of keys.\nFor example,\none megabyte zone can store about 4 thousand keys.\n",
-      "\nIn versions 1.7.3, 1.7.7, and 1.11.10 cache header format has been changed.\nPreviously cached responses will be considered invalid\nafter upgrading to a newer nginx version.\n"
+      "\nAs part of\ncommercial subscription,\nthe shared memory zone also stores extended\ncache information,\nthus, it is required to specify a larger zone size for the same number of keys.\nFor example,\none megabyte zone can store about 4 thousand keys.\n"
     ],
     "since": null,
     "module": "ngx_http_uwsgi_module"
@@ -8538,7 +8790,7 @@
       "server",
       "location"
     ],
-    "desc": "Sets a parameter that should be passed to the uwsgi server. The value can contain text, variables, and their combination. These directives are inherited from the previous level if and only if there are no uwsgi_param directives defined on the current level.",
+    "desc": "Sets a parameter that should be passed to the uwsgi server. The value can contain text, variables, and their combination. These directives are inherited from the previous configuration level if and only if there are no uwsgi_param directives defined on the current level.",
     "notes": [],
     "since": null,
     "module": "ngx_http_uwsgi_module"
@@ -8718,6 +8970,25 @@
     "desc": "Specifies the enabled ciphers for requests to a secured uwsgi server. The ciphers are specified in the format understood by the OpenSSL library.",
     "notes": [],
     "since": "1.5.8",
+    "module": "ngx_http_uwsgi_module"
+  },
+  {
+    "name": "uwsgi_ssl_conf_command",
+    "syntax": [
+      "uwsgi_ssl_conf_command command;"
+    ],
+    "def": null,
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Sets arbitrary OpenSSL configuration commands when establishing a connection with the secured uwsgi server.",
+    "notes": [
+      "\nThe directive is supported when using OpenSSL 1.0.2 or higher.\n",
+      "\nNote that configuring OpenSSL directly\nmight result in unexpected behavior.\n"
+    ],
+    "since": "1.19.4",
     "module": "ngx_http_uwsgi_module"
   },
   {
@@ -8970,7 +9241,9 @@
       "server"
     ],
     "desc": "Sets the timeout of inactivity after which the connection is closed.",
-    "notes": [],
+    "notes": [
+      "\nThis directive is obsolete since version 1.19.7.\nThe keepalive_timeout\ndirective should be used instead.\n"
+    ],
     "since": null,
     "module": "ngx_http_v2_module"
   },
@@ -9015,7 +9288,9 @@
       "server"
     ],
     "desc": "Limits the maximum size of an HPACK-compressed request header field. The limit applies equally to both name and value. Note that if Huffman encoding is applied, the actual size of decompressed name and value strings may be larger. For most requests, the default limit should be enough.",
-    "notes": [],
+    "notes": [
+      "\nThis directive is obsolete since version 1.19.7.\nThe large_client_header_buffers\ndirective should be used instead.\n"
+    ],
     "since": null,
     "module": "ngx_http_v2_module"
   },
@@ -9030,7 +9305,9 @@
       "server"
     ],
     "desc": "Limits the maximum size of the entire request header list after HPACK decompression. For most requests, the default limit should be enough.",
-    "notes": [],
+    "notes": [
+      "\nThis directive is obsolete since version 1.19.7.\nThe large_client_header_buffers\ndirective should be used instead.\n"
+    ],
     "since": null,
     "module": "ngx_http_v2_module"
   },
@@ -9045,7 +9322,9 @@
       "server"
     ],
     "desc": "Sets the maximum number of requests (including push requests) that can be served through one HTTP/2 connection, after which the next client request will lead to connection closing and the need of establishing a new connection.",
-    "notes": [],
+    "notes": [
+      "\nThis directive is obsolete since version 1.19.7.\nThe keepalive_requests\ndirective should be used instead.\n"
+    ],
     "since": "1.11.6",
     "module": "ngx_http_v2_module"
   },
@@ -9106,7 +9385,9 @@
       "server"
     ],
     "desc": "Sets the timeout for expecting more data from the client, after which the connection is closed.",
-    "notes": [],
+    "notes": [
+      "\nThis directive is obsolete since version 1.19.7.\nThe client_header_timeout\ndirective should be used instead.\n"
+    ],
     "since": null,
     "module": "ngx_http_v2_module"
   },
@@ -9249,7 +9530,7 @@
   {
     "name": "resolver",
     "syntax": [
-      "resolver \naddress ...\n[valid=time];",
+      "resolver \n    address ...\n    [valid=time]\n    [ipv6=on|off]\n    [status_zone=zone];",
       "resolver off;"
     ],
     "def": "resolver off;",
@@ -9259,8 +9540,7 @@
     ],
     "desc": "Configures name servers used to find the client’s hostname to pass it to the authentication server, and in the XCLIENT command when proxying SMTP. For example:",
     "notes": [
-      "\nBefore version 1.1.7, only a single name server could be configured.\nSpecifying name servers using IPv6 addresses is supported\nstarting from versions 1.3.1 and 1.2.2.\n",
-      "\nBefore version 1.1.9, tuning of caching time was not possible,\nand nginx always cached answers for the duration of 5 minutes.\n"
+      "\nBefore version 1.1.7, only a single name server could be configured.\nSpecifying name servers using IPv6 addresses is supported\nstarting from versions 1.3.1 and 1.2.2.\n"
     ],
     "since": null,
     "module": "ngx_mail_core_module"
@@ -9415,6 +9695,21 @@
     "module": "ngx_mail_proxy_module"
   },
   {
+    "name": "proxy_smtp_auth",
+    "syntax": [
+      "proxy_smtp_auth on | off;"
+    ],
+    "def": "proxy_smtp_auth off;",
+    "contexts": [
+      "mail",
+      "server"
+    ],
+    "desc": "Enables or disables user authentication on the SMTP backend using the AUTH command.",
+    "notes": [],
+    "since": "1.19.4",
+    "module": "ngx_mail_proxy_module"
+  },
+  {
     "name": "proxy_timeout",
     "syntax": [
       "proxy_timeout timeout;"
@@ -9524,6 +9819,24 @@
     "module": "ngx_mail_ssl_module"
   },
   {
+    "name": "ssl_conf_command",
+    "syntax": [
+      "ssl_conf_command command;"
+    ],
+    "def": null,
+    "contexts": [
+      "mail",
+      "server"
+    ],
+    "desc": "Sets arbitrary OpenSSL configuration commands.",
+    "notes": [
+      "\nThe directive is supported when using OpenSSL 1.0.2 or higher.\n",
+      "\nNote that configuring OpenSSL directly\nmight result in unexpected behavior.\n"
+    ],
+    "since": "1.19.4",
+    "module": "ngx_mail_ssl_module"
+  },
+  {
     "name": "ssl_crl",
     "syntax": [
       "ssl_crl file;"
@@ -9567,7 +9880,8 @@
     ],
     "desc": "Specifies a curve for ECDHE ciphers.",
     "notes": [
-      "\nPrior to version 1.11.0,\nthe prime256v1 curve was used by default.\n"
+      "\nPrior to version 1.11.0,\nthe prime256v1 curve was used by default.\n",
+      "\nWhen using OpenSSL 1.0.2 or higher,\nthis directive sets the list of curves supported by the server.\nThus, in order for ECDSA certificates to work,\nit is important to include the curves used in the certificates.\n"
     ],
     "since": "1.1.0",
     "module": "ngx_mail_ssl_module"
@@ -9937,7 +10251,7 @@
   {
     "name": "resolver",
     "syntax": [
-      "resolver \n    address ...\n    [valid=time]\n    [ipv6=on|off];"
+      "resolver \n    address ...\n    [valid=time]\n    [ipv6=on|off]\n    [status_zone=zone];"
     ],
     "def": null,
     "contexts": [
@@ -9945,9 +10259,7 @@
       "server"
     ],
     "desc": "Configures name servers used to resolve names of upstream servers into addresses, for example:",
-    "notes": [
-      "\nBefore version 1.11.3, this directive was available as part of our\ncommercial subscription.\n"
-    ],
+    "notes": [],
     "since": "1.11.3",
     "module": "ngx_stream_core_module"
   },
@@ -10130,14 +10442,14 @@
   {
     "name": "js_access",
     "syntax": [
-      "js_access function;"
+      "js_access function | module.function;"
     ],
     "def": null,
     "contexts": [
       "stream",
       "server"
     ],
-    "desc": "Sets an njs function which will be called at the access phase.",
+    "desc": "Sets an njs function which will be called at the access phase. Since 0.4.0, a module function can be referenced.",
     "notes": [],
     "since": null,
     "module": "ngx_stream_js_module"
@@ -10145,16 +10457,30 @@
   {
     "name": "js_filter",
     "syntax": [
-      "js_filter function;"
+      "js_filter function | module.function;"
     ],
     "def": null,
     "contexts": [
       "stream",
       "server"
     ],
-    "desc": "Sets a data filter.",
+    "desc": "Sets a data filter. Since 0.4.0, a module function can be referenced.",
     "notes": [],
     "since": null,
+    "module": "ngx_stream_js_module"
+  },
+  {
+    "name": "js_import",
+    "syntax": [
+      "js_import module.js |\nexport_name from module.js;"
+    ],
+    "def": null,
+    "contexts": [
+      "stream"
+    ],
+    "desc": "Imports a module that implements location and variable handlers in njs. The export_name is used as a namespace to access module functions. If the export_name is not specified, the module name will be used as a namespace.",
+    "notes": [],
+    "since": "0.4.0",
     "module": "ngx_stream_js_module"
   },
   {
@@ -10166,7 +10492,7 @@
     "contexts": [
       "stream"
     ],
-    "desc": "Specifies a file that implements server and variable handlers in njs.",
+    "desc": "Specifies a file that implements server and variable handlers in njs:",
     "notes": [],
     "since": null,
     "module": "ngx_stream_js_module"
@@ -10178,7 +10504,7 @@
     ],
     "def": null,
     "contexts": [
-      "http"
+      "stream"
     ],
     "desc": "Sets an additional path for njs modules.",
     "notes": [],
@@ -10188,14 +10514,14 @@
   {
     "name": "js_preread",
     "syntax": [
-      "js_preread function;"
+      "js_preread function | module.function;"
     ],
     "def": null,
     "contexts": [
       "stream",
       "server"
     ],
-    "desc": "Sets an njs function which will be called at the preread phase.",
+    "desc": "Sets an njs function which will be called at the preread phase. Since 0.4.0, a module function can be referenced.",
     "notes": [],
     "since": null,
     "module": "ngx_stream_js_module"
@@ -10203,13 +10529,13 @@
   {
     "name": "js_set",
     "syntax": [
-      "js_set \n$variable function;"
+      "js_set \n$variable function |\nmodule.function;"
     ],
     "def": null,
     "contexts": [
       "stream"
     ],
-    "desc": "Sets an njs function for the specified variable.",
+    "desc": "Sets an njs function for the specified variable. Since 0.4.0, a module function can be referenced.",
     "notes": [],
     "since": null,
     "module": "ngx_stream_js_module"
@@ -10223,7 +10549,7 @@
     "contexts": [
       "stream"
     ],
-    "desc": "Creates a new $variable whose value is looked up by the key in the key-value database. Strings are matched ignoring the case. The database is stored in a shared memory zone specified by the zone parameter.",
+    "desc": "Creates a new $variable whose value is looked up by the key in the key-value database. Matching rules are defined by the type parameter of the keyval_zone directive. The database is stored in a shared memory zone specified by the zone parameter.",
     "notes": [],
     "since": null,
     "module": "ngx_stream_keyval_module"
@@ -10231,7 +10557,7 @@
   {
     "name": "keyval_zone",
     "syntax": [
-      "keyval_zone \n    zone=name:size\n    [state=file]\n    [timeout=time]\n    [sync];"
+      "keyval_zone \n    zone=name:size\n    [state=file]\n    [timeout=time]\n    [type=string|ip|prefix]\n    [sync];"
     ],
     "def": null,
     "contexts": [
@@ -10255,6 +10581,21 @@
     "desc": "Sets the shared memory zone and the maximum allowed number of connections for a given key value. When this limit is exceeded, the server will close the connection. For example, the directives",
     "notes": [],
     "since": null,
+    "module": "ngx_stream_limit_conn_module"
+  },
+  {
+    "name": "limit_conn_dry_run",
+    "syntax": [
+      "limit_conn_dry_run on | off;"
+    ],
+    "def": "limit_conn_dry_run off;",
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Enables the dry run mode. In this mode, the number of connections is not limited, however, in the shared memory zone, the number of excessive connections is accounted as usual.",
+    "notes": [],
+    "since": "1.17.6",
     "module": "ngx_stream_limit_conn_module"
   },
   {
@@ -10282,7 +10623,9 @@
       "stream"
     ],
     "desc": "Sets parameters for a shared memory zone that will keep states for various keys. In particular, the state includes the current number of connections. The key can contain text, variables, and their combinations (1.11.2). Connections with an empty key value are not accounted. Usage example:",
-    "notes": [],
+    "notes": [
+      "\nAdditionally, as part of our\ncommercial subscription,\nthe\nstatus information\nfor each such shared memory zone can be\nobtained or\nreset\nwith the API since 1.17.7.\n"
+    ],
     "since": null,
     "module": "ngx_stream_limit_conn_module"
   },
@@ -10297,7 +10640,7 @@
       "stream",
       "server"
     ],
-    "desc": "Sets the path, format, and configuration for a buffered log write. Several logs can be specified on the same level. Logging to syslog can be configured by specifying the “syslog:” prefix in the first parameter. The special value off cancels all access_log directives on the current level.",
+    "desc": "Sets the path, format, and configuration for a buffered log write. Several logs can be specified on the same configuration level. Logging to syslog can be configured by specifying the “syslog:” prefix in the first parameter. The special value off cancels all access_log directives on the current level.",
     "notes": [
       "\nThe buffer size must not exceed the size of an atomic write to a disk file.\nFor FreeBSD this size is unlimited.\n"
     ],
@@ -10635,6 +10978,24 @@
     "module": "ngx_stream_proxy_module"
   },
   {
+    "name": "proxy_ssl_conf_command",
+    "syntax": [
+      "proxy_ssl_conf_command command;"
+    ],
+    "def": null,
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Sets arbitrary OpenSSL configuration commands when establishing a connection with the proxied server.",
+    "notes": [
+      "\nThe directive is supported when using OpenSSL 1.0.2 or higher.\n",
+      "\nNote that configuring OpenSSL directly\nmight result in unexpected behavior.\n"
+    ],
+    "since": "1.19.4",
+    "module": "ngx_stream_proxy_module"
+  },
+  {
     "name": "proxy_ssl_crl",
     "syntax": [
       "proxy_ssl_crl file;"
@@ -10829,6 +11190,20 @@
     "module": "ngx_stream_return_module"
   },
   {
+    "name": "set",
+    "syntax": [
+      "set $variable value;"
+    ],
+    "def": null,
+    "contexts": [
+      "server"
+    ],
+    "desc": "Sets a value for the specified variable. The value can contain text, variables, and their combination.",
+    "notes": [],
+    "since": null,
+    "module": "ngx_stream_set_module"
+  },
+  {
     "name": "split_clients",
     "syntax": [
       "split_clients \n    string\n    $variable { ... }"
@@ -10905,6 +11280,24 @@
     "module": "ngx_stream_ssl_module"
   },
   {
+    "name": "ssl_conf_command",
+    "syntax": [
+      "ssl_conf_command command;"
+    ],
+    "def": null,
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Sets arbitrary OpenSSL configuration commands.",
+    "notes": [
+      "\nThe directive is supported when using OpenSSL 1.0.2 or higher.\n",
+      "\nNote that configuring OpenSSL directly\nmight result in unexpected behavior.\n"
+    ],
+    "since": "1.19.4",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
     "name": "ssl_crl",
     "syntax": [
       "ssl_crl file;"
@@ -10948,7 +11341,8 @@
     ],
     "desc": "Specifies a curve for ECDHE ciphers.",
     "notes": [
-      "\nPrior to version 1.11.0,\nthe prime256v1 curve was used by default.\n"
+      "\nPrior to version 1.11.0,\nthe prime256v1 curve was used by default.\n",
+      "\nWhen using OpenSSL 1.0.2 or higher,\nthis directive sets the list of curves supported by the server.\nThus, in order for ECDSA certificates to work,\nit is important to include the curves used in the certificates.\n"
     ],
     "since": null,
     "module": "ngx_stream_ssl_module"
@@ -11259,6 +11653,36 @@
     "module": "ngx_stream_upstream_module"
   },
   {
+    "name": "resolver",
+    "syntax": [
+      "resolver \n    address ...\n    [valid=time]\n    [ipv6=on|off]\n    [status_zone=zone];"
+    ],
+    "def": null,
+    "contexts": [
+      "upstream"
+    ],
+    "desc": "Configures name servers used to resolve names of upstream servers into addresses, for example:",
+    "notes": [],
+    "since": "1.17.5",
+    "module": "ngx_stream_upstream_module"
+  },
+  {
+    "name": "resolver_timeout",
+    "syntax": [
+      "resolver_timeout time;"
+    ],
+    "def": "resolver_timeout 30s;",
+    "contexts": [
+      "upstream"
+    ],
+    "desc": "Sets a timeout for name resolution, for example:",
+    "notes": [
+      "\nThis directive is available as part of our\ncommercial subscription.\n"
+    ],
+    "since": "1.17.5",
+    "module": "ngx_stream_upstream_module"
+  },
+  {
     "name": "health_check",
     "syntax": [
       "health_check [parameters];"
@@ -11464,6 +11888,24 @@
     "desc": "Specifies the enabled ciphers for connections to another cluster server. The ciphers are specified in the format understood by the OpenSSL library.",
     "notes": [],
     "since": null,
+    "module": "ngx_stream_zone_sync_module"
+  },
+  {
+    "name": "zone_sync_ssl_conf_command",
+    "syntax": [
+      "zone_sync_ssl_conf_command command;"
+    ],
+    "def": null,
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Sets arbitrary OpenSSL configuration commands when establishing a connection with another cluster server.",
+    "notes": [
+      "\nThe directive is supported when using OpenSSL 1.0.2 or higher.\n",
+      "\nNote that configuring OpenSSL directly\nmight result in unexpected behavior.\n"
+    ],
+    "since": "1.19.4",
     "module": "ngx_stream_zone_sync_module"
   },
   {
