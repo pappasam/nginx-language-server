@@ -6,7 +6,7 @@
 
 A [Language Server](https://microsoft.github.io/language-server-protocol/) for `nginx.conf`.
 
-Still under construction, expect big changes and breaking changes for a while.
+Still under construction, expect big / potentially breaking changes for a while.
 
 ## Capabilities
 
