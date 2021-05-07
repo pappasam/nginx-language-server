@@ -1,8 +1,8 @@
 # Nginx Language Server
 
 [![image-version](https://img.shields.io/pypi/v/nginx-language-server.svg)](https://python.org/pypi/nginx-language-server)
-[![image-license](https://img.shields.io/pypi/l/nginx-language-server.svg)](https://python.org/pypi/nginx-language-server)
-[![image-python-versions](https://img.shields.io/pypi/pyversions/nginx-language-server.svg)](https://python.org/pypi/nginx-language-server)
+[![image-license](https://img.shields.io/badge/license-GPL%203.0--only-orange)](https://python.org/pypi/jedi-language-server)
+[![image-python-versions](https://img.shields.io/badge/python->=3.6-blue)](https://python.org/pypi/jedi-language-server)
 
 A [Language Server](https://microsoft.github.io/language-server-protocol/) for `nginx.conf`.
 
