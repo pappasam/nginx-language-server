@@ -128,7 +128,7 @@ VariableDefinitionLookup = Dict[str, VariableDefinition]
 def load_raw_data(basename: str) -> ListDicts:
     """Pull in raw JSON data from directives file."""
     path_data = pathlib.Path(__file__).parent.parent.joinpath("data")
-    with path_data.joinpath(basename).open() as outfile:
+    with path_data.joinpath(basename).open(encoding="UTF-8") as outfile:
         data_raw = json.load(outfile)
     return data_raw
 
