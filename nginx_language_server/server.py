@@ -8,12 +8,12 @@ Official language server spec:
 
 from typing import Optional
 
-from pygls.features import COMPLETION, HOVER
-from pygls.server import LanguageServer
-from pygls.types import (
+from pygls.lsp.methods import COMPLETION, HOVER
+from pygls.lsp.types import (
     CompletionItem,
     CompletionItemKind,
     CompletionList,
+    CompletionOptions,
     CompletionParams,
     Hover,
     InsertTextFormat,
@@ -21,6 +21,7 @@ from pygls.types import (
     MarkupKind,
     TextDocumentPositionParams,
 )
+from pygls.server import LanguageServer
 
 from . import pygls_utils
 from .parser import DIRECTIVES, VARIABLES, nginxconf
@@ -34,12 +35,15 @@ SERVER = LanguageServer()
 # Server capabilities
 
 
-@SERVER.feature(COMPLETION, trigger_characters=["$"])
+@SERVER.feature(
+    COMPLETION,
+    CompletionOptions(trigger_characters=["$"]),
+)
 def completion(
     server: LanguageServer, params: CompletionParams
 ) -> Optional[CompletionList]:
     """Returns completion items."""
-    document = server.workspace.get_document(params.textDocument.uri)
+    document = server.workspace.get_document(params.text_document.uri)
     parsed = nginxconf.convert(document.source)
     line = nginxconf.find(parsed, params.position.line)
     if not line:
@@ -70,14 +74,15 @@ def completion(
         else None
     )
 
+
 @SERVER.feature(HOVER)
 def hover(
     server: LanguageServer, params: TextDocumentPositionParams
 ) -> Optional[Hover]:
     """Support Hover."""
-    document = server.workspace.get_document(params.textDocument.uri)
+    document = server.workspace.get_document(params.text_document.uri)
     parsed = nginxconf.convert(document.source)
-    word = pygls_utils.word_at_position(document, params.position)
+    word = document.word_at_position(params.position)
     line = nginxconf.find(parsed, params.position.line)
 
     # append "_name" to beginning of word

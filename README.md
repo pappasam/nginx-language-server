@@ -59,6 +59,32 @@ augroup end
 
 Note: this list is non-exhaustive. If you know of a great choice not included in this list, please submit a PR!
 
+## Command line
+
+nginx-language-server can be run directly from the command line.
+
+```console
+$ nginx-language-server --help
+usage: nginx-language-server [-h] [--version] [--tcp] [--host HOST]
+                             [--port PORT] [--log-file LOG_FILE] [-v]
+
+Nginx language server: an LSP server for nginx.conf.
+
+optional arguments:
+  -h, --help           show this help message and exit
+  --version            display version information and exit
+  --tcp                use TCP server instead of stdio
+  --host HOST          host for TCP server (default 127.0.0.1)
+  --port PORT          port for TCP server (default 2088)
+  --log-file LOG_FILE  redirect logs to the given file instead of writing to
+                       stderr
+  -v, --verbose        increase verbosity of log output
+
+Examples:
+
+    Run from stdio: nginx-language-server
+```
+
 ## Inspiration
 
 The useful language data for nginx is ported from [vscode-nginx-conf-hint](https://github.com/hangxingliu/vscode-nginx-conf-hint). I would have used this library directly, but alas! It's written only for VSCode and I use Neovim.
