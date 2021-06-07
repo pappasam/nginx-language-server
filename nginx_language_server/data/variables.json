@@ -35,6 +35,11 @@
     "module": "ngx_http_core_module"
   },
   {
+    "name": "$connection_time",
+    "desc": "connection time in seconds with a milliseconds resolution (1.19.10)",
+    "module": "ngx_http_core_module"
+  },
+  {
     "name": "$content_length",
     "desc": "“Content-Length” request header field",
     "module": "ngx_http_core_module"
@@ -271,7 +276,7 @@
   },
   {
     "name": "$jwt_claim_name",
-    "desc": "returns the value of a specified\nJWT claim\n\n\nFor nested claims and claims including a dot (“.”),\nthe value of the variable cannot be evaluated;\nthe auth_jwt_claim_set directive should be used instead.",
+    "desc": "returns the value of a specified\nJWT claim\n\n\nFor nested claims and claims including a dot (“.”),\nthe value of the variable cannot be evaluated;\nthe auth_jwt_claim_set directive should be used instead.\n\n\n\nVariable values for tokens encrypted with JWE\nare available only after decryption which occurs during the\nAccess phase.",
     "module": "ngx_http_auth_jwt_module"
   },
   {

@@ -642,7 +642,7 @@
       "server",
       "location"
     ],
-    "desc": "Sets the maximum allowed size of the client request body, specified in the “Content-Length” request header field. If the size in a request exceeds the configured value, the 413 (Request Entity Too Large) error is returned to the client. Please be aware that browsers cannot correctly display this error. Setting size to 0 disables checking of client request body size.",
+    "desc": "Sets the maximum allowed size of the client request body. If the size in a request exceeds the configured value, the 413 (Request Entity Too Large) error is returned to the client. Please be aware that browsers cannot correctly display this error. Setting size to 0 disables checking of client request body size.",
     "notes": [],
     "since": null,
     "module": "ngx_http_core_module"
@@ -851,15 +851,33 @@
     "syntax": [
       "keepalive_requests number;"
     ],
-    "def": "keepalive_requests 100;",
+    "def": "keepalive_requests 1000;",
     "contexts": [
       "http",
       "server",
       "location"
     ],
     "desc": "Sets the maximum number of requests that can be served through one keep-alive connection. After the maximum number of requests are made, the connection is closed.",
-    "notes": [],
+    "notes": [
+      "\nPrior to version 1.19.10, the default value was 100.\n"
+    ],
     "since": "0.8.0",
+    "module": "ngx_http_core_module"
+  },
+  {
+    "name": "keepalive_time",
+    "syntax": [
+      "keepalive_time time;"
+    ],
+    "def": "keepalive_time 1h;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Limits the maximum time during which requests can be processed through one keep-alive connection. After this time is reached, the connection is closed following the subsequent request processing.",
+    "notes": [],
+    "since": "1.19.10",
     "module": "ngx_http_core_module"
   },
   {
@@ -1857,7 +1875,8 @@
     ],
     "desc": "Sets the variable to a JWT claim parameter identified by key names. Name matching starts from the top level of the JSON tree. For arrays, the variable keeps a list of array elements separated by commas.",
     "notes": [
-      "\nPrior to version 1.13.7, only one key name could be specified,\nand the result was undefined for arrays.\n"
+      "\nPrior to version 1.13.7, only one key name could be specified,\nand the result was undefined for arrays.\n",
+      "\nVariable values for tokens encrypted with JWE\nare available only after decryption which occurs during the\nAccess phase.\n"
     ],
     "since": "1.11.10",
     "module": "ngx_http_auth_jwt_module"
@@ -1907,7 +1926,7 @@
       "location",
       "limit_except"
     ],
-    "desc": "Allows retrieving a JSON Web Key Set file from a subrequest for validating JWT signature and sets the URI where the subrequest will be sent to. To avoid validation overhead, it is recommended to cache the key file:",
+    "desc": "Allows retrieving a JSON Web Key Set file from a subrequest for validating JWT signature and sets the URI where the subrequest will be sent to. Parameter value can contain variables. To avoid validation overhead, it is recommended to cache the key file:",
     "notes": [],
     "since": "1.15.6",
     "module": "ngx_http_auth_jwt_module"
@@ -1926,6 +1945,23 @@
     "desc": "Sets the maximum allowable leeway to compensate clock skew when verifying the exp and nbf JWT claims.",
     "notes": [],
     "since": "1.13.10",
+    "module": "ngx_http_auth_jwt_module"
+  },
+  {
+    "name": "auth_jwt_type",
+    "syntax": [
+      "auth_jwt_type signed | encrypted;"
+    ],
+    "def": "auth_jwt_type signed;",
+    "contexts": [
+      "http",
+      "server",
+      "location",
+      "limit_except"
+    ],
+    "desc": "Specifies which type of JSON Web Token to expect: JWS (signed) or JWE (encrypted).",
+    "notes": [],
+    "since": "1.19.7",
     "module": "ngx_http_auth_jwt_module"
   },
   {
@@ -4109,6 +4145,21 @@
     "module": "ngx_http_index_module"
   },
   {
+    "name": "js_body_filter",
+    "syntax": [
+      "js_body_filter function | module.function\n[buffer_type=string | buffer];"
+    ],
+    "def": null,
+    "contexts": [
+      "location",
+      "limit_except"
+    ],
+    "desc": "Sets an njs function as a response body filter. The filter function is called for each data chunk of a response body with the following arguments:",
+    "notes": [],
+    "since": "0.5.2",
+    "module": "ngx_http_js_module"
+  },
+  {
     "name": "js_content",
     "syntax": [
       "js_content function | module.function;"
@@ -4192,6 +4243,20 @@
     "desc": "Sets an njs function for the specified variable. Since 0.4.0, a module function can be referenced.",
     "notes": [],
     "since": null,
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_var",
+    "syntax": [
+      "js_var $variable [value];"
+    ],
+    "def": null,
+    "contexts": [
+      "http"
+    ],
+    "desc": "Declares a writable variable. The value can contain text, variables, and their combination. The variable is not overwritten after a redirect unlike variables created with the set directive.",
+    "notes": [],
+    "since": "0.5.3",
     "module": "ngx_http_js_module"
   },
   {
@@ -5244,7 +5309,7 @@
       "server",
       "location"
     ],
-    "desc": "Sets one or more flags for the cookie. The cookie can contain text, variables, and their combinations. The secure, httponly, samesite=strict, samesite=lax, samesite=none parameters add the corresponding flags. The nosecure, nohttponly, nosamesite parameters remove the corresponding flags.",
+    "desc": "Sets one or more flags for the cookie. The cookie can contain text, variables, and their combinations. The flag can contain text, variables, and their combinations (1.19.8). The secure, httponly, samesite=strict, samesite=lax, samesite=none parameters add the corresponding flags. The nosecure, nohttponly, nosamesite parameters remove the corresponding flags.",
     "notes": [],
     "since": "1.19.3",
     "module": "ngx_http_proxy_module"
@@ -7875,13 +7940,29 @@
     "syntax": [
       "keepalive_requests number;"
     ],
-    "def": "keepalive_requests 100;",
+    "def": "keepalive_requests 1000;",
     "contexts": [
       "upstream"
     ],
     "desc": "Sets the maximum number of requests that can be served through one keepalive connection. After the maximum number of requests is made, the connection is closed.",
-    "notes": [],
+    "notes": [
+      "\nPrior to version 1.19.10, the default value was 100.\n"
+    ],
     "since": "1.15.3",
+    "module": "ngx_http_upstream_module"
+  },
+  {
+    "name": "keepalive_time",
+    "syntax": [
+      "keepalive_time time;"
+    ],
+    "def": "keepalive_time 1h;",
+    "contexts": [
+      "upstream"
+    ],
+    "desc": "Limits the maximum time during which requests can be processed through one keepalive connection. After this time is reached, the connection is closed following the subsequent request processing.",
+    "notes": [],
+    "since": "1.19.10",
     "module": "ngx_http_upstream_module"
   },
   {
@@ -9488,7 +9569,7 @@
   {
     "name": "listen",
     "syntax": [
-      "listen \n    address:port\n    [ssl]\n    [backlog=number]\n    [rcvbuf=size]\n    [sndbuf=size]\n    [bind]\n    [ipv6only=on|off]\n    [so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]];"
+      "listen \n    address:port\n    [ssl]\n    [proxy_protocol]\n    [backlog=number]\n    [rcvbuf=size]\n    [sndbuf=size]\n    [bind]\n    [ipv6only=on|off]\n    [so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]];"
     ],
     "def": null,
     "contexts": [
@@ -9511,6 +9592,21 @@
     "desc": "Provides the configuration file context in which the mail server directives are specified.",
     "notes": [],
     "since": null,
+    "module": "ngx_mail_core_module"
+  },
+  {
+    "name": "max_errors",
+    "syntax": [
+      "max_errors number;"
+    ],
+    "def": "max_errors 5;",
+    "contexts": [
+      "mail",
+      "server"
+    ],
+    "desc": "Sets the number of protocol errors after which the connection is closed.",
+    "notes": [],
+    "since": "1.21.0",
     "module": "ngx_mail_core_module"
   },
   {
@@ -9695,6 +9791,21 @@
     "module": "ngx_mail_proxy_module"
   },
   {
+    "name": "proxy_protocol",
+    "syntax": [
+      "proxy_protocol on | off;"
+    ],
+    "def": "proxy_protocol off;",
+    "contexts": [
+      "mail",
+      "server"
+    ],
+    "desc": "Enables the PROXY protocol for connections to a backend.",
+    "notes": [],
+    "since": "1.19.8",
+    "module": "ngx_mail_proxy_module"
+  },
+  {
     "name": "proxy_smtp_auth",
     "syntax": [
       "proxy_smtp_auth on | off;"
@@ -9738,6 +9849,21 @@
     "notes": [],
     "since": null,
     "module": "ngx_mail_proxy_module"
+  },
+  {
+    "name": "set_real_ip_from",
+    "syntax": [
+      "set_real_ip_from \n    address |\n    CIDR |\n    unix:;"
+    ],
+    "def": null,
+    "contexts": [
+      "mail",
+      "server"
+    ],
+    "desc": "Defines trusted addresses that are known to send correct replacement addresses. If the special value unix: is specified, all UNIX-domain sockets will be trusted.",
+    "notes": [],
+    "since": null,
+    "module": "ngx_mail_realip_module"
   },
   {
     "name": "ssl",
@@ -10192,7 +10318,7 @@
   {
     "name": "listen",
     "syntax": [
-      "listen \n    address:port\n    [ssl]\n    [udp]\n    [proxy_protocol]\n    [backlog=number]\n    [rcvbuf=size]\n    [sndbuf=size]\n    [bind]\n    [ipv6only=on|off]\n    [reuseport]\n    [so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]];"
+      "listen \n    address:port\n    [ssl]\n    [udp]\n    [proxy_protocol]\n    [fastopen=number]\n    [backlog=number]\n    [rcvbuf=size]\n    [sndbuf=size]\n    [bind]\n    [ipv6only=on|off]\n    [reuseport]\n    [so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]];"
     ],
     "def": null,
     "contexts": [
@@ -10538,6 +10664,20 @@
     "desc": "Sets an njs function for the specified variable. Since 0.4.0, a module function can be referenced.",
     "notes": [],
     "since": null,
+    "module": "ngx_stream_js_module"
+  },
+  {
+    "name": "js_var",
+    "syntax": [
+      "js_var $variable [value];"
+    ],
+    "def": null,
+    "contexts": [
+      "stream"
+    ],
+    "desc": "Declares a writable variable. The value can contain text, variables, and their combination.",
+    "notes": [],
+    "since": "0.5.3",
     "module": "ngx_stream_js_module"
   },
   {
