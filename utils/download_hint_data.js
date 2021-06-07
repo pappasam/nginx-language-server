@@ -20,11 +20,11 @@ const chalk = require('chalk');
 const url = require('url');
 const cheerio = require('cheerio');
 
-const checker = require('./lib/checker');
-const snippetGenerator = require('./lib/snippet_generator');
-const http = require('./lib/http_with_cache');
-const html = require('./lib/html');
-const io = require('./lib/io');
+const checker = require('./helpers/checker');
+const snippetGenerator = require('./helpers/snippet_generator');
+const http = require('./helpers/http_with_cache');
+const html = require('./helpers/html');
+const io = require('./helpers/io');
 
 const bold = any => chalk.bold(String(any));
 const removeBlank = any => String(any).replace(/\s/g, '');
