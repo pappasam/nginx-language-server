@@ -66,7 +66,7 @@ def completion(
             insert_text=directive.name,
             insert_text_format=InsertTextFormat.PlainText,
         )
-        for directive in (*directives.values(), *VARIABLES.values())
+        for directive in (*directives.values(), *DIRECTIVES["any"].values(), *VARIABLES.values())
     ]
     return (
         CompletionList(is_incomplete=False, items=completion_items)
@@ -95,7 +95,7 @@ def hover(
     possible_directives = (
         DIRECTIVES[last_context] if last_context in DIRECTIVES else {}
     )
-    possibilities = {**possible_directives, **VARIABLES}
+    possibilities = {**possible_directives, **DIRECTIVES["any"], **VARIABLES}
     if word not in possibilities:
         if line.line != params.position.line:
             return None
