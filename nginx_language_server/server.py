@@ -95,6 +95,8 @@ def hover(
     possible_directives = (
         DIRECTIVES[last_context] if last_context in DIRECTIVES else {}
     )
+    if len(contexts) >= 2 and contexts[-1] == "if" and contexts[-2] == "location":
+        possible_directives = {**possible_directives, **DIRECTIVES["ifinlocation"]}
     possibilities = {**possible_directives, **DIRECTIVES["any"], **VARIABLES}
     if word not in possibilities:
         if line.line != params.position.line:
