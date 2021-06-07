@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.7.1
+
+### Added
+
+- Some metadata to pyproject.toml. This will hopefully make pypi easier to navigate.
+
+### Fixed
+
+- ifinlocation context (special case based on our strange parsing) has been appropriately handled.
+
 ## 0.7.0
 
 ### Added
