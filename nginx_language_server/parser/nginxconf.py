@@ -40,9 +40,9 @@ def _convert(
 
 def convert(code: str) -> ParsedSymbols:
     """Load and parse symbols into a container for future processing."""
+    with NamedTemporaryFile(mode="w", delete=False) as nginx:
+        nginx.write(code)
     try:
-        with NamedTemporaryFile(mode="w", delete=False) as nginx:
-            nginx.write(code)
         parsed = crossplane.parse(nginx.name)["config"][0]["parsed"]
         result: ParsedSymbols = {}
         _convert(result, parsed, [])

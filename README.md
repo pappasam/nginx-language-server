@@ -2,7 +2,7 @@
 
 [![image-version](https://img.shields.io/pypi/v/nginx-language-server.svg)](https://python.org/pypi/nginx-language-server)
 [![image-license](https://img.shields.io/badge/license-GPL%203.0--only-orange)](https://python.org/pypi/jedi-language-server)
-[![image-python-versions](https://img.shields.io/badge/python->=3.6-blue)](https://python.org/pypi/jedi-language-server)
+[![image-python-versions](https://img.shields.io/badge/python->=3.8-blue)](https://python.org/pypi/jedi-language-server)
 
 A [Language Server](https://microsoft.github.io/language-server-protocol/) for `nginx.conf`.
 
@@ -38,16 +38,18 @@ The following instructions show how to use nginx-language-server with your devel
 With [coc.nvim](https://github.com/neoclide/coc.nvim), put the following in `coc-settings.json`:
 
 ```json
+{
   "languageserver": {
     "nginx-language-server": {
       "command": "nginx-language-server",
       "filetypes": ["nginx"],
       "rootPatterns": ["nginx.conf", ".git"]
     }
-  },
+  }
+}
 ```
 
-In your vimrc, I recommend putting in the following lines to ensure variables complete / hover correcty:
+In your vimrc, I recommend putting in the following lines to ensure variables complete / hover correctly:
 
 ```vim
 augroup custom_nginx
@@ -55,6 +57,12 @@ augroup custom_nginx
   autocmd FileType nginx setlocal iskeyword+=$
   autocmd FileType nginx let b:coc_additional_keywords = ['$']
 augroup end
+```
+
+Alternatively, you can use [coc-nginx](https://github.com/yaegassy/coc-nginx).
+
+```vim
+let g:coc_global_extensions = ['@yaegassy/coc-nginx']
 ```
 
 Note: this list is non-exhaustive. If you know of a great choice not included in this list, please submit a PR!

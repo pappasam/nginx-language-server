@@ -8,9 +8,13 @@ setup:  ## Set up the local development environment
 	poetry install
 	poetry run pre-commit install
 
-.PHONY: tox
+.PHONY: test
 test:  ## Run the tests
-	poetry run tox
+	poetry run black --check --diff nginx_language_server
+	poetry run docformatter --check --recursive nginx_language_server
+	poetry run isort --check nginx_language_server
+	poetry run pylint nginx_language_server
+	poetry run pyright nginx_language_server
 
 .PHONY: publish
 publish:  ## Build & publish the new version
@@ -19,6 +23,6 @@ publish:  ## Build & publish the new version
 
 .PHONY: format
 format:
-	poetry run black jedi_language_server tests
-	poetry run isort jedi_language_server tests
-	poetry run docformatter --recursive --in-place jedi_language_server tests
+	poetry run black nginx_language_server
+	poetry run isort nginx_language_server
+	poetry run docformatter --recursive --in-place nginx_language_server

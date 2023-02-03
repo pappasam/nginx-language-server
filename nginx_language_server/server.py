@@ -8,8 +8,9 @@ Official language server spec:
 
 from typing import Optional
 
-from pygls.lsp.methods import COMPLETION, HOVER
-from pygls.lsp.types import (
+from lsprotocol.types import (
+    TEXT_DOCUMENT_COMPLETION,
+    TEXT_DOCUMENT_HOVER,
     CompletionItem,
     CompletionItemKind,
     CompletionList,
@@ -23,20 +24,23 @@ from pygls.lsp.types import (
 )
 from pygls.server import LanguageServer
 
-from . import pygls_utils
-from .parser import DIRECTIVES, VARIABLES, nginxconf
+from nginx_language_server import __version__, pygls_utils
+from nginx_language_server.parser import DIRECTIVES, VARIABLES, nginxconf
 
 # pylint: disable=line-too-long
 
 
-SERVER = LanguageServer()
+SERVER = LanguageServer(
+    name="nginx-language-server",
+    version=__version__,
+)
 
 
 # Server capabilities
 
 
 @SERVER.feature(
-    COMPLETION,
+    TEXT_DOCUMENT_COMPLETION,
     CompletionOptions(trigger_characters=["$"]),
 )
 def completion(
@@ -66,7 +70,11 @@ def completion(
             insert_text=directive.name,
             insert_text_format=InsertTextFormat.PlainText,
         )
-        for directive in (*directives.values(), *DIRECTIVES["any"].values(), *VARIABLES.values())
+        for directive in (
+            *directives.values(),
+            *DIRECTIVES["any"].values(),
+            *VARIABLES.values(),
+        )
     ]
     return (
         CompletionList(is_incomplete=False, items=completion_items)
@@ -75,7 +83,7 @@ def completion(
     )
 
 
-@SERVER.feature(HOVER)
+@SERVER.feature(TEXT_DOCUMENT_HOVER)
 def hover(
     server: LanguageServer, params: TextDocumentPositionParams
 ) -> Optional[Hover]:
@@ -95,8 +103,15 @@ def hover(
     possible_directives = (
         DIRECTIVES[last_context] if last_context in DIRECTIVES else {}
     )
-    if len(contexts) >= 2 and contexts[-1] == "if" and contexts[-2] == "location":
-        possible_directives = {**possible_directives, **DIRECTIVES["ifinlocation"]}
+    if (
+        len(contexts) >= 2
+        and contexts[-1] == "if"
+        and contexts[-2] == "location"
+    ):
+        possible_directives = {
+            **possible_directives,
+            **DIRECTIVES["ifinlocation"],
+        }
     possibilities = {**possible_directives, **DIRECTIVES["any"], **VARIABLES}
     if word not in possibilities:
         if line.line != params.position.line:
