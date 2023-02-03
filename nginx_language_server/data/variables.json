@@ -280,6 +280,11 @@
     "module": "ngx_http_auth_jwt_module"
   },
   {
+    "name": "$jwt_payload",
+    "desc": "returns the decrypted top-level payload\nof nested\nor encrypted tokens (1.21.2).\nFor nested tokens returns the enclosed JWS token.\nFor encrypted tokens returns JSON with claims.",
+    "module": "ngx_http_auth_jwt_module"
+  },
+  {
     "name": "$fastcgi_script_name",
     "desc": "request URI or, if a URI ends with a slash, request URI with an index file\nname configured by the fastcgi_index directive appended to it.\nThis variable can be used to set the\nSCRIPT_FILENAME and PATH_TRANSLATED\nparameters that determine the script name in PHP.\nFor example, for the “/info/” request with the\nfollowing directives\nfastcgi_index index.php;\nfastcgi_param SCRIPT_FILENAME /home/www/scripts/php$fastcgi_script_name;\n\nthe SCRIPT_FILENAME parameter will be equal to\n“/home/www/scripts/php/info/index.php”.\n\n\nWhen using the fastcgi_split_path_info directive,\nthe $fastcgi_script_name variable equals the value of\nthe first capture set by the directive.",
     "module": "ngx_http_fastcgi_module"
@@ -385,6 +390,11 @@
     "module": "ngx_http_ssi_module"
   },
   {
+    "name": "$ssl_alpn_protocol",
+    "desc": "returns the protocol selected by ALPN during the SSL handshake,\nor an empty string otherwise (1.21.4);",
+    "module": "ngx_http_ssl_module"
+  },
+  {
     "name": "$ssl_cipher",
     "desc": "returns the name of the cipher used\nfor an established SSL connection;",
     "module": "ngx_http_ssl_module"
@@ -457,6 +467,11 @@
   {
     "name": "$ssl_client_verify",
     "desc": "returns the result of client certificate verification:\n“SUCCESS”, “FAILED:reason”,\nand “NONE” if a certificate was not present;\n\nPrior to version 1.11.7, the “FAILED” result\ndid not contain the reason string.",
+    "module": "ngx_http_ssl_module"
+  },
+  {
+    "name": "$ssl_curve",
+    "desc": "returns the negotiated curve used for\nSSL handshake key exchange process (1.21.5).\nKnown curves are listed by names, unknown are shown in hexadecimal,\nfor example:\nprime256v1\n\n\nThe variable is supported only when using OpenSSL version 3.0 or higher.\nWith older versions, the variable value will be an empty string.",
     "module": "ngx_http_ssl_module"
   },
   {
@@ -715,6 +730,11 @@
     "module": "ngx_stream_realip_module"
   },
   {
+    "name": "$ssl_alpn_protocol",
+    "desc": "returns the protocol selected by ALPN during the SSL handshake,\nor an empty string otherwise (1.21.4);",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
     "name": "$ssl_cipher",
     "desc": "returns the name of the cipher used\nfor an established SSL connection;",
     "module": "ngx_stream_ssl_module"
@@ -772,6 +792,11 @@
   {
     "name": "$ssl_client_verify",
     "desc": "returns the result of client certificate verification (1.11.8):\n“SUCCESS”, “FAILED:reason”,\nand “NONE” if a certificate was not present;",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
+    "name": "$ssl_curve",
+    "desc": "returns the negotiated curve used for\nSSL handshake key exchange process (1.21.5).\nKnown curves are listed by names, unknown are shown in hexadecimal,\nfor example:\nprime256v1\n\n\nThe variable is supported only when using OpenSSL version 3.0 or higher.\nWith older versions, the variable value will be an empty string.",
     "module": "ngx_stream_ssl_module"
   },
   {

@@ -1321,7 +1321,7 @@
   {
     "name": "resolver",
     "syntax": [
-      "resolver \n    address ...\n    [valid=time]\n    [ipv6=on|off]\n    [status_zone=zone];"
+      "resolver \n    address ...\n    [valid=time]\n    [ipv4=on|off]\n    [ipv6=on|off]\n    [status_zone=zone];"
     ],
     "def": null,
     "contexts": [
@@ -1441,14 +1441,16 @@
     "syntax": [
       "sendfile_max_chunk size;"
     ],
-    "def": "sendfile_max_chunk 0;",
+    "def": "sendfile_max_chunk 2m;",
     "contexts": [
       "http",
       "server",
       "location"
     ],
-    "desc": "When set to a non-zero value, limits the amount of data that can be transferred in a single sendfile() call. Without the limit, one fast connection may seize the worker process entirely.",
-    "notes": [],
+    "desc": "Limits the amount of data that can be transferred in a single sendfile() call. Without the limit, one fast connection may seize the worker process entirely.",
+    "notes": [
+      "\nPrior to version 1.21.4, by default there was no limit.\n"
+    ],
     "since": null,
     "module": "ngx_http_core_module"
   },
@@ -1898,6 +1900,22 @@
     "module": "ngx_http_auth_jwt_module"
   },
   {
+    "name": "auth_jwt_key_cache",
+    "syntax": [
+      "auth_jwt_key_cache time;"
+    ],
+    "def": "auth_jwt_key_cache 0;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Enables or disables caching of keys obtained from a file or from a subrequest, and sets caching time for them. Caching of keys obtained from variables is not supported. By default, caching of keys is disabled.",
+    "notes": [],
+    "since": "1.21.4",
+    "module": "ngx_http_auth_jwt_module"
+  },
+  {
     "name": "auth_jwt_key_file",
     "syntax": [
       "auth_jwt_key_file file;"
@@ -1950,7 +1968,7 @@
   {
     "name": "auth_jwt_type",
     "syntax": [
-      "auth_jwt_type signed | encrypted;"
+      "auth_jwt_type signed |\n        encrypted |\n        nested;"
     ],
     "def": "auth_jwt_type signed;",
     "contexts": [
@@ -1959,9 +1977,26 @@
       "location",
       "limit_except"
     ],
-    "desc": "Specifies which type of JSON Web Token to expect: JWS (signed) or JWE (encrypted).",
+    "desc": "Specifies which type of JSON Web Token to expect: JWS (signed), JWE (encrypted), or signed and then encrypted Nested JWT (nested) (1.21.0).",
     "notes": [],
     "since": "1.19.7",
+    "module": "ngx_http_auth_jwt_module"
+  },
+  {
+    "name": "auth_jwt_require",
+    "syntax": [
+      "auth_jwt_require \n    $value ...\n    [error=401 |\n                              403]\n;"
+    ],
+    "def": null,
+    "contexts": [
+      "http",
+      "server",
+      "location",
+      "limit_except"
+    ],
+    "desc": "Specifies additional checks for JWT validation. The value can contain text, variables, and their combination, and must start with a variable (1.21.7). The authentication will succeed only if all the values are not empty and are not equal to “0”.",
+    "notes": [],
+    "since": "1.21.2",
     "module": "ngx_http_auth_jwt_module"
   },
   {
@@ -3512,7 +3547,7 @@
   {
     "name": "grpc_ssl_conf_command",
     "syntax": [
-      "grpc_ssl_conf_command command;"
+      "grpc_ssl_conf_command name value;"
     ],
     "def": null,
     "contexts": [
@@ -4152,10 +4187,14 @@
     "def": null,
     "contexts": [
       "location",
+      "ifinlocation",
       "limit_except"
     ],
     "desc": "Sets an njs function as a response body filter. The filter function is called for each data chunk of a response body with the following arguments:",
-    "notes": [],
+    "notes": [
+      "\nAs the js_body_filter handler\nreturns its result immediately, it supports\nonly synchronous operations.\nThus, asynchronous operations such as\nr.subrequest()\nor\nsetTimeout()\nare not supported.\n",
+      "\nThe directive can be specified inside the\nif block\nsince 0.7.7.\n"
+    ],
     "since": "0.5.2",
     "module": "ngx_http_js_module"
   },
@@ -4167,11 +4206,142 @@
     "def": null,
     "contexts": [
       "location",
+      "ifinlocation",
       "limit_except"
     ],
     "desc": "Sets an njs function as a location content handler. Since 0.4.0, a module function can be referenced.",
-    "notes": [],
+    "notes": [
+      "\nThe directive can be specified inside the\nif block\nsince 0.7.7.\n"
+    ],
     "since": null,
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_fetch_buffer_size",
+    "syntax": [
+      "js_fetch_buffer_size size;"
+    ],
+    "def": "js_fetch_buffer_size 16k;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Sets the size of the buffer used for reading and writing with Fetch API.",
+    "notes": [],
+    "since": "0.7.4",
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_fetch_ciphers",
+    "syntax": [
+      "js_fetch_ciphers ciphers;"
+    ],
+    "def": "js_fetch_ciphers HIGH:!aNULL:!MD5;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Specifies the enabled ciphers for HTTPS requests with Fetch API. The ciphers are specified in the format understood by the OpenSSL library.",
+    "notes": [],
+    "since": "0.7.0",
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_fetch_max_response_buffer_size",
+    "syntax": [
+      "js_fetch_max_response_buffer_size size;"
+    ],
+    "def": "js_fetch_max_response_buffer_size 1m;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Sets the maximum size of the response received with Fetch API.",
+    "notes": [],
+    "since": "0.7.4",
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_fetch_protocols",
+    "syntax": [
+      "js_fetch_protocols \n    [TLSv1]\n    [TLSv1.1]\n    [TLSv1.2]\n    [TLSv1.3];"
+    ],
+    "def": "js_fetch_protocols TLSv1 TLSv1.1 TLSv1.2;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Enables the specified protocols for HTTPS requests with Fetch API.",
+    "notes": [],
+    "since": "0.7.0",
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_fetch_timeout",
+    "syntax": [
+      "js_fetch_timeout time;"
+    ],
+    "def": "js_fetch_timeout 60s;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Defines a timeout for reading and writing for Fetch API. The timeout is set only between two successive read/write operations, not for the whole response. If no data is transmitted within this time, the connection is closed.",
+    "notes": [],
+    "since": "0.7.4",
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_fetch_trusted_certificate",
+    "syntax": [
+      "js_fetch_trusted_certificate file;"
+    ],
+    "def": null,
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Specifies a file with trusted CA certificates in the PEM format used to verify the HTTPS certificate with Fetch API.",
+    "notes": [],
+    "since": "0.7.0",
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_fetch_verify",
+    "syntax": [
+      "js_fetch_verify on | off;"
+    ],
+    "def": "js_fetch_verify on;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Enables or disables verification of the HTTPS server certificate with Fetch API.",
+    "notes": [],
+    "since": "0.7.4",
+    "module": "ngx_http_js_module"
+  },
+  {
+    "name": "js_fetch_verify_depth",
+    "syntax": [
+      "js_fetch_verify_depth number;"
+    ],
+    "def": "js_fetch_verify_depth 100;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Sets the verification depth in the HTTPS server certificates chain with Fetch API.",
+    "notes": [],
+    "since": "0.7.0",
     "module": "ngx_http_js_module"
   },
   {
@@ -4182,10 +4352,14 @@
     "def": null,
     "contexts": [
       "location",
+      "ifinlocation",
       "limit_except"
     ],
     "desc": "Sets an njs function as a response header filter. The directive allows changing arbitrary header fields of a response header.",
-    "notes": [],
+    "notes": [
+      "\nAs the js_header_filter handler\nreturns its result immediately, it supports\nonly synchronous operations.\nThus, asynchronous operations such as\nr.subrequest()\nor\nsetTimeout()\nare not supported.\n",
+      "\nThe directive can be specified inside the\nif block\nsince 0.7.7.\n"
+    ],
     "since": "0.5.1",
     "module": "ngx_http_js_module"
   },
@@ -4196,10 +4370,14 @@
     ],
     "def": null,
     "contexts": [
-      "http"
+      "http",
+      "server",
+      "location"
     ],
     "desc": "Imports a module that implements location and variable handlers in njs. The export_name is used as a namespace to access module functions. If the export_name is not specified, the module name will be used as a namespace.",
-    "notes": [],
+    "notes": [
+      "\nThe directive can be specified on the\nserver and location level\nsince 0.7.7.\n"
+    ],
     "since": "0.4.0",
     "module": "ngx_http_js_module"
   },
@@ -4224,10 +4402,14 @@
     ],
     "def": null,
     "contexts": [
-      "http"
+      "http",
+      "server",
+      "location"
     ],
     "desc": "Sets an additional path for njs modules.",
-    "notes": [],
+    "notes": [
+      "\nThe directive can be specified on the\nserver and location level\nsince 0.7.7.\n"
+    ],
     "since": "0.3.0",
     "module": "ngx_http_js_module"
   },
@@ -4238,10 +4420,15 @@
     ],
     "def": null,
     "contexts": [
-      "http"
+      "http",
+      "server",
+      "location"
     ],
     "desc": "Sets an njs function for the specified variable. Since 0.4.0, a module function can be referenced.",
-    "notes": [],
+    "notes": [
+      "\nAs the js_set handler\nreturns its result immediately, it supports\nonly synchronous operations.\nThus, asynchronous operations such as\nr.subrequest()\nor\nsetTimeout()\nare not supported.\n",
+      "\nThe directive can be specified on the\nserver and location level\nsince 0.7.7.\n"
+    ],
     "since": null,
     "module": "ngx_http_js_module"
   },
@@ -4252,10 +4439,14 @@
     ],
     "def": null,
     "contexts": [
-      "http"
+      "http",
+      "server",
+      "location"
     ],
     "desc": "Declares a writable variable. The value can contain text, variables, and their combination. The variable is not overwritten after a redirect unlike variables created with the set directive.",
-    "notes": [],
+    "notes": [
+      "\nThe directive can be specified on the\nserver and location level\nsince 0.7.7.\n"
+    ],
     "since": "0.5.3",
     "module": "ngx_http_js_module"
   },
@@ -4612,22 +4803,6 @@
     "module": "ngx_http_memcached_module"
   },
   {
-    "name": "memcached_force_ranges",
-    "syntax": [
-      "memcached_force_ranges on | off;"
-    ],
-    "def": "memcached_force_ranges off;",
-    "contexts": [
-      "http",
-      "server",
-      "location"
-    ],
-    "desc": "Enables byte-range support for both cached and uncached responses from the memcached server regardless of the “Accept-Ranges” field in these responses.",
-    "notes": [],
-    "since": "1.7.7",
-    "module": "ngx_http_memcached_module"
-  },
-  {
     "name": "memcached_gzip_flag",
     "syntax": [
       "memcached_gzip_flag flag;"
@@ -4866,6 +5041,22 @@
       "\nThis directive is available as part of our\ncommercial subscription.\n"
     ],
     "since": null,
+    "module": "ngx_http_mp4_module"
+  },
+  {
+    "name": "mp4_start_key_frame",
+    "syntax": [
+      "mp4_start_key_frame on | off;"
+    ],
+    "def": "mp4_start_key_frame off;",
+    "contexts": [
+      "http",
+      "server",
+      "location"
+    ],
+    "desc": "Forces output video to always start with a key video frame. If the start argument does not point to a key frame, initial frames are hidden using an mp4 edit list. Edit lists are supported by major players and browsers such as Chrome, Safari, QuickTime and ffmpeg, partially supported by Firefox.",
+    "notes": [],
+    "since": "1.21.4",
     "module": "ngx_http_mp4_module"
   },
   {
@@ -5818,7 +6009,7 @@
   {
     "name": "proxy_ssl_conf_command",
     "syntax": [
-      "proxy_ssl_conf_command command;"
+      "proxy_ssl_conf_command name value;"
     ],
     "def": null,
     "contexts": [
@@ -7340,7 +7531,7 @@
   {
     "name": "ssl_conf_command",
     "syntax": [
-      "ssl_conf_command command;"
+      "ssl_conf_command name value;"
     ],
     "def": null,
     "contexts": [
@@ -7511,7 +7702,7 @@
     "desc": "Enables the specified protocols.",
     "notes": [
       "\nThe TLSv1.1 and TLSv1.2 parameters\n(1.1.13, 1.0.12) work only when OpenSSL 1.0.1 or higher is used.\n",
-      "\nThe TLSv1.3 parameter (1.13.0) works only when\nOpenSSL 1.1.1 built with TLSv1.3 support is used.\n"
+      "\nThe TLSv1.3 parameter (1.13.0) works only when\nOpenSSL 1.1.1 or higher is used.\n"
     ],
     "since": null,
     "module": "ngx_http_ssl_module"
@@ -9056,7 +9247,7 @@
   {
     "name": "uwsgi_ssl_conf_command",
     "syntax": [
-      "uwsgi_ssl_conf_command command;"
+      "uwsgi_ssl_conf_command name value;"
     ],
     "def": null,
     "contexts": [
@@ -9626,7 +9817,7 @@
   {
     "name": "resolver",
     "syntax": [
-      "resolver \n    address ...\n    [valid=time]\n    [ipv6=on|off]\n    [status_zone=zone];",
+      "resolver \n    address ...\n    [valid=time]\n    [ipv4=on|off]\n    [ipv6=on|off]\n    [status_zone=zone];",
       "resolver off;"
     ],
     "def": "resolver off;",
@@ -9947,7 +10138,7 @@
   {
     "name": "ssl_conf_command",
     "syntax": [
-      "ssl_conf_command command;"
+      "ssl_conf_command name value;"
     ],
     "def": null,
     "contexts": [
@@ -10055,7 +10246,7 @@
     "desc": "Enables the specified protocols.",
     "notes": [
       "\nThe TLSv1.1 and TLSv1.2 parameters\n(1.1.13, 1.0.12) work only when OpenSSL 1.0.1 or higher is used.\n",
-      "\nThe TLSv1.3 parameter (1.13.0) works only when\nOpenSSL 1.1.1 built with TLSv1.3 support is used.\n"
+      "\nThe TLSv1.3 parameter (1.13.0) works only when\nOpenSSL 1.1.1 or higher is used.\n"
     ],
     "since": null,
     "module": "ngx_mail_ssl_module"
@@ -10260,7 +10451,7 @@
     "syntax": [
       "smtp_auth method ...;"
     ],
-    "def": "smtp_auth login plain;",
+    "def": "smtp_auth plain login;",
     "contexts": [
       "mail",
       "server"
@@ -10377,7 +10568,7 @@
   {
     "name": "resolver",
     "syntax": [
-      "resolver \n    address ...\n    [valid=time]\n    [ipv6=on|off]\n    [status_zone=zone];"
+      "resolver \n    address ...\n    [valid=time]\n    [ipv4=on|off]\n    [ipv6=on|off]\n    [status_zone=zone];"
     ],
     "def": null,
     "contexts": [
@@ -10576,8 +10767,130 @@
       "server"
     ],
     "desc": "Sets an njs function which will be called at the access phase. Since 0.4.0, a module function can be referenced.",
-    "notes": [],
+    "notes": [
+      "\nAs the js_access handler\nreturns its result immediately, it supports\nonly synchronous callbacks.\nThus, asynchronous callbacks such as\nngx.fetch()\nor\nsetTimeout()\nare not supported.\n"
+    ],
     "since": null,
+    "module": "ngx_stream_js_module"
+  },
+  {
+    "name": "js_fetch_buffer_size",
+    "syntax": [
+      "js_fetch_buffer_size size;"
+    ],
+    "def": "js_fetch_buffer_size 16k;",
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Sets the size of the buffer used for reading and writing with Fetch API.",
+    "notes": [],
+    "since": "0.7.4",
+    "module": "ngx_stream_js_module"
+  },
+  {
+    "name": "js_fetch_ciphers",
+    "syntax": [
+      "js_fetch_ciphers ciphers;"
+    ],
+    "def": "js_fetch_ciphers HIGH:!aNULL:!MD5;",
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Specifies the enabled ciphers for HTTPS connections with Fetch API. The ciphers are specified in the format understood by the OpenSSL library.",
+    "notes": [],
+    "since": "0.7.0",
+    "module": "ngx_stream_js_module"
+  },
+  {
+    "name": "js_fetch_max_response_buffer_size",
+    "syntax": [
+      "js_fetch_max_response_buffer_size size;"
+    ],
+    "def": "js_fetch_max_response_buffer_size 1m;",
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Sets the maximum size of the response received with Fetch API.",
+    "notes": [],
+    "since": "0.7.4",
+    "module": "ngx_stream_js_module"
+  },
+  {
+    "name": "js_fetch_protocols",
+    "syntax": [
+      "js_fetch_protocols \n    [TLSv1]\n    [TLSv1.1]\n    [TLSv1.2]\n    [TLSv1.3];"
+    ],
+    "def": "js_fetch_protocols TLSv1 TLSv1.1 TLSv1.2;",
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Enables the specified protocols for HTTPS connections with Fetch API.",
+    "notes": [],
+    "since": "0.7.0",
+    "module": "ngx_stream_js_module"
+  },
+  {
+    "name": "js_fetch_timeout",
+    "syntax": [
+      "js_fetch_timeout time;"
+    ],
+    "def": "js_fetch_timeout 60s;",
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Defines a timeout for reading and writing for Fetch API. The timeout is set only between two successive read/write operations, not for the whole response. If no data is transmitted within this time, the connection is closed.",
+    "notes": [],
+    "since": "0.7.4",
+    "module": "ngx_stream_js_module"
+  },
+  {
+    "name": "js_fetch_trusted_certificate",
+    "syntax": [
+      "js_fetch_trusted_certificate file;"
+    ],
+    "def": null,
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Specifies a file with trusted CA certificates in the PEM format used to verify the HTTPS certificate with Fetch API.",
+    "notes": [],
+    "since": "0.7.0",
+    "module": "ngx_stream_js_module"
+  },
+  {
+    "name": "js_fetch_verify",
+    "syntax": [
+      "js_fetch_verify on | off;"
+    ],
+    "def": "js_fetch_verify on;",
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Enables or disables verification of the HTTPS server certificate with Fetch API.",
+    "notes": [],
+    "since": "0.7.4",
+    "module": "ngx_stream_js_module"
+  },
+  {
+    "name": "js_fetch_verify_depth",
+    "syntax": [
+      "js_fetch_verify_depth number;"
+    ],
+    "def": "js_fetch_verify_depth 100;",
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Sets the verification depth in the HTTPS server certificates chain with Fetch API.",
+    "notes": [],
+    "since": "0.7.0",
     "module": "ngx_stream_js_module"
   },
   {
@@ -10590,8 +10903,10 @@
       "stream",
       "server"
     ],
-    "desc": "Sets a data filter. Since 0.4.0, a module function can be referenced.",
-    "notes": [],
+    "desc": "Sets a data filter. Since 0.4.0, a module function can be referenced. The filter function is called once at the moment when the stream session reaches the content phase.",
+    "notes": [
+      "\nAs the js_filter handler\nreturns its result immediately, it supports\nonly synchronous operations.\nThus, asynchronous operations such as\nngx.fetch()\nor\nsetTimeout()\nare not supported.\n"
+    ],
     "since": null,
     "module": "ngx_stream_js_module"
   },
@@ -10602,10 +10917,13 @@
     ],
     "def": null,
     "contexts": [
-      "stream"
+      "stream",
+      "server"
     ],
     "desc": "Imports a module that implements location and variable handlers in njs. The export_name is used as a namespace to access module functions. If the export_name is not specified, the module name will be used as a namespace.",
-    "notes": [],
+    "notes": [
+      "\nThe directive can be specified on the\nserver level\nsince 0.7.7.\n"
+    ],
     "since": "0.4.0",
     "module": "ngx_stream_js_module"
   },
@@ -10630,10 +10948,13 @@
     ],
     "def": null,
     "contexts": [
-      "stream"
+      "stream",
+      "server"
     ],
     "desc": "Sets an additional path for njs modules.",
-    "notes": [],
+    "notes": [
+      "\nThe directive can be specified on the\nserver level\nsince 0.7.7.\n"
+    ],
     "since": "0.3.0",
     "module": "ngx_stream_js_module"
   },
@@ -10648,7 +10969,9 @@
       "server"
     ],
     "desc": "Sets an njs function which will be called at the preread phase. Since 0.4.0, a module function can be referenced.",
-    "notes": [],
+    "notes": [
+      "\nAs the js_preread handler\nreturns its result immediately, it supports\nonly synchronous callbacks.\nThus, asynchronous callbacks such as\nngx.fetch()\nor\nsetTimeout()\nare not supported.\nNevertheless, asynchronous operations are supported in\ns.on()\ncallbacks in the\npreread phase.\nSee\nthis example for more information.\n"
+    ],
     "since": null,
     "module": "ngx_stream_js_module"
   },
@@ -10659,10 +10982,14 @@
     ],
     "def": null,
     "contexts": [
-      "stream"
+      "stream",
+      "server"
     ],
     "desc": "Sets an njs function for the specified variable. Since 0.4.0, a module function can be referenced.",
-    "notes": [],
+    "notes": [
+      "\nAs the js_set handler\nreturns its result immediately, it supports\nonly synchronous callbacks.\nThus, asynchronous callbacks such as\nngx.fetch()\nor\nsetTimeout()\nare not supported.\n",
+      "\nThe directive can be specified on the\nserver level\nsince 0.7.7.\n"
+    ],
     "since": null,
     "module": "ngx_stream_js_module"
   },
@@ -10673,10 +11000,13 @@
     ],
     "def": null,
     "contexts": [
-      "stream"
+      "stream",
+      "server"
     ],
     "desc": "Declares a writable variable. The value can contain text, variables, and their combination.",
-    "notes": [],
+    "notes": [
+      "\nThe directive can be specified on the\nserver level\nsince 0.7.7.\n"
+    ],
     "since": "0.5.3",
     "module": "ngx_stream_js_module"
   },
@@ -10922,6 +11252,21 @@
     "module": "ngx_stream_proxy_module"
   },
   {
+    "name": "proxy_half_close",
+    "syntax": [
+      "proxy_half_close on | off;"
+    ],
+    "def": "proxy_half_close off;",
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Enables or disables closing each direction of a TCP connection independently (“TCP half-close”). If enabled, proxying over TCP will be kept until both sides close the connection.",
+    "notes": [],
+    "since": "1.21.4",
+    "module": "ngx_stream_proxy_module"
+  },
+  {
     "name": "proxy_next_upstream",
     "syntax": [
       "proxy_next_upstream on | off;"
@@ -11120,7 +11465,7 @@
   {
     "name": "proxy_ssl_conf_command",
     "syntax": [
-      "proxy_ssl_conf_command command;"
+      "proxy_ssl_conf_command name value;"
     ],
     "def": null,
     "contexts": [
@@ -11358,6 +11703,21 @@
     "module": "ngx_stream_split_clients_module"
   },
   {
+    "name": "ssl_alpn",
+    "syntax": [
+      "ssl_alpn protocol ...;"
+    ],
+    "def": null,
+    "contexts": [
+      "stream",
+      "server"
+    ],
+    "desc": "Specifies the list of supported ALPN protocols. One of the protocols must be negotiated if the client uses ALPN:",
+    "notes": [],
+    "since": "1.21.4",
+    "module": "ngx_stream_ssl_module"
+  },
+  {
     "name": "ssl_certificate",
     "syntax": [
       "ssl_certificate file;"
@@ -11422,7 +11782,7 @@
   {
     "name": "ssl_conf_command",
     "syntax": [
-      "ssl_conf_command command;"
+      "ssl_conf_command name value;"
     ],
     "def": null,
     "contexts": [
@@ -11545,7 +11905,7 @@
     "desc": "Enables the specified protocols.",
     "notes": [
       "\nThe TLSv1.1 and TLSv1.2 parameters work\nonly when OpenSSL 1.0.1 or higher is used.\n",
-      "\nThe TLSv1.3 parameter (1.13.0) works only when\nOpenSSL 1.1.1 built with TLSv1.3 support is used.\n"
+      "\nThe TLSv1.3 parameter (1.13.0) works only when\nOpenSSL 1.1.1 or higher is used.\n"
     ],
     "since": null,
     "module": "ngx_stream_ssl_module"
@@ -12033,7 +12393,7 @@
   {
     "name": "zone_sync_ssl_conf_command",
     "syntax": [
-      "zone_sync_ssl_conf_command command;"
+      "zone_sync_ssl_conf_command name value;"
     ],
     "def": null,
     "contexts": [

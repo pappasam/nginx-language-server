@@ -29,7 +29,6 @@ class DirectiveDefinition(BaseModel):
     ls_documentation: str = ""
 
     # pylint: disable=no-self-argument
-    # pylint: disable=no-self-use
     # pylint: disable=unused-argument
 
     @validator("ls_detail", always=True)
@@ -96,7 +95,6 @@ class VariableDefinition(BaseModel):
     ls_documentation: str = ""
 
     # pylint: disable=no-self-argument
-    # pylint: disable=no-self-use
     # pylint: disable=unused-argument
 
     @validator("ls_detail", always=True)
