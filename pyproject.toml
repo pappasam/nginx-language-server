@@ -13,7 +13,7 @@ line_length = 79
 
 [tool.poetry]
 name = "nginx-language-server"
-version = "0.8.0"
+version = "0.9.0"
 description = "A language server for nginx.conf"
 authors = ["Sam Roeca <samuel.roeca@gmail.com>"]
 readme = "README.md"
@@ -26,7 +26,7 @@ keywords = [
   "vim",
   "neovim",
   "lsp",
-  "language-server-protocol"
+  "language-server-protocol",
 ]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
@@ -37,7 +37,7 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: Text Editors :: Integrated Development Environments (IDE)",
   "Topic :: Utilities",
-  "Typing :: Typed"
+  "Typing :: Typed",
 ]
 include = ["README.md"]
 license = "GPL-3.0-only"
