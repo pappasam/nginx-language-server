@@ -6,7 +6,7 @@ Helper functions that simplify working with pygls
 from typing import Optional
 
 from lsprotocol.types import Position, Range
-from pygls.workspace import Document
+from pygls.workspace import TextDocument as Document
 
 
 def char_before_cursor(
