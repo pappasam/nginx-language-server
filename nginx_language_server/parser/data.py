@@ -5,7 +5,7 @@ import pathlib
 import textwrap
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, ValidationInfo, field_validator
 
 from .utils import wrap_plain_text, wrap_rich_text
 
@@ -17,28 +17,31 @@ class DirectiveDefinition(BaseModel):
 
     name: str
     syntax: List[str]
-    default: Optional[str] = Field(alias="def")
+    default: Optional[str] = Field(default=None, alias="def")
     contexts: List[str]
     desc: str
     notes: List[str]
-    since: Optional[str]
+    since: Optional[str] = None
     module: str
 
-    # Calculated values
-    ls_detail: str = ""
-    ls_documentation: str = ""
+    # Calculated values: validate_default runs their validators, as nothing passes them
+    ls_detail: str = Field(default="", validate_default=True)
+    ls_documentation: str = Field(default="", validate_default=True)
 
     # pylint: disable=no-self-argument
     # pylint: disable=unused-argument
 
-    @validator("ls_detail", always=True)
-    def get_ls_detail(cls, v, values) -> str:
+    @field_validator("ls_detail", mode="after")
+    @classmethod
+    def get_ls_detail(cls, v: str, info: ValidationInfo) -> str:
         """Get detail string."""
-        return f"dir: {values['name']}"
+        return f"dir: {info.data['name']}"
 
-    @validator("ls_documentation", always=True)
-    def get_ls_documentation(cls, v, values) -> str:
+    @field_validator("ls_documentation", mode="after")
+    @classmethod
+    def get_ls_documentation(cls, v: str, info: ValidationInfo) -> str:
         """Get documentation string."""
+        values = info.data
         result = ""
         if values["default"]:
             result += (
@@ -90,21 +93,24 @@ class VariableDefinition(BaseModel):
     desc: str
     module: str
 
-    # Calculated values
-    ls_detail: str = ""
-    ls_documentation: str = ""
+    # Calculated values: validate_default runs their validators, as nothing passes them
+    ls_detail: str = Field(default="", validate_default=True)
+    ls_documentation: str = Field(default="", validate_default=True)
 
     # pylint: disable=no-self-argument
     # pylint: disable=unused-argument
 
-    @validator("ls_detail", always=True)
-    def get_ls_detail(cls, v, values) -> str:
+    @field_validator("ls_detail", mode="after")
+    @classmethod
+    def get_ls_detail(cls, v: str, info: ValidationInfo) -> str:
         """Get detail string."""
-        return f"var: {values['name']}"
+        return f"var: {info.data['name']}"
 
-    @validator("ls_documentation", always=True)
-    def get_ls_documentation(cls, v, values) -> str:
+    @field_validator("ls_documentation", mode="after")
+    @classmethod
+    def get_ls_documentation(cls, v: str, info: ValidationInfo) -> str:
         """Get documentation string."""
+        values = info.data
         result = ""
         if values["desc"]:
             desc = wrap_rich_text(values["desc"].strip())

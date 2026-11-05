@@ -22,7 +22,7 @@ from lsprotocol.types import (
     MarkupKind,
     TextDocumentPositionParams,
 )
-from pygls.server import LanguageServer
+from pygls.lsp.server import LanguageServer
 
 from nginx_language_server import __version__, pygls_utils
 from nginx_language_server.parser import DIRECTIVES, VARIABLES, nginxconf
@@ -47,7 +47,7 @@ def completion(
     server: LanguageServer, params: CompletionParams
 ) -> Optional[CompletionList]:
     """Returns completion items."""
-    document = server.workspace.get_document(params.text_document.uri)
+    document = server.workspace.get_text_document(params.text_document.uri)
     parsed = nginxconf.convert(document.source)
     line = nginxconf.find(parsed, params.position.line)
     if not line:
@@ -88,7 +88,7 @@ def hover(
     server: LanguageServer, params: TextDocumentPositionParams
 ) -> Optional[Hover]:
     """Support Hover."""
-    document = server.workspace.get_document(params.text_document.uri)
+    document = server.workspace.get_text_document(params.text_document.uri)
     parsed = nginxconf.convert(document.source)
     word = document.word_at_position(params.position)
     line = nginxconf.find(parsed, params.position.line)
